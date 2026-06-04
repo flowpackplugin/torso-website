@@ -336,6 +336,7 @@ h1,h2,h3{font-weight:800;letter-spacing:-.02em;line-height:1.12}
 /* ===== Responsive ===== */
 @media(max-width:900px){
   .hero__grid,.split,.loc-grid{grid-template-columns:1fr;gap:36px}
+  .hero__grid::before{display:none}
   .loc-grid>div:first-child{margin-top:0}
   .figure{margin:0 auto;max-width:400px}
   .feature-grid{grid-template-columns:1fr}
