@@ -1,2 +1,27 @@
-node_modules/
+# OS / tooling
 .DS_Store
+node_modules/
+ffmpeg2pass-*.log*
+
+# heavy source media (originals) — never commit (GitHub 100MB limit)
+assets/img/*.MP4
+assets/img/*.MOV
+
+# intermediate / unused encodes & posters (not used by the live site)
+assets/video/dongo.mp4
+assets/video/jo.mp4
+assets/video/yoon.mp4
+assets/video/hero_montage.mp4
+assets/img/hero_poster_dongo.jpg
+assets/img/hero_poster_jo.jpg
+assets/img/hero_poster_yoon.jpg
+assets/img/hero_poster_montage.jpg
+assets/img/ba_before.jpg
+assets/img/ba_after.jpg
+
+# temp montages / contact sheets
+assets/img/_*.png
+assets/img/*_sheet.png
+
+# unused legacy script
+assets/js/hero3d.js
