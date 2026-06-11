@@ -198,9 +198,39 @@ document.querySelectorAll('a[href]').forEach(a => {
   // second line is a sibling heading (same big style) — clear it; types in after the strike
   var answerEl = el.parentNode.querySelector('.stance__h--a');
   var answerFull = answerEl ? answerEl.textContent.trim() : '';
-  if (answerEl) answerEl.textContent = '';
+  // reserve final height up front so nothing shifts as text types in
+  if (answerEl) { answerEl.style.minHeight = answerEl.offsetHeight + 'px'; answerEl.textContent = ''; }
+  // lead paragraph — typed in too (same effect), preserving its <b>
+  var leadEl = el.parentNode.querySelector('.stance__p--lead');
+  var leadSegs = leadEl ? collectSegs(leadEl) : null;
+  if (leadEl) { leadEl.style.minHeight = leadEl.offsetHeight + 'px'; leadEl.innerHTML = ''; leadEl.style.opacity = '0'; }
 
-  // soft per-character typewriter (each glyph fades in from blur)
+  // read a node's children into typed segments (text / <b> / <br>)
+  function collectSegs(node) {
+    var segs = [], ns = node.childNodes;
+    for (var j = 0; j < ns.length; j++) {
+      var n = ns[j];
+      if (n.nodeType === 3) segs.push({ t: n.textContent, b: false });
+      else if (n.nodeName === 'BR') segs.push({ t: '\n', b: false });
+      else segs.push({ t: n.textContent, b: n.nodeName === 'B' });
+    }
+    return segs;
+  }
+  // per-character reveal driver (each glyph fades in from blur)
+  function animate(spans, done, mult) {
+    mult = mult || 1;
+    var i = 0;
+    (function step() {
+      if (i >= spans.length) { if (done) done(); return; }
+      spans[i].el.classList.add('on'); i++;
+      var prev = spans[i - 1].ch;
+      var ease = i < 5 ? 1.2 : 1;
+      var base = (27 * ease + Math.random() * 16) * mult;
+      var delay = prev === '\n' ? 200 : (prev === ',' || prev === '?' || prev === '.' ? 150 * mult : base);
+      setTimeout(step, delay);
+    })();
+  }
+  // soft per-character typewriter (plain text, with \n support)
   function typeText(target, text, done) {
     var tw = document.createElement('span'); tw.className = 'tw';
     var spans = [];
@@ -211,16 +241,25 @@ document.querySelectorAll('a[href]').forEach(a => {
       tw.appendChild(s); spans.push({ el: s, ch: text[k] });
     }
     target.innerHTML = ''; target.appendChild(tw);
-    var i = 0;
-    (function step() {
-      if (i >= spans.length) { if (done) done(); return; }
-      spans[i].el.classList.add('on'); i++;
-      var prev = spans[i - 1].ch;
-      var ease = i < 5 ? 1.2 : 1;
-      var base = 27 * ease + Math.random() * 16;
-      var delay = prev === '\n' ? 200 : (prev === ',' || prev === '?' || prev === '.' ? 150 : base);
-      setTimeout(step, delay);
-    })();
+    animate(spans, done);
+  }
+  // same typewriter, but keeps bold runs (segments from collectSegs)
+  function typeSegs(target, segs, done, mult) {
+    var tw = document.createElement('span'); tw.className = 'tw';
+    var spans = [];
+    for (var g = 0; g < segs.length; g++) {
+      var holder = tw;
+      if (segs[g].b) { var bEl = document.createElement('b'); tw.appendChild(bEl); holder = bEl; }
+      var t = segs[g].t;
+      for (var k = 0; k < t.length; k++) {
+        if (t[k] === '\n') { holder.appendChild(document.createElement('br')); continue; }
+        var s = document.createElement('span');
+        s.className = 'ch'; s.textContent = t[k];
+        holder.appendChild(s); spans.push({ el: s, ch: t[k] });
+      }
+    }
+    target.innerHTML = ''; target.appendChild(tw);
+    animate(spans, done, mult);
   }
   function run() {
     typeText(el, full, function () { setTimeout(strike, 650); });
@@ -228,7 +267,11 @@ document.querySelectorAll('a[href]').forEach(a => {
   function strike() {
     el.classList.add('struck');                          // draw the line across the question
     setTimeout(function () {
-      if (answerEl) typeText(answerEl, answerFull);      // then type the answer below (same style)
+      if (answerEl) typeText(answerEl, answerFull, function () {  // then the answer
+        if (leadEl && leadSegs) setTimeout(function () {          // then the lead paragraph
+          leadEl.style.opacity = '1'; typeSegs(leadEl, leadSegs, null, 1.6);
+        }, 320);
+      });
     }, 760);
   }
   if ('IntersectionObserver' in window) {
