@@ -188,31 +188,22 @@ document.querySelectorAll('a[href]').forEach(a => {
     });
   });
 })();
-// stance heading — typewriter when it scrolls into view
+// ── typewriter module: hero opener (question→strike→answer) + manifesto (lead + closing) ──
 (function () {
-  var el = document.querySelector('.stance__h');
-  if (!el) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var full = el.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '');
-  if (reduce) return;
-  // second line is a sibling heading (same big style) — clear it; types in after the strike
-  var answerEl = el.parentNode.querySelector('.stance__h--a');
-  var answerFull = answerEl ? answerEl.textContent.trim() : '';
-  // reserve final height up front so nothing shifts as text types in
-  if (answerEl) { answerEl.style.minHeight = answerEl.offsetHeight + 'px'; answerEl.textContent = ''; }
-  // lead paragraph — typed in too (same effect), preserving its <b>
-  var leadEl = el.parentNode.querySelector('.stance__p--lead');
-  var leadSegs = leadEl ? collectSegs(leadEl) : null;
-  if (leadEl) { leadEl.style.minHeight = leadEl.offsetHeight + 'px'; leadEl.innerHTML = ''; leadEl.style.opacity = '0'; }
 
   // read a node's children into typed segments (text / <b> / <br>)
   function collectSegs(node) {
     var segs = [], ns = node.childNodes;
     for (var j = 0; j < ns.length; j++) {
       var n = ns[j];
-      if (n.nodeType === 3) segs.push({ t: n.textContent, b: false });
+      if (n.nodeType === 3) segs.push({ t: n.textContent.replace(/\s+/g, ' '), b: false });
       else if (n.nodeName === 'BR') segs.push({ t: '\n', b: false });
-      else segs.push({ t: n.textContent, b: n.nodeName === 'B' });
+      else segs.push({ t: n.textContent.replace(/\s+/g, ' '), b: n.nodeName === 'B' });
+    }
+    if (segs.length) {                                   // drop indentation/newlines at the very ends
+      segs[0].t = segs[0].t.replace(/^\s+/, '');
+      segs[segs.length - 1].t = segs[segs.length - 1].t.replace(/\s+$/, '');
     }
     return segs;
   }
@@ -230,20 +221,7 @@ document.querySelectorAll('a[href]').forEach(a => {
       setTimeout(step, delay);
     })();
   }
-  // soft per-character typewriter (plain text, with \n support)
-  function typeText(target, text, done) {
-    var tw = document.createElement('span'); tw.className = 'tw';
-    var spans = [];
-    for (var k = 0; k < text.length; k++) {
-      if (text[k] === '\n') { tw.appendChild(document.createElement('br')); continue; }
-      var s = document.createElement('span');
-      s.className = 'ch'; s.textContent = text[k];
-      tw.appendChild(s); spans.push({ el: s, ch: text[k] });
-    }
-    target.innerHTML = ''; target.appendChild(tw);
-    animate(spans, done);
-  }
-  // same typewriter, but keeps bold runs (segments from collectSegs)
+  // typewriter that preserves bold runs (segments from collectSegs)
   function typeSegs(target, segs, done, mult) {
     var tw = document.createElement('span'); tw.className = 'tw';
     var spans = [];
@@ -261,57 +239,63 @@ document.querySelectorAll('a[href]').forEach(a => {
     target.innerHTML = ''; target.appendChild(tw);
     animate(spans, done, mult);
   }
-  function run() {
-    typeText(el, full, function () { setTimeout(strike, 650); });
-  }
-  function strike() {
-    el.classList.add('struck');                          // draw the line across the question
+
+  // HERO opener: type the question, strike it, then type the answer
+  (function () {
+    var q = document.querySelector('.hero__q');
+    if (!q) return;
+    var a = document.querySelector('.hero__a');
+    var lead = document.querySelector('.hero__lead');
+    var qSegs = collectSegs(q);
+    var aSegs = a ? collectSegs(a) : null;
+    var leadSegs = lead ? collectSegs(lead) : null;
+    if (reduce) return;
+    q.style.animation = 'none'; q.style.minHeight = q.offsetHeight + 'px'; q.innerHTML = ''; q.style.opacity = '1';
+    if (a) { a.style.animation = 'none'; a.style.minHeight = a.offsetHeight + 'px'; a.innerHTML = ''; a.style.opacity = '0'; }
+    if (lead) { lead.style.animation = 'none'; lead.style.minHeight = lead.offsetHeight + 'px'; lead.innerHTML = ''; lead.style.opacity = '0'; }
     setTimeout(function () {
-      if (answerEl) typeText(answerEl, answerFull, function () {  // then the answer
-        if (leadEl && leadSegs) setTimeout(function () {          // then the lead paragraph
-          leadEl.style.opacity = '1'; typeSegs(leadEl, leadSegs, null, 1.6);
-        }, 320);
+      typeSegs(q, qSegs, function () {
+        setTimeout(function () {
+          q.classList.add('struck');
+          setTimeout(function () {
+            if (a) { a.style.opacity = '1'; typeSegs(a, aSegs, function () {
+              if (lead) setTimeout(function () { lead.style.opacity = '1'; typeSegs(lead, leadSegs, null, 1.25); }, 300);
+            }); }
+          }, 760);
+        }, 600);
       });
-    }, 760);
-  }
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(el); run(); } });
-    }, { threshold: 0.5 });
-    io.observe(el);
-  } else { run(); }
-})();
-// hero hook — soft typewriter on load (keeps the bold second line)
-(function () {
-  var el = document.querySelector('.hero__hook');
-  if (!el) return;
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return;
-  var parts = [
-    { t: '추구미를 몰라도 괜찮습니다.', b: false },
-    { br: true },
-    { t: '우리가 찾아내고 조각하니까요.', b: true }
-  ];
-  el.style.animation = 'none'; el.style.opacity = '1';
-  el.innerHTML = '';
-  var spans = [];
-  parts.forEach(function (p) {
-    if (p.br) { el.appendChild(document.createElement('br')); return; }
-    var holder = el;
-    if (p.b) { var b = document.createElement('b'); el.appendChild(b); holder = b; }
-    for (var i = 0; i < p.t.length; i++) {
-      var s = document.createElement('span'); s.className = 'ch'; s.textContent = p.t[i];
-      holder.appendChild(s); spans.push({ el: s, ch: p.t[i] });
+    }, 350);
+  })();
+
+  // MANIFESTO: type the lead, then the closing line, when scrolled into view
+  (function () {
+    var leadEl = document.querySelector('.stance__p--lead');
+    if (!leadEl) return;
+    var closeEl = document.querySelector('.stance__close');
+    var leadSegs = collectSegs(leadEl);
+    var closeSegs = closeEl ? collectSegs(closeEl) : null;
+    if (reduce) return;
+    leadEl.style.minHeight = leadEl.offsetHeight + 'px'; leadEl.innerHTML = ''; leadEl.style.opacity = '0';
+    if (closeEl) { closeEl.style.minHeight = closeEl.offsetHeight + 'px'; closeEl.innerHTML = ''; closeEl.style.opacity = '0'; }
+    function run() {
+      leadEl.style.opacity = '1';
+      typeSegs(leadEl, leadSegs, function () {
+        if (closeEl && closeSegs) setTimeout(function () { closeEl.style.opacity = '1'; typeSegs(closeEl, closeSegs); }, 400);
+      }, 1.3);
     }
-  });
-  var i = 0;
-  (function step() {
-    if (i >= spans.length) return;
-    spans[i].el.classList.add('on'); i++;
-    var prev = spans[i - 1].ch;
-    var ease = i < 5 ? 1.2 : 1;
-    var base = 27 * ease + Math.random() * 15;
-    setTimeout(step, prev === '.' ? 160 : base);
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { io.disconnect(); run(); } });
+      }, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
+      io.observe(leadEl);
+      // safety net: if still untouched after a moment and it's on screen, reveal anyway
+      setTimeout(function () {
+        if (leadEl.style.opacity === '0') {
+          var r = leadEl.getBoundingClientRect();
+          if (r.top < (window.innerHeight || 0) && r.bottom > 0) { io.disconnect(); run(); }
+        }
+      }, 1200);
+    } else { run(); }
   })();
 })();
 // generic scroll-in typewriter for any [data-typer] element
