@@ -52,7 +52,7 @@ document.querySelectorAll('a[href]').forEach(a => {
     entries.forEach(function (e) {
       if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  }, { threshold: 0.05, rootMargin: '0px 0px 8% 0px' });
   els.forEach(function (el) {
     var r = el.getBoundingClientRect();
     if (r.top < window.innerHeight * 0.92) { el.classList.add('in'); return; } // already in view
@@ -216,8 +216,8 @@ document.querySelectorAll('a[href]').forEach(a => {
       spans[i].el.classList.add('on'); i++;
       var prev = spans[i - 1].ch;
       var ease = i < 5 ? 1.2 : 1;
-      var base = (27 * ease + Math.random() * 16) * mult;
-      var delay = prev === '\n' ? 200 : (prev === ',' || prev === '?' || prev === '.' ? 150 * mult : base);
+      var base = (14 * ease + Math.random() * 8) * mult;
+      var delay = prev === '\n' ? 120 : (prev === ',' || prev === '?' || prev === '.' ? 90 * mult : base);
       setTimeout(step, delay);
     })();
   }
@@ -259,12 +259,12 @@ document.querySelectorAll('a[href]').forEach(a => {
           q.classList.add('struck');
           setTimeout(function () {
             if (a) { a.style.opacity = '1'; typeSegs(a, aSegs, function () {
-              if (lead) setTimeout(function () { lead.style.opacity = '1'; typeSegs(lead, leadSegs, null, 1.25); }, 300);
+              if (lead) setTimeout(function () { lead.style.opacity = '1'; typeSegs(lead, leadSegs, null, 1.1); }, 200);
             }); }
-          }, 760);
-        }, 600);
+          }, 500);
+        }, 420);
       });
-    }, 350);
+    }, 150);
   })();
 
   // MANIFESTO: type the lead, then the closing line, when scrolled into view
@@ -286,7 +286,7 @@ document.querySelectorAll('a[href]').forEach(a => {
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (es) {
         es.forEach(function (e) { if (e.isIntersecting) { io.disconnect(); run(); } });
-      }, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
+      }, { threshold: 0, rootMargin: '0px 0px 0px 0px' });
       io.observe(leadEl);
       // safety net: if still untouched after a moment and it's on screen, reveal anyway
       setTimeout(function () {
@@ -320,14 +320,14 @@ document.querySelectorAll('a[href]').forEach(a => {
       spans[i].el.classList.add('on'); i++;
       var prev = spans[i - 1].ch;
       var ease = i < 5 ? 1.2 : 1;
-      var base = 27 * ease + Math.random() * 16;
-      setTimeout(step, prev === '\n' ? 190 : (prev === ',' || prev === '.' || prev === '?' ? 150 : base));
+      var base = 14 * ease + Math.random() * 8;
+      setTimeout(step, prev === '\n' ? 120 : (prev === ',' || prev === '.' || prev === '?' ? 90 : base));
     })();
   }
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); type(e.target); } });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.2 });
     els.forEach(function (el) { io.observe(el); });
   } else { els.forEach(type); }
 })();
