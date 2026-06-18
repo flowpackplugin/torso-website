@@ -44,7 +44,8 @@ document.querySelectorAll('a[href]').forEach(a => {
 (function () {
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var sel = '.shead, .feature, .price-card, .price-tabs, .split > div, .split .slideshow,' +
-            ' .split img, .band > *, .info-row, .gal img, .map-links, .loc-map, #reserve';
+            ' .split img, .band > *, .info-row, .gal img, .map-links, .loc-map, #reserve,' +
+            ' .corephoto, .stat, .tocademy';
   var els = Array.prototype.slice.call(document.querySelectorAll(sel));
   if (!els.length) return;
   if (reduce || !('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
@@ -59,7 +60,7 @@ document.querySelectorAll('a[href]').forEach(a => {
     el.classList.add('reveal');
     // light stagger inside card grids
     var p = el.parentElement;
-    if (p && (p.classList.contains('feature-grid') || p.classList.contains('desg-grid') || p.classList.contains('gal'))) {
+    if (p && (p.classList.contains('feature-grid') || p.classList.contains('desg-grid') || p.classList.contains('gal') || p.classList.contains('corephoto-grid') || p.classList.contains('stat-grid'))) {
       var idx = Array.prototype.indexOf.call(p.children, el);
       el.style.transitionDelay = Math.min(idx * 0.14, 0.7) + 's';
     }
@@ -245,56 +246,38 @@ document.querySelectorAll('a[href]').forEach(a => {
     var q = document.querySelector('.hero__q');
     if (!q) return;
     var a = document.querySelector('.hero__a');
-    var lead = document.querySelector('.hero__lead');
     var qSegs = collectSegs(q);
     var aSegs = a ? collectSegs(a) : null;
-    var leadSegs = lead ? collectSegs(lead) : null;
     if (reduce) return;
     q.style.animation = 'none'; q.style.minHeight = q.offsetHeight + 'px'; q.innerHTML = ''; q.style.opacity = '1';
     if (a) { a.style.animation = 'none'; a.style.minHeight = a.offsetHeight + 'px'; a.innerHTML = ''; a.style.opacity = '0'; }
-    if (lead) { lead.style.animation = 'none'; lead.style.minHeight = lead.offsetHeight + 'px'; lead.innerHTML = ''; lead.style.opacity = '0'; }
     setTimeout(function () {
       typeSegs(q, qSegs, function () {
-        setTimeout(function () {
-          q.classList.add('struck');
-          setTimeout(function () {
-            if (a) { a.style.opacity = '1'; typeSegs(a, aSegs, function () {
-              if (lead) setTimeout(function () { lead.style.opacity = '1'; typeSegs(lead, leadSegs, null, 1.1); }, 200);
-            }); }
-          }, 500);
-        }, 420);
+        if (a) setTimeout(function () { a.style.opacity = '1'; typeSegs(a, aSegs); }, 220);
       });
     }, 150);
   })();
 
-  // MANIFESTO: type the lead, then the closing line, when scrolled into view
+  // PROOF hook: type the differentiation line when scrolled into view
   (function () {
-    var leadEl = document.querySelector('.stance__p--lead');
-    if (!leadEl) return;
-    var closeEl = document.querySelector('.stance__close');
-    var leadSegs = collectSegs(leadEl);
-    var closeSegs = closeEl ? collectSegs(closeEl) : null;
+    var el = document.querySelector('.proof__hook');
+    if (!el) return;
+    var segs = collectSegs(el);
     if (reduce) return;
-    leadEl.style.minHeight = leadEl.offsetHeight + 'px'; leadEl.innerHTML = ''; leadEl.style.opacity = '0';
-    if (closeEl) { closeEl.style.minHeight = closeEl.offsetHeight + 'px'; closeEl.innerHTML = ''; closeEl.style.opacity = '0'; }
-    function run() {
-      leadEl.style.opacity = '1';
-      typeSegs(leadEl, leadSegs, function () {
-        if (closeEl && closeSegs) setTimeout(function () { closeEl.style.opacity = '1'; typeSegs(closeEl, closeSegs); }, 400);
-      }, 1.3);
-    }
+    el.style.minHeight = el.offsetHeight + 'px'; el.innerHTML = ''; el.style.opacity = '0';
+    function run() { el.style.opacity = '1'; typeSegs(el, segs, null, 1.2); }
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (es) {
         es.forEach(function (e) { if (e.isIntersecting) { io.disconnect(); run(); } });
-      }, { threshold: 0, rootMargin: '0px 0px 0px 0px' });
-      io.observe(leadEl);
-      // safety net: if still untouched after a moment and it's on screen, reveal anyway
+      }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
+      io.observe(el);
+      // safety net: reveal anyway if it's on screen but never triggered
       setTimeout(function () {
-        if (leadEl.style.opacity === '0') {
-          var r = leadEl.getBoundingClientRect();
+        if (el.style.opacity === '0') {
+          var r = el.getBoundingClientRect();
           if (r.top < (window.innerHeight || 0) && r.bottom > 0) { io.disconnect(); run(); }
         }
-      }, 1200);
+      }, 1400);
     } else { run(); }
   })();
 })();
@@ -372,4 +355,72 @@ document.querySelectorAll('a[href]').forEach(a => {
       });
     });
   });
+})();
+// authority stats — slot digit-roll (same as program prices) when scrolled into view
+(function () {
+  var nums = Array.prototype.slice.call(document.querySelectorAll('.stat__num'));
+  if (!nums.length) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function build(el) {
+    if (el.dataset.roll) return;
+    el.dataset.roll = '1';
+    var str = el.textContent.trim();
+    var wrap = document.createElement('span'); wrap.className = 'num';
+    var digits = [];
+    for (var i = 0; i < str.length; i++) {
+      var c = str[i];
+      if (c >= '0' && c <= '9') {
+        var dig = document.createElement('span'); dig.className = 'dig';
+        var col = document.createElement('span'); col.className = 'dig__col';
+        for (var n = 0; n <= 9; n++) { var sp = document.createElement('span'); sp.textContent = n; col.appendChild(sp); }
+        dig.appendChild(col); wrap.appendChild(dig);
+        digits.push({ col: col, target: parseInt(c, 10) });
+      } else {
+        var s = document.createElement('span'); s.className = 'comma'; s.textContent = c; wrap.appendChild(s);
+      }
+    }
+    el.innerHTML = ''; el.appendChild(wrap);
+    el._digits = digits;
+  }
+  function settle(el) {
+    if (el._digits) el._digits.forEach(function (d) {
+      d.col.style.transition = 'none'; d.col.style.opacity = '1';
+      d.col.style.transform = 'translateY(-' + (d.target * 1.25) + 'em)';
+    });
+  }
+  function roll(el) {
+    if (!el._digits) return;
+    el._digits.forEach(function (d, i) {
+      d.col.style.transition = 'none';
+      d.col.style.transform = 'translateY(0)';
+      d.col.style.opacity = '0';
+      void d.col.offsetHeight;
+      setTimeout(function () {
+        d.col.style.transition = 'transform .7s cubic-bezier(.16,.84,.44,1), opacity .5s ease';
+        d.col.style.transform = 'translateY(-' + (d.target * 1.25) + 'em)';
+        d.col.style.opacity = '1';
+      }, i * 80);
+    });
+  }
+  nums.forEach(build);
+  if (reduce || !('IntersectionObserver' in window)) { nums.forEach(settle); return; }
+  nums.forEach(function (el) {                       // hidden until scrolled into view
+    if (el._digits) el._digits.forEach(function (d) { d.col.style.opacity = '0'; });
+  });
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); roll(e.target); } });
+  }, { threshold: 0.45 });
+  nums.forEach(function (el) { io.observe(el); });
+})();
+// scroll progress (thin top line)
+(function () {
+  var bar = document.createElement('div'); bar.id = 'scrollprog'; document.body.appendChild(bar);
+  var raf = false;
+  function upd() {
+    raf = false;
+    var h = document.documentElement, max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  }
+  function onScroll() { if (!raf) { raf = true; requestAnimationFrame(upd); } }
+  upd(); window.addEventListener('scroll', onScroll, { passive: true }); window.addEventListener('resize', onScroll);
 })();
