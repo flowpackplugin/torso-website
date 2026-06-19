@@ -348,7 +348,7 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .desg__b .sent.in{opacity:1}
 .desg__sns{margin-top:13px;display:flex;flex-wrap:wrap;gap:11px;align-items:center}
 .desg__sns a{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
-  border:1px solid var(--line);border-radius:50%;color:var(--ink);transition:.28s var(--ease)}
+  border:1px solid var(--line);border-radius:10px;color:var(--ink);transition:.28s var(--ease)}
 .desg__sns a:hover{border-color:var(--accent);color:var(--accent-d);background:rgba(140,156,131,.09);
   transform:translateY(-2px)}
 .desg__sns .sns-ico{width:17px;height:17px;display:block}
