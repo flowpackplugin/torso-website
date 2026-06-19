@@ -125,46 +125,20 @@ document.querySelectorAll('a[href]').forEach(a => {
     });
   });
 })();
-// program tabs (디렉터 / 원장) — pill slide, elegant fade (no discount roll)
+// program prices — tabs (디렉터 / 실장 / 원장) + discount toggles + digit-roll
 (function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var tabs = document.querySelectorAll('.price-tab');
   if (!tabs.length) return;
   var thumb = document.querySelector('.price-tabs__thumb');
-  function moveThumb(btn) {
-    if (!thumb || !btn) return;
-    thumb.style.left = btn.offsetLeft + 'px';
-    thumb.style.top = btn.offsetTop + 'px';
-    thumb.style.width = btn.offsetWidth + 'px';
-    thumb.style.height = btn.offsetHeight + 'px';
-  }
-  var activeTab = document.querySelector('.price-tab.active');
-  if (activeTab && thumb) {
-    var pre = thumb.style.transition; thumb.style.transition = 'none'; moveThumb(activeTab);
-    requestAnimationFrame(function () { thumb.style.transition = pre; });
-  }
-  window.addEventListener('resize', function () { moveThumb(document.querySelector('.price-tab.active')); });
-  tabs.forEach(function (t) {
-    t.addEventListener('click', function () {
-      tabs.forEach(function (x) { x.classList.remove('active'); });
-      t.classList.add('active');
-      moveThumb(t);
-      document.querySelectorAll('.price-card').forEach(function (c) { c.classList.add('hidden'); });
-      var shown = document.getElementById('price-' + t.dataset.tab);
-      if (shown) shown.classList.remove('hidden');
-    });
-  });
-})();
-// price digit-roll animation (each digit slots up into place, stacking)
-(function () {
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function build(el) {
-    if (el.dataset.roll) return;
-    el.dataset.roll = '1';
-    var str = el.textContent.trim();
+
+  // build a number string into slot columns (digits roll up into place)
+  function fmt(n) { return n.toLocaleString('en-US'); }
+  function buildNum(text) {
     var wrap = document.createElement('span'); wrap.className = 'num';
     var digits = [];
-    for (var i = 0; i < str.length; i++) {
-      var c = str[i];
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i];
       if (c >= '0' && c <= '9') {
         var dig = document.createElement('span'); dig.className = 'dig';
         var col = document.createElement('span'); col.className = 'dig__col';
@@ -175,45 +149,96 @@ document.querySelectorAll('a[href]').forEach(a => {
         var s = document.createElement('span'); s.className = 'comma'; s.textContent = c; wrap.appendChild(s);
       }
     }
-    el.innerHTML = ''; el.appendChild(wrap);
-    el._digits = digits;
+    return { wrap: wrap, digits: digits };
   }
-  function settle(el) {                 // jump straight to value (no motion)
-    if (el._digits) el._digits.forEach(function (d) { d.col.style.transition = 'none'; d.col.style.opacity = '1'; d.col.style.transform = 'translateY(-' + d.target + 'em)'; });
-  }
-  function roll(el, base) {
-    if (!el._digits) return;
-    el._digits.forEach(function (d, i) {
-      d.col.style.transition = 'none';
-      d.col.style.transform = 'translateY(0)';      // reset to 0
-      d.col.style.opacity = '0';
-      void d.col.offsetHeight;                        // reflow
+  function settle(digits) { digits.forEach(function (d) { d.col.style.transition = 'none'; d.col.style.opacity = '1'; d.col.style.transform = 'translateY(-' + d.target + 'em)'; }); }
+  function roll(digits, base) {
+    digits.forEach(function (d, i) {
+      d.col.style.transition = 'none'; d.col.style.transform = 'translateY(0)'; d.col.style.opacity = '0';
+      void d.col.offsetHeight;
       setTimeout(function () {
         d.col.style.transition = 'transform .42s cubic-bezier(.16,.84,.44,1), opacity .38s ease';
-        d.col.style.transform = 'translateY(-' + d.target + 'em)';
-        d.col.style.opacity = '1';
-      }, base + i * 45);                              // stack one by one (left → right)
+        d.col.style.transform = 'translateY(-' + d.target + 'em)'; d.col.style.opacity = '1';
+      }, base + i * 45);
     });
   }
-  function animateCard(card) {
-    if (!card) return;
-    card.querySelectorAll('.pay').forEach(function (el) { build(el); });
-    if (reduce) { card.querySelectorAll('.pay').forEach(settle); return; }
-    var rows = card.querySelectorAll('.pay'), r = 0;
-    rows.forEach(function (el) { roll(el, r * 70); r++; }); // each row offset, digits stagger within
+  function discounted(base, mode) {
+    if (mode === 'npay') return Math.round(base * 0.9);
+    if (mode === 'first') return Math.round(base * 0.5);
+    return base;
   }
-  var active = document.querySelector('.price-card:not(.hidden)');
-  if (active && !reduce && 'IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { animateCard(e.target); io.unobserve(e.target); } });
-    }, { threshold: 0.2 });
-    io.observe(active);
-  } else { animateCard(active); }
-  document.querySelectorAll('.price-tab').forEach(function (t) {
-    t.addEventListener('click', function () {
-      setTimeout(function () { animateCard(document.getElementById('price-' + t.dataset.tab)); }, 40);
+  function renderPay(el, mode, rowIdx, doAnim) {
+    var base = parseInt(el.dataset.base, 10);
+    if (!base) return;                                   // skip 추후 공개 rows
+    el.classList.remove('is-disc'); el.innerHTML = '';
+    if (!mode) {
+      var cur = buildNum(fmt(base)); el.appendChild(cur.wrap);
+      if (doAnim && !reduce) roll(cur.digits, rowIdx * 70); else settle(cur.digits);
+    } else {
+      var oldEl = document.createElement('s'); oldEl.className = 'pay__old'; oldEl.textContent = fmt(base); el.appendChild(oldEl);
+      var neu = document.createElement('span'); neu.className = 'pay__new pay__new--' + mode;
+      var nn = buildNum(fmt(discounted(base, mode))); neu.appendChild(nn.wrap); el.appendChild(neu);
+      if (doAnim && !reduce) roll(nn.digits, 60); else settle(nn.digits);
+      void el.offsetHeight;
+      requestAnimationFrame(function () { el.classList.add('is-disc'); });   // draw strike + reveal new
+    }
+  }
+  function renderCard(card, doAnim) {
+    if (!card) return;
+    var mode = card.dataset.disc || '', idx = 0;
+    card.querySelectorAll('.pay').forEach(function (el) {
+      if (!el.dataset.base) return;
+      renderPay(el, mode, idx, doAnim); idx++;
+    });
+  }
+
+  // discount toggle buttons (mutually exclusive within a card)
+  document.querySelectorAll('.price-card').forEach(function (card) {
+    card.querySelectorAll('.perk--btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var next = (card.dataset.disc === btn.dataset.disc) ? '' : btn.dataset.disc;
+        card.dataset.disc = next;
+        card.querySelectorAll('.perk--btn').forEach(function (b) {
+          b.setAttribute('aria-pressed', b.dataset.disc === next ? 'true' : 'false');
+        });
+        renderCard(card, true);
+      });
     });
   });
+
+  // tabs: pill slide + show/hide cards
+  function moveThumb(btn) {
+    if (!thumb || !btn) return;
+    thumb.style.left = btn.offsetLeft + 'px'; thumb.style.top = btn.offsetTop + 'px';
+    thumb.style.width = btn.offsetWidth + 'px'; thumb.style.height = btn.offsetHeight + 'px';
+  }
+  var activeTab = document.querySelector('.price-tab.active');
+  if (activeTab && thumb) {
+    var pre = thumb.style.transition; thumb.style.transition = 'none'; moveThumb(activeTab);
+    requestAnimationFrame(function () { thumb.style.transition = pre; });
+  }
+  window.addEventListener('resize', function () { moveThumb(document.querySelector('.price-tab.active')); });
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (x) { x.classList.remove('active'); });
+      t.classList.add('active'); moveThumb(t);
+      document.querySelectorAll('.price-card').forEach(function (c) { c.classList.add('hidden'); });
+      var shown = document.getElementById('price-' + t.dataset.tab);
+      if (shown) { shown.classList.remove('hidden'); renderCard(shown, true); }
+    });
+  });
+
+  // initial: settle base values, then roll when the active card scrolls into view
+  var active = document.querySelector('.price-card:not(.hidden)');
+  if (active) {
+    renderCard(active, false);
+    if (!reduce && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { renderCard(e.target, true); io.unobserve(e.target); } });
+      }, { threshold: 0.2 });
+      io.observe(active);
+    }
+  }
 })();
 // ── typewriter module: hero opener (question→strike→answer) + manifesto (lead + closing) ──
 (function () {
