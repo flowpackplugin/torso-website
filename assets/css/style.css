@@ -370,9 +370,17 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .price-row .pay__new--npay{color:#03c75a}
 .price-row .pay__new--first{color:var(--accent-d)}
 .price-row .pay--tba{font-weight:600;font-size:14px;color:var(--mut)}
+.price-row .pay__lbl{display:inline-block;vertical-align:middle;margin-left:7px;
+  font-size:9.5px;font-weight:800;letter-spacing:.01em;line-height:1;white-space:nowrap;
+  padding:3px 6px;border-radius:999px;
+  opacity:0;transform:translateY(2px);transition:opacity .4s ease .22s,transform .4s var(--ease) .22s}
+.price-row .pay.is-disc .pay__lbl{opacity:1;transform:none}
+.pay__lbl--npay{color:#03c75a;background:rgba(3,199,90,.12)}
+.pay__lbl--first{color:var(--accent-d);background:rgba(140,156,131,.16)}
 @media(prefers-reduced-motion:reduce){
   .price-row .pay__old::after{transition:none}
   .price-row .pay__new{transition:none}
+  .price-row .pay__lbl{transition:none}
 }
 .price-note{text-align:center;color:var(--mut);font-size:14px;margin-top:18px}
 .hidden{display:none}
@@ -535,6 +543,11 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   .gal{columns:1}
   .price-row{grid-template-columns:1fr auto;gap:10px}
   .price-row .reg{display:none}
+  .price-perks{gap:9px;margin-top:24px}
+  .price-perks .perk--btn{font-size:15px;padding:13px 21px;gap:8px;border-width:1.5px}
+  .price-perks .perk--btn .perk__pct{font-size:16px}
+  .perk--btn::after{font-size:10px;top:-10px;right:-7px;padding:3px 7px}
+  .price-row .pay__lbl{font-size:9px;margin-left:5px;padding:3px 5px}
 }
 /* mobile: stack the two archive photos so each is large */
 @media(max-width:700px){
