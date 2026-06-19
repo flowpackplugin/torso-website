@@ -303,7 +303,14 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .price-row .pay .hot .roll__col.go{transform:translateY(-1.25em)}
 .price-divider{padding:10px 30px;background:var(--paper-2);font-size:12px;letter-spacing:.2em;
   text-transform:uppercase;color:var(--mut);font-weight:700}
-.price-note{text-align:center;color:var(--mut);font-size:14px;margin-top:26px}
+.price-perks{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:28px}
+.price-perks .perk{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:600;
+  color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:9px 17px;background:var(--paper)}
+.price-perks .perk__pct{font-weight:800;font-size:15px;letter-spacing:-.02em}
+.price-perks .perk__pct--npay{color:#03c75a}
+.price-perks .perk--hot{border-color:var(--accent);background:rgba(140,156,131,.12)}
+.price-perks .perk--hot .perk__pct{color:var(--accent-d)}
+.price-note{text-align:center;color:var(--mut);font-size:14px;margin-top:18px}
 .hidden{display:none}
 
 /* ===== Designers ===== */
