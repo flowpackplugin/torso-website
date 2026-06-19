@@ -326,14 +326,35 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .price-perks .perk--hot{border-color:var(--accent);background:rgba(140,156,131,.12)}
 .price-perks .perk--hot .perk__pct{color:var(--accent-d)}
 /* discount toggle buttons */
-.perk--btn{cursor:pointer;-webkit-appearance:none;appearance:none;font-family:inherit;
+.perk--btn{position:relative;cursor:pointer;-webkit-appearance:none;appearance:none;font-family:inherit;
+  border-color:#03c75a;background:rgba(3,199,90,.08);
+  animation:perkInvite 2.4s var(--ease) infinite;
   transition:background .28s var(--ease),border-color .28s var(--ease),color .28s var(--ease),box-shadow .28s var(--ease),transform .12s var(--ease)}
-.perk--btn:hover{border-color:var(--ink)}
+.perk--btn.perk--hot{border-color:var(--accent);background:rgba(140,156,131,.14);animation-delay:1.2s}
+.perk--btn::after{content:"눌러보기";position:absolute;top:-9px;right:-6px;
+  font-size:9px;font-weight:800;letter-spacing:.02em;line-height:1;color:#fff;
+  padding:3px 6px;border-radius:999px;background:#03c75a;
+  box-shadow:0 2px 6px rgba(3,199,90,.4);pointer-events:none;
+  opacity:0;transform:translateY(2px) scale(.9);transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.perk--btn.perk--hot::after{background:var(--accent-d);box-shadow:0 2px 6px rgba(140,156,131,.45)}
+.price-card[data-disc=""] .perk--btn::after{opacity:1;transform:none}
+.perk--btn:hover{border-color:var(--ink);animation:none}
 .perk--btn:active{transform:scale(.96)}
-.perk--btn[aria-pressed="true"]{background:#03c75a;border-color:#03c75a;color:#fff;box-shadow:0 4px 14px rgba(3,199,90,.28)}
+.perk--btn[aria-pressed="true"]{background:#03c75a;border-color:#03c75a;color:#fff;box-shadow:0 4px 14px rgba(3,199,90,.28);animation:none}
 .perk--btn[aria-pressed="true"] .perk__pct--npay{color:#fff}
+.perk--btn[aria-pressed="true"]::after{opacity:0}
 .perk--btn.perk--hot[aria-pressed="true"]{background:var(--accent-d);border-color:var(--accent-d);color:#fff;box-shadow:0 4px 14px rgba(140,156,131,.4)}
 .perk--btn.perk--hot[aria-pressed="true"] .perk__pct{color:#fff}
+@keyframes perkInvite{
+  0%,100%{box-shadow:0 0 0 0 rgba(3,199,90,0)}
+  50%{box-shadow:0 0 0 5px rgba(3,199,90,.14)}
+}
+.perk--btn.perk--hot{animation-name:perkInviteHot}
+@keyframes perkInviteHot{
+  0%,100%{box-shadow:0 0 0 0 rgba(140,156,131,0)}
+  50%{box-shadow:0 0 0 5px rgba(140,156,131,.2)}
+}
+@media(prefers-reduced-motion:reduce){.perk--btn{animation:none}}
 .price-hint{max-width:840px;margin:12px auto 0;padding:0 30px;font-size:12.5px;color:var(--mut);letter-spacing:.01em}
 .price-card+.price-hint,.price-hint{margin-top:14px;margin-bottom:-8px}
 /* discounted price: strike original + new value */
