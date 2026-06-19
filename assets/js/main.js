@@ -30,6 +30,32 @@ if (burger && menu){
     document.body.classList.remove('menu-open');
   }));
 }
+// corephoto cards: hover-play on desktop, autoplay muted-loop on touch
+(function () {
+  var vids = document.querySelectorAll('.corephoto__img video');
+  if (!vids.length) return;
+  vids.forEach(function (v) { v.muted = true; v.loop = true; v.playsInline = true; });
+  var touch = window.matchMedia && window.matchMedia('(hover:none)').matches;
+  if (touch) {
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) { e.target.play().catch(function () {}); }
+          else { e.target.pause(); }
+        });
+      }, { threshold: 0.25 });
+      vids.forEach(function (v) { io.observe(v); });
+    } else {
+      vids.forEach(function (v) { v.autoplay = true; v.play().catch(function () {}); });
+    }
+  } else {
+    vids.forEach(function (v) {
+      var card = v.closest('.corephoto');
+      card.addEventListener('mouseenter', function () { v.play().catch(function () {}); });
+      card.addEventListener('mouseleave', function () { v.pause(); try { v.currentTime = 0; } catch (e) {} });
+    });
+  }
+})();
 // open only EXTERNAL links in a new tab; internal pages stay in the same tab
 document.querySelectorAll('a[href]').forEach(a => {
   const h = a.getAttribute('href') || '';
