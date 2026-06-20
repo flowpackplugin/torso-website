@@ -1,9 +1,17 @@
 // nav: solid on scroll
 const nav = document.querySelector('.nav');
 if (nav){
-  const onScroll = () => nav.classList.toggle('solid', window.scrollY > 40 || nav.dataset.always === '1');
+  const hero = document.querySelector('body.home-film .hero--film');
+  // on mobile home, keep the bar transparent over the dark hero — only go solid
+  // once the hero has scrolled away, so no white bar floats over the dark film
+  const threshold = () => {
+    if (hero && window.matchMedia('(max-width:560px)').matches) return hero.offsetHeight - 70;
+    return 40;
+  };
+  const onScroll = () => nav.classList.toggle('solid', window.scrollY > threshold() || nav.dataset.always === '1');
   onScroll();
   window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll);
 }
 // mobile burger
 const burger = document.querySelector('.nav__burger');
