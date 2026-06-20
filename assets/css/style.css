@@ -84,9 +84,7 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 
 /* ===== Nav (light) ===== */
 .nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:100;display:flex;align-items:center;
-  background:transparent;border-bottom:1px solid transparent;
-  transition:background .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease);
-  animation:navDrop .8s var(--ease) both}
+  background:transparent;border-bottom:1px solid transparent}
 .nav.solid .nav__in{background:rgba(247,246,243,.86);
   box-shadow:0 8px 26px rgba(20,18,15,.15),inset 0 1px 0 rgba(255,255,255,.6)}
 @keyframes navDrop{from{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:none}}
@@ -106,12 +104,15 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .nav__logo{display:flex;align-items:center;gap:10px}
 .nav__mark{height:30px}
 .nav__word{height:18px}
-.nav__menu{display:flex;gap:4px;list-style:none}
-.nav__menu a{position:relative;display:block;color:var(--ink-soft);font-size:12.5px;letter-spacing:.12em;
+.nav__menu{position:relative;display:flex;gap:4px;list-style:none}
+.nav__pill{position:absolute;z-index:0;top:0;left:0;height:0;border-radius:100px;
+  background:rgba(20,18,15,.08);pointer-events:none;
+  transition:left .5s var(--ease),width .5s var(--ease),top .5s var(--ease),height .5s var(--ease)}
+.nav__menu a{position:relative;z-index:1;display:block;color:var(--ink-soft);font-size:12.5px;letter-spacing:.12em;
   text-transform:uppercase;font-weight:600;opacity:.82;padding:8px 14px;border-radius:100px;
-  transition:background .25s var(--ease),color .25s var(--ease),opacity .25s var(--ease)}
-.nav__menu a:hover{opacity:1;background:rgba(20,18,15,.06)}
-.nav__menu a.active{opacity:1;color:var(--ink);background:rgba(20,18,15,.08)}
+  transition:color .25s var(--ease),opacity .25s var(--ease)}
+.nav__menu a:hover{opacity:1}
+.nav__menu a.active{opacity:1;color:var(--ink)}
 .nav__cta{color:var(--ink);background:rgba(255,255,255,.34);
   -webkit-backdrop-filter:blur(10px) saturate(150%);backdrop-filter:blur(10px) saturate(150%);
   font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
@@ -503,6 +504,7 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   .desg-grid{grid-template-columns:repeat(2,1fr)}
   .gal{columns:2}
   .nav__menu,.nav__cta{display:none}
+  .nav__pill{display:none}
   .nav__burger{display:block;z-index:95}
   /* keep logo + toggle above the z-90 overlay so they stay visible (and X is tappable) */
   .nav__logo{position:relative;z-index:95}
@@ -706,7 +708,8 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 @media(max-width:700px){.stat-grid{grid-template-columns:1fr 1fr;gap:30px 18px}}
 
 /* home — 추구미 cores (image-forward overlay) */
-.corephoto-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.corephoto-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;
+  width:min(1400px,calc(100vw - 36px));margin-left:50%;transform:translateX(-50%)}
 .corephoto{position:relative;display:block;overflow:hidden;aspect-ratio:3/4;background:var(--char-2);cursor:default}
 .corephoto__img{position:absolute;inset:0;z-index:0}
 .corephoto__img img,.corephoto__img video{width:100%;height:100%;object-fit:cover;object-position:center top;
@@ -733,8 +736,8 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .corephoto__ex{display:block;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.22);
   font-size:11.5px;letter-spacing:.03em;color:var(--accent)}
 @media(hover:none){.corephoto__reveal{max-height:160px;opacity:1;margin-top:13px}}
-@media(max-width:900px){.corephoto-grid{grid-template-columns:1fr 1fr;gap:10px}}
-@media(max-width:560px){.corephoto-grid{grid-template-columns:1fr}}
+@media(max-width:900px){.corephoto-grid{grid-template-columns:1fr 1fr;gap:3px;width:calc(100vw - 24px)}}
+@media(max-width:560px){.corephoto-grid{grid-template-columns:1fr;width:calc(100vw - 24px)}}
 
 /* before / after slider */
 .ba{position:relative;width:100%;max-width:780px;margin:0 auto;aspect-ratio:4/3;overflow:hidden;

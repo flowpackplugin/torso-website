@@ -30,6 +30,41 @@ if (burger && menu){
     document.body.classList.remove('menu-open');
   }));
 }
+// nav: sliding pill that glides to the current page's menu item on load
+(function () {
+  var menu = document.querySelector('.nav__menu');
+  if (!menu) return;
+  var links = menu.querySelectorAll('a');
+  if (!links.length) return;
+  var active = menu.querySelector('a.active') || links[0];
+  var pill = document.createElement('span');
+  pill.className = 'nav__pill';
+  menu.insertBefore(pill, menu.firstChild);
+  function place(el, animate) {
+    if (!el || !el.offsetWidth) return;
+    pill.style.transition = animate ? '' : 'none';
+    pill.style.left = el.offsetLeft + 'px';
+    pill.style.top = el.offsetTop + 'px';
+    pill.style.width = el.offsetWidth + 'px';
+    pill.style.height = el.offsetHeight + 'px';
+  }
+  var idx = Array.prototype.indexOf.call(links, active);
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var prev = null;
+  try { prev = sessionStorage.getItem('torsoNavIdx'); } catch (e) {}
+  if (!reduce && prev !== null && +prev !== idx && links[+prev]) {
+    place(links[+prev], false);                       // start where the last page's item was
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { place(active, true); });   // then glide to this page
+    });
+  } else {
+    place(active, false);                             // first visit: just settle in place
+  }
+  try { sessionStorage.setItem('torsoNavIdx', idx); } catch (e) {}
+  window.addEventListener('resize', function () {
+    place(menu.querySelector('a.active') || active, false);
+  });
+})();
 // corephoto cards: hover-play on desktop, autoplay muted-loop on touch
 (function () {
   var vids = document.querySelectorAll('.corephoto__img video');
