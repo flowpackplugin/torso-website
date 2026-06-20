@@ -737,11 +737,11 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .corephoto__line{display:block;margin-top:5px;font-size:12px;color:rgba(255,255,255,.74);letter-spacing:.02em}
 .corephoto__reveal{display:block;overflow:hidden;max-height:0;opacity:0;
   transition:max-height .6s var(--ease),opacity .5s var(--ease),margin-top .6s var(--ease)}
-.corephoto:hover .corephoto__reveal{max-height:160px;opacity:1;margin-top:13px}
+.corephoto:hover .corephoto__reveal{max-height:200px;opacity:1;margin-top:13px}
 .corephoto__desc{display:block;font-size:13px;line-height:1.55;color:rgba(255,255,255,.86)}
 .corephoto__ex{display:block;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.22);
   font-size:11.5px;letter-spacing:.03em;color:var(--accent)}
-@media(hover:none){.corephoto__reveal{max-height:160px;opacity:1;margin-top:13px}}
+@media(hover:none){.corephoto__reveal{max-height:200px;opacity:1;margin-top:13px}}
 @media(max-width:900px){.corephoto-grid{grid-template-columns:1fr 1fr;gap:3px;width:calc(100vw - 24px)}}
 @media(max-width:560px){.corephoto-grid{grid-template-columns:1fr;width:calc(100vw - 24px)}}
 
