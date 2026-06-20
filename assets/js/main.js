@@ -12,12 +12,12 @@ if (burger && menu){
   // scissors toggle (closed by default, opens with the menu)
   burger.innerHTML = '<svg viewBox="0 0 26 24" aria-hidden="true">' +
     '<g class="handles">' +
-      '<circle cx="5" cy="8" r="2.5"/><circle cx="5" cy="16" r="2.5"/>' +
-      '<line x1="6.9" y1="9.3" x2="13" y2="12"/><line x1="6.9" y1="14.7" x2="13" y2="12"/>' +
+      '<circle cx="5.1" cy="8.3" r="2.05"/><circle cx="5.1" cy="15.7" r="2.05"/>' +
+      '<line x1="6.95" y1="9.45" x2="11" y2="12"/><line x1="6.95" y1="14.55" x2="11" y2="12"/>' +
     '</g>' +
-    '<g class="bl bl-a"><line x1="12" y1="12" x2="24.5" y2="11"/></g>' +
-    '<g class="bl bl-b"><line x1="12" y1="12" x2="24.5" y2="13"/></g>' +
-    '<circle class="pivot" cx="12.6" cy="12" r="1"/>' +
+    '<g class="bl bl-a"><line x1="11" y1="12" x2="24" y2="10.1"/></g>' +
+    '<g class="bl bl-b"><line x1="11" y1="12" x2="24" y2="13.9"/></g>' +
+    '<circle class="pivot" cx="11" cy="12" r="0.9"/>' +
     '</svg>';
   burger.addEventListener('click', () => {
     const open = menu.classList.toggle('open');

@@ -124,10 +124,10 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .nav__cta:active{transform:scale(.97)}
 .nav__burger{display:none;background:none;border:0;cursor:pointer;padding:0;width:30px;height:30px;line-height:0}
 .nav__burger svg{width:30px;height:30px;display:block}
-.nav__burger svg *{stroke:var(--ink);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nav__burger svg *{stroke:var(--ink);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .nav__burger .pivot{fill:var(--ink);stroke:none}
 /* handles stay fixed (always apart); only the blades pivot */
-.nav__burger .bl{transform-box:view-box;transform-origin:12px 12px;transition:transform .45s var(--ease)}
+.nav__burger .bl{transform-box:view-box;transform-origin:11px 12px;transition:transform .45s var(--ease)}
 /* default = closed (blade tips meet) */
 .nav__burger .bl-a{transform:rotate(0deg)}
 .nav__burger .bl-b{transform:rotate(0deg)}
@@ -334,8 +334,8 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .price-perks--inline{margin:0;gap:6px}
 .price-perks--inline .perk{font-size:10px;font-weight:600;gap:3px;padding:2px 8px;line-height:1.3}
 .price-perks--inline .perk__pct{font-size:10px}
-.price-perks .perk{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:600;
-  color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:9px 17px;background:var(--paper)}
+.price-perks .perk{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-size:14px;font-weight:600;
+  white-space:nowrap;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:9px 17px;background:var(--paper)}
 .price-perks .perk__pct{font-weight:800;font-size:15px;letter-spacing:-.02em}
 .price-perks .perk__pct--npay{color:#03c75a}
 .price-perks .perk--hot{border-color:var(--accent);background:rgba(140,156,131,.12)}
@@ -515,9 +515,12 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
      NOTE: no backdrop-filter here — a filtered ancestor would trap the fixed
      full-screen menu inside the 76px nav box. */
   .nav{background:rgba(240,239,236,.62);
-    -webkit-backdrop-filter:none;backdrop-filter:none;border-bottom:1px solid rgba(205,201,191,.5)}
+    -webkit-backdrop-filter:none;backdrop-filter:none;border-bottom:1px solid rgba(205,201,191,.45)}
   .nav.solid{background:rgba(240,239,236,.9);
     -webkit-backdrop-filter:none;backdrop-filter:none;border-bottom:1px solid var(--line)}
+  /* over the dark hero (not yet scrolled) drop the bottom line; keep the light bar
+     so the dark logo + scissors stay readable, just remove the stray white edge */
+  .home-film .nav:not(.solid){border-bottom-color:transparent}
   /* the nav's transform intro animation makes it a containing block, trapping the
      fixed full-screen menu — disable it on mobile so the overlay fills the viewport */
   .nav{animation:none;transform:none}
@@ -569,10 +572,10 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   .price-row .reg{display:none}
   .price-card__h{padding:20px 20px 16px}
   .price-divider{padding:11px 20px}
-  .price-perks{gap:9px;margin-top:24px}
-  .price-perks .perk--btn{font-size:15px;padding:13px 21px;gap:8px;border-width:1.5px}
-  .price-perks .perk--btn .perk__pct{font-size:16px}
-  .perk--btn::after{font-size:10px;top:-10px;right:-7px;padding:3px 7px}
+  .price-perks{gap:8px;margin-top:22px;justify-content:center}
+  .price-perks .perk--btn{font-size:12.5px;padding:11px 15px;gap:6px;border-width:1.5px;flex:0 0 auto}
+  .price-perks .perk--btn .perk__pct{font-size:14px}
+  .perk--btn::after{font-size:9px;top:-9px;right:-6px;padding:2px 6px}
   .price-row .pay__lbl{font-size:9px;margin-left:5px;padding:3px 5px}
 }
 /* mobile: stack the two archive photos so each is large */
