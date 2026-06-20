@@ -514,13 +514,12 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   /* mobile: always a readable solid bar (dark logo + dark icon on every page).
      NOTE: no backdrop-filter here — a filtered ancestor would trap the fixed
      full-screen menu inside the 76px nav box. */
-  .nav{background:rgba(240,239,236,.62);
-    -webkit-backdrop-filter:none;backdrop-filter:none;border-bottom:1px solid rgba(205,201,191,.45)}
-  .nav.solid{background:rgba(240,239,236,.9);
-    -webkit-backdrop-filter:none;backdrop-filter:none;border-bottom:1px solid var(--line)}
-  /* over the dark hero: fully transparent bar — no white block or edge line.
-     logo + scissors invert to white (above) so they read on the dark film.
-     once scrolled past the hero, .solid restores the readable light bar. */
+  /* mobile: fully transparent nav on every page + scroll state — no box, no bar.
+     logo + icons carry a soft white halo so they stay legible over photos. */
+  .nav{background:transparent;
+    -webkit-backdrop-filter:none;backdrop-filter:none;border-bottom:1px solid transparent}
+  .nav.solid{background:transparent;
+    -webkit-backdrop-filter:none;backdrop-filter:none;border-bottom:1px solid transparent}
   body.home-film:not(.menu-open) .nav:not(.solid){background:transparent;border-bottom-color:transparent}
   /* the nav's transform intro animation makes it a containing block, trapping the
      fixed full-screen menu — disable it on mobile so the overlay fills the viewport */
@@ -529,8 +528,13 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   .nav__in{max-width:var(--maxw);width:100%;margin:0 auto;padding:0 28px;border-radius:0;
     background:transparent;border:0;box-shadow:none;
     -webkit-backdrop-filter:none;backdrop-filter:none}
+  /* default dark logo/icons: soft white halo keeps them readable over photos */
+  .nav__mark,.nav__word{filter:drop-shadow(0 0 2px rgba(255,255,255,.92)) drop-shadow(0 1px 2px rgba(255,255,255,.6))}
+  .nav__burger svg{filter:drop-shadow(0 0 2px rgba(255,255,255,.92)) drop-shadow(0 1px 2px rgba(255,255,255,.6))}
+  /* over the dark hero: white logo + scissors, dark halo for legibility */
   body.home-film:not(.menu-open) .nav:not(.solid) .nav__mark,
-  body.home-film:not(.menu-open) .nav:not(.solid) .nav__word{filter:brightness(0) invert(1)!important}
+  body.home-film:not(.menu-open) .nav:not(.solid) .nav__word{filter:brightness(0) invert(1) drop-shadow(0 1px 3px rgba(0,0,0,.5))!important}
+  body.home-film:not(.menu-open) .nav:not(.solid) .nav__burger svg{filter:drop-shadow(0 1px 3px rgba(0,0,0,.55))!important}
   body.home-film:not(.menu-open) .nav:not(.solid) .nav__burger svg *{stroke:#fff!important}
   body.home-film:not(.menu-open) .nav:not(.solid) .nav__burger .pivot{fill:#fff!important}
   /* full-screen overlay menu (concrete paper) */
