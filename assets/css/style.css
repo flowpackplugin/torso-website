@@ -87,9 +87,8 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   background:transparent;border-bottom:1px solid transparent;
   transition:background .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease);
   animation:navDrop .8s var(--ease) both}
-.nav.solid{background:rgba(240,239,236,.72);
-  -webkit-backdrop-filter:blur(14px) saturate(120%);backdrop-filter:blur(14px) saturate(120%);
-  border-bottom-color:var(--line);box-shadow:0 6px 22px rgba(0,0,0,.05)}
+.nav.solid .nav__in{background:rgba(247,246,243,.86);
+  box-shadow:0 8px 26px rgba(20,18,15,.15),inset 0 1px 0 rgba(255,255,255,.6)}
 @keyframes navDrop{from{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.nav{animation:none}}
 @keyframes navMist{
@@ -97,21 +96,27 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   50%{background-position:42% 0,64% 0,0 0;transform:translateY(3px) scaleY(1.08)}
 }
 @media (prefers-reduced-motion:reduce){.nav::before{animation:none}}
-.nav__in{max-width:var(--maxw);margin:0 auto;padding:0 28px;width:100%;display:flex;align-items:center;
-  justify-content:space-between}
+.nav__in{max-width:1160px;width:calc(100% - 40px);margin:0 auto;display:flex;align-items:center;
+  justify-content:space-between;padding:10px 12px 10px 24px;border-radius:100px;
+  background:rgba(247,246,243,.72);
+  -webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);
+  border:1px solid rgba(255,255,255,.5);
+  box-shadow:0 12px 38px rgba(20,18,15,.12),inset 0 1px 0 rgba(255,255,255,.55);
+  transition:box-shadow .4s var(--ease),background .4s var(--ease),padding .35s var(--ease)}
 .nav__logo{display:flex;align-items:center;gap:10px}
 .nav__mark{height:30px}
 .nav__word{height:18px}
-.nav__menu{display:flex;gap:38px;list-style:none}
-.nav__menu a{position:relative;color:var(--ink-soft);font-size:13px;letter-spacing:.14em;text-transform:uppercase;
-  font-weight:600;opacity:.78;transition:.25s}
-.nav__menu a:hover,.nav__menu a.active{opacity:1}
-.nav__menu a::after{content:"";position:absolute;left:0;bottom:-5px;height:1px;width:0;
-  background:var(--accent);transition:width .3s var(--ease)}
-.nav__menu a:hover::after,.nav__menu a.active::after{width:100%}
-.nav__cta{color:var(--ink);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
-  border:1px solid var(--ink);padding:9px 18px;transition:.3s}
-.nav__cta:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.nav__menu{display:flex;gap:4px;list-style:none}
+.nav__menu a{position:relative;display:block;color:var(--ink-soft);font-size:12.5px;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:600;opacity:.82;padding:8px 14px;border-radius:100px;
+  transition:background .25s var(--ease),color .25s var(--ease),opacity .25s var(--ease)}
+.nav__menu a:hover{opacity:1;background:rgba(20,18,15,.06)}
+.nav__menu a.active{opacity:1;color:var(--ink);background:rgba(20,18,15,.08)}
+.nav__cta{color:var(--paper);background:var(--ink);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  font-weight:700;border:1px solid var(--ink);border-radius:100px;padding:10px 20px;
+  transition:background .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease),transform .15s var(--ease)}
+.nav__cta:hover{background:var(--accent-d);border-color:var(--accent-d);color:#fff;box-shadow:0 6px 16px rgba(140,156,131,.34)}
+.nav__cta:active{transform:scale(.97)}
 .nav__burger{display:none;background:none;border:0;cursor:pointer;padding:0;width:30px;height:30px;line-height:0}
 .nav__burger svg{width:30px;height:30px;display:block}
 .nav__burger svg *{stroke:var(--ink);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
@@ -282,8 +287,10 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .feature p{color:#aaa69d;font-size:14px}
 
 /* ===== Price ===== */
-.price-tabs{position:relative;display:flex;width:fit-content;margin:0 auto 46px;border:1.5px solid var(--ink);
-  border-radius:999px;padding:4px;gap:4px}
+.price-tabs{position:relative;display:flex;width:fit-content;margin:0 auto 46px;border:1px solid var(--line);
+  border-radius:999px;padding:5px;gap:4px;background:rgba(255,255,255,.5);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  box-shadow:0 8px 24px -10px rgba(20,18,15,.16),inset 0 1px 0 rgba(255,255,255,.6)}
 .price-tabs__thumb{position:absolute;z-index:0;border-radius:999px;background:var(--ink);
   transition:left .4s var(--ease),width .4s var(--ease),top .4s var(--ease),height .4s var(--ease);pointer-events:none}
 .price-tab{position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;
@@ -291,14 +298,17 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   font-weight:700;letter-spacing:.06em;font-size:13px;transition:color .35s var(--ease);color:var(--ink)}
 .price-tab .tab-ico{flex:none}
 .price-tab.active{color:var(--paper)}
-.price-card{max-width:840px;margin:0 auto;border:1px solid var(--line);background:rgba(255,255,255,.25)}
-.price-card__h{display:flex;justify-content:space-between;align-items:baseline;padding:24px 30px;
-  border-bottom:2px solid var(--ink)}
+.price-card{max-width:860px;margin:0 auto;border:1px solid rgba(255,255,255,.6);border-radius:24px;
+  background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  box-shadow:0 26px 64px -28px rgba(20,18,15,.24),0 4px 16px rgba(20,18,15,.05);overflow:hidden}
+.price-card__h{display:flex;justify-content:space-between;align-items:center;padding:26px 34px 22px;
+  border-bottom:1px solid var(--line)}
 .price-card__h h3{font-size:19px}
 .price-card__h .npay{font-size:12px;color:#fff;letter-spacing:.02em;background:#03c75a;
   padding:5px 12px;border-radius:999px;font-weight:700;white-space:nowrap}
-.price-row{display:grid;grid-template-columns:1fr auto auto;gap:24px;align-items:center;padding:18px 30px;
-  border-bottom:1px solid var(--line)}
+.price-row{display:grid;grid-template-columns:1fr auto auto;gap:24px;align-items:center;padding:19px 34px;
+  border-bottom:1px solid rgba(205,201,191,.5);transition:background .2s var(--ease)}
+.price-row:hover{background:rgba(140,156,131,.05)}
 .price-row:last-child{border-bottom:0}
 .price-row .name{font-weight:600}
 .price-row .reg{color:var(--mut);text-align:right;min-width:96px}
@@ -311,7 +321,7 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .price-row .pay .hot .roll__col>span{display:block;height:1.25em}
 .price-row .pay .hot .roll__col>span:first-child{color:var(--mut)}
 .price-row .pay .hot .roll__col.go{transform:translateY(-1.25em)}
-.price-divider{padding:10px 30px;background:var(--paper-2);font-size:12px;letter-spacing:.2em;
+.price-divider{padding:12px 34px;background:var(--paper-2);font-size:12px;letter-spacing:.2em;
   text-transform:uppercase;color:var(--mut);font-weight:700}
 .price-perks{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:28px}
 .price-perks--top{justify-content:flex-start;max-width:840px;margin:0 auto 22px}
@@ -502,6 +512,10 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   /* the nav's transform intro animation makes it a containing block, trapping the
      fixed full-screen menu — disable it on mobile so the overlay fills the viewport */
   .nav{animation:none;transform:none}
+  /* mobile: revert capsule to a flat full-width bar so the overlay menu works */
+  .nav__in{max-width:var(--maxw);width:100%;margin:0 auto;padding:0 28px;border-radius:0;
+    background:transparent;border:0;box-shadow:none;
+    -webkit-backdrop-filter:none;backdrop-filter:none}
   .home-film .nav:not(.solid) .nav__mark,
   .home-film .nav:not(.solid) .nav__word{filter:none!important}
   .home-film .nav:not(.solid) .nav__burger span{background:var(--ink)!important}
@@ -541,8 +555,11 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 @media(max-width:560px){
   .desg-grid{grid-template-columns:1fr}
   .gal{columns:1}
-  .price-row{grid-template-columns:1fr auto;gap:10px}
+  .price-card{border-radius:18px}
+  .price-row{grid-template-columns:1fr auto;gap:10px;padding:16px 20px}
   .price-row .reg{display:none}
+  .price-card__h{padding:20px 20px 16px}
+  .price-divider{padding:11px 20px}
   .price-perks{gap:9px;margin-top:24px}
   .price-perks .perk--btn{font-size:15px;padding:13px 21px;gap:8px;border-width:1.5px}
   .price-perks .perk--btn .perk__pct{font-size:16px}
@@ -882,12 +899,9 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .hero--film .scroll-cue{color:#fff}
 .hero--film .scroll-cue__track{background:rgba(255,255,255,.65)}
 .hero--film .scroll-cue__track::after{background:#fff}
-/* nav floating over the film (until it goes solid on scroll) */
-.home-film .nav:not(.solid) .nav__menu a{color:#f1efe9}
-.home-film .nav:not(.solid) .nav__cta{color:#fff;border-color:rgba(255,255,255,.7)}
+/* glass capsule stays light over the film — keep logo/menu dark for contrast */
 .home-film .nav:not(.solid) .nav__mark,
-.home-film .nav:not(.solid) .nav__word{filter:brightness(0) invert(1)}
-.home-film .nav:not(.solid) .nav__burger span{background:#fff}
+.home-film .nav:not(.solid) .nav__word{filter:none}
 @media(max-width:900px){
   .hero--film .hero__scrim{background:linear-gradient(180deg,rgba(14,13,11,.55) 0%,rgba(14,13,11,.35) 40%,rgba(14,13,11,.72) 100%)}
 }
