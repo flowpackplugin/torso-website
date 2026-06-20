@@ -403,8 +403,11 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 /* ===== Designers ===== */
 .desg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
 .desg{border:1px solid var(--line);background:rgba(255,255,255,.22);display:flex;flex-direction:column;
-  scroll-margin-top:96px;transition:box-shadow .6s var(--ease),border-color .6s var(--ease)}
+  scroll-margin-top:96px;transition:transform .45s var(--ease),box-shadow .45s var(--ease),border-color .45s var(--ease)}
+.desg:hover{transform:translateY(-6px) scale(1.025);border-color:var(--accent);box-shadow:0 22px 54px -22px rgba(20,18,15,.32),0 6px 18px rgba(20,18,15,.06);z-index:2}
+.desg:hover .desg__img{transform:scale(1.06)}
 .desg:target{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent),0 18px 50px rgba(0,0,0,.12)}
+@media(prefers-reduced-motion:reduce){.desg:hover{transform:none}.desg:hover .desg__img{transform:none}}
 /* designers load in sequence (after heading) */
 .desg-grid .desg{animation:heroRise .9s var(--ease) both}
 .desg-grid .desg:nth-child(1){animation-delay:.45s}
@@ -415,9 +418,9 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .desg__ph{aspect-ratio:1/1;background:var(--paper-2);display:flex;align-items:center;justify-content:center;
   color:var(--mut);font-size:13px;letter-spacing:.08em;position:relative;overflow:hidden}
 .desg__ph::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--accent);opacity:.6}
-.desg__ph img{width:100%;height:100%;object-fit:cover;filter:grayscale(1)}
+.desg__ph img{width:100%;height:100%;object-fit:cover}
 .desg__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;
-  filter:grayscale(1) contrast(1.03);z-index:1}
+  filter:saturate(1.02) contrast(1.02);z-index:1;transition:transform .55s var(--ease)}
 .desg__ph span{position:relative;z-index:0}
 .desg__b{padding:26px 24px 28px;display:flex;flex-direction:column;flex:1}
 .desg__b .role{align-self:flex-start;display:inline-block;font-size:11.5px;letter-spacing:.14em;
