@@ -143,18 +143,35 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .fab-reserve{display:none}
 @media(max-width:900px){
   .fab-reserve{display:inline-flex;align-items:center;gap:9px;position:fixed;left:50%;bottom:20px;
-    transform:translate(-50%,170%);z-index:80;background:var(--ink);color:var(--paper);
+    transform:translate(-50%,170%);z-index:80;background:var(--ink);color:var(--paper);overflow:hidden;
     padding:14px 30px;border-radius:100px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;
     font-weight:700;text-decoration:none;box-shadow:0 12px 30px -8px rgba(20,18,15,.55);
     transition:transform .5s var(--ease),opacity .35s var(--ease);opacity:0;pointer-events:none}
   .fab-reserve::after{content:"";width:7px;height:7px;border-top:1.5px solid currentColor;
     border-right:1.5px solid currentColor;transform:rotate(45deg);margin-left:-2px;opacity:.85}
-  .fab-reserve.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+  /* light sweep across the pill to catch the eye */
+  .fab-reserve::before{content:"";position:absolute;top:0;left:0;width:42%;height:100%;pointer-events:none;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);
+    transform:translateX(-180%) skewX(-18deg);opacity:0}
+  .fab-reserve.show{transform:translate(-50%,0);opacity:1;pointer-events:auto;
+    animation:fabPulse 2.8s var(--ease) infinite}
+  .fab-reserve.show::before{animation:fabShine 2.8s ease-in-out 1s infinite}
   .fab-reserve:active{transform:translate(-50%,0) scale(.97)}
   body.menu-open .fab-reserve{transform:translate(-50%,170%)!important;opacity:0!important;pointer-events:none!important}
 }
+@keyframes fabPulse{
+  0%,100%{box-shadow:0 12px 30px -8px rgba(20,18,15,.55),0 0 0 0 rgba(140,156,131,.45)}
+  55%{box-shadow:0 14px 32px -8px rgba(20,18,15,.6),0 0 0 9px rgba(140,156,131,0)}
+}
+@keyframes fabShine{
+  0%{transform:translateX(-180%) skewX(-18deg);opacity:0}
+  10%{opacity:1}
+  42%{transform:translateX(330%) skewX(-18deg);opacity:0}
+  100%{transform:translateX(330%) skewX(-18deg);opacity:0}
+}
 @media(max-width:900px) and (prefers-reduced-motion:reduce){
   .fab-reserve{transition:opacity .35s ease}
+  .fab-reserve.show,.fab-reserve.show::before{animation:none}
 }
 
 /* ===== Hero (editorial collage) ===== */
