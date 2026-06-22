@@ -97,16 +97,16 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .nav__logo{grid-column:2;order:2;justify-self:center;display:flex;align-items:center;gap:10px}
 .nav__mark{height:30px}
 .nav__word{height:18px}
-/* logo draw-in: a soft ink edge wipes left→right so the mark, then the wordmark, appear "drawn" */
-.nav__logo .nav__mark,.nav__logo .nav__word{
-  -webkit-mask:linear-gradient(90deg,#000 56%,rgba(0,0,0,0) 74%) right/300% 100% no-repeat;
-          mask:linear-gradient(90deg,#000 56%,rgba(0,0,0,0) 74%) right/300% 100% no-repeat}
-.nav__logo .nav__mark{animation:navDraw .6s var(--ease) .15s both}
-.nav__logo .nav__word{animation:navDraw 1.05s var(--ease) .52s both}
-@keyframes navDraw{from{-webkit-mask-position:right;mask-position:right}
-  to{-webkit-mask-position:left;mask-position:left}}
+/* logo intro: the mark pops in (scale), then the wordmark unfurls out to its side */
+.nav__logo .nav__mark{animation:navMarkIn .5s var(--ease) .1s both}
+.nav__logo .nav__word{transform-origin:left center;animation:navWordIn .55s var(--ease) .52s both}
+@keyframes navMarkIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+@keyframes navWordIn{
+  0%{opacity:0;transform:translateX(-10px) scaleX(.55)}
+  55%{opacity:1}
+  100%{opacity:1;transform:translateX(0) scaleX(1)}}
 @media(prefers-reduced-motion:reduce){
-  .nav__logo .nav__mark,.nav__logo .nav__word{animation:none;-webkit-mask:none;mask:none}}
+  .nav__logo .nav__mark,.nav__logo .nav__word{animation:none}}
 .nav__menu{display:flex;align-items:center;gap:8px;list-style:none}
 .nav__menu--l{grid-column:1;order:1;justify-self:end}
 .nav__menu--r{grid-column:3;order:3;justify-self:start}
