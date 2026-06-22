@@ -923,6 +923,11 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   .rev--ba .ba__handle,.rev--ba .ba__range,.rev--ba .ba__hint{display:none}
   .rev--ba .ba:hover .ba__label--b{--g:1}
 }
+/* text-only review card: photo removed, review text kept */
+.rev--text .rev__body{padding-top:22px}
+.rev__tag--in{position:static;display:inline-block;margin-bottom:13px;color:var(--accent-d);
+  background:rgba(111,129,103,.1);border:1px solid rgba(111,129,103,.22);
+  -webkit-backdrop-filter:none;backdrop-filter:none}
 .rev__tag{position:absolute;left:12px;bottom:12px;z-index:2;font-size:11px;letter-spacing:.12em;
   text-transform:uppercase;font-weight:700;color:#fff;background:rgba(20,19,16,.62);
   backdrop-filter:blur(4px);padding:6px 12px;border-radius:999px}
