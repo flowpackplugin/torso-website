@@ -37,6 +37,24 @@ if (burger && navWrap){
     burger.setAttribute('aria-expanded', 'false');
   }));
 }
+// mobile floating Reserve button: rises once you leave the hero (2nd section),
+// tucks away again near the booking section + while the menu is open
+(function () {
+  var fab = document.querySelector('.fab-reserve');
+  if (!fab) return;
+  var rsv = document.getElementById('reserve');
+  function onScroll() {
+    var show = window.scrollY > window.innerHeight * 0.6;
+    // tuck away once the booking section (programs) is in view
+    if (show && rsv && rsv.getBoundingClientRect().top < window.innerHeight * 0.9) show = false;
+    // ...and near the footer on every page, so it never overlaps the bottom CTA
+    if (show && (window.innerHeight + window.scrollY) > document.documentElement.scrollHeight - 140) show = false;
+    fab.classList.toggle('show', show);
+  }
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+})();
 // corephoto cards: hover-play on desktop, autoplay muted-loop on touch
 (function () {
   var vids = document.querySelectorAll('.corephoto__img video');

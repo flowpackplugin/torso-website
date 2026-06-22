@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TORSO — 센터 네비 미리보기 (데스크탑)</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  body{background:#e7e4dd;margin:0;padding:30px 18px 70px;
+    font-family:"Helvetica Neue",Arial,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+  .wrap{max-width:1200px;margin:0 auto}
+  h1{font-size:18px;letter-spacing:.04em;text-align:center;margin:0 0 6px}
+  .sub{text-align:center;color:#6c685f;font-size:13px;margin:0 0 30px}
+  .cap{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8b867c;
+    font-weight:700;margin:26px 0 10px}
+  /* preview frames: un-pin the fixed nav so each state shows in place */
+  .frame{position:relative;border-radius:14px;overflow:hidden;border:1px solid #dcd8cf;
+    box-shadow:0 14px 40px -26px rgba(0,0,0,.5)}
+  .frame .nav{position:static}
+  .frame .nav__in{padding-top:0;padding-bottom:0}
+  .stageA{background:#cfccc5 url("assets/img/soft_poster.jpg") center 30%/cover no-repeat;min-height:150px}
+  /* dark wash so the "over the film" white nav is legible even without the photo */
+  .stageA::before{content:"";position:absolute;inset:0;background:rgba(18,17,15,.55);z-index:0}
+  .stageA .nav{position:relative;z-index:1}
+  .stageB{background:var(--paper)}
+  .hint{height:96px;display:flex;align-items:center;justify-content:center;color:#fff;
+    font-size:12px;letter-spacing:.28em;text-transform:uppercase;position:relative;z-index:1}
+  .stageB .hint{color:#b8b3a8}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>센터 로고 · 좌우 분할 네비 — 데스크탑 미리보기</h1>
+  <p class="sub">로고는 정중앙, 메뉴는 좌(Home·Philosophy·Directors)·우(Reviews·Programs·Reserve)로 분할. 활성 메뉴엔 밑줄.</p>
+
+  <div class="cap">A · 다크 히어로 위 (스크롤 전 — 흰색 로고/메뉴)</div>
+  <div class="frame">
+    <div class="stageA home-film">
+      <header class="nav">
+        <div class="nav__in">
+          <nav class="nav__nav">
+            <ul class="nav__menu nav__menu--l">
+              <li><a href="#" class="active">Home</a></li>
+              <li><a href="#">Philosophy</a></li>
+              <li><a href="#">Directors</a></li>
+            </ul>
+            <ul class="nav__menu nav__menu--r">
+              <li><a href="#">Reviews</a></li>
+              <li><a href="#">Programs</a></li>
+              <li class="nav__cta-li"><a class="nav__cta" href="#">Reserve</a></li>
+            </ul>
+          </nav>
+          <a class="nav__logo" href="#"><img class="nav__mark" src="assets/logo/symbol_black.png" alt=""><img class="nav__word" src="assets/logo/logo_black.png" alt="TORSO for MEN"></a>
+          <button class="nav__burger" aria-label="menu"></button>
+        </div>
+      </header>
+      <div class="hint">Soft Core — brand film</div>
+    </div>
+  </div>
+
+  <div class="cap">B · 스크롤 후 / 서브페이지 (밝은 바 — 검정 로고/메뉴 + 블러)</div>
+  <div class="frame">
+    <div class="stageB">
+      <header class="nav solid">
+        <div class="nav__in">
+          <nav class="nav__nav">
+            <ul class="nav__menu nav__menu--l">
+              <li><a href="#">Home</a></li>
+              <li><a href="#" class="active">Philosophy</a></li>
+              <li><a href="#">Directors</a></li>
+            </ul>
+            <ul class="nav__menu nav__menu--r">
+              <li><a href="#">Reviews</a></li>
+              <li><a href="#">Programs</a></li>
+              <li class="nav__cta-li"><a class="nav__cta" href="#">Reserve</a></li>
+            </ul>
+          </nav>
+          <a class="nav__logo" href="#"><img class="nav__mark" src="assets/logo/symbol_black.png" alt=""><img class="nav__word" src="assets/logo/logo_black.png" alt="TORSO for MEN"></a>
+          <button class="nav__burger" aria-label="menu"></button>
+        </div>
+      </header>
+      <div class="hint">Philosophy</div>
+    </div>
+  </div>
+</div>
+<script>
+  // render the real scissors-burger markup (hidden on desktop, shown on mobile)
+  document.querySelectorAll('.nav__burger').forEach(function(b){
+    b.innerHTML = '<svg viewBox="0 0 26 24" aria-hidden="true">'+
+      '<g class="handles"><circle cx="5.1" cy="8.3" r="2.05"/><circle cx="5.1" cy="15.7" r="2.05"/>'+
+      '<line x1="6.95" y1="9.45" x2="11" y2="12"/><line x1="6.95" y1="14.55" x2="11" y2="12"/></g>'+
+      '<g class="bl bl-a"><line x1="11" y1="12" x2="24" y2="10.1"/></g>'+
+      '<g class="bl bl-b"><line x1="11" y1="12" x2="24" y2="13.9"/></g>'+
+      '<circle class="pivot" cx="11" cy="12" r="0.9"/></svg>';
+  });
+</script>
+</body>
+</html>

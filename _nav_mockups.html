@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TORSO — 네비 디자인 시안</title>
+<style>
+:root{--ink:#181715;--ink-soft:#4a463f;--paper:#f7f6f3;--paper-2:#efece5;--line:#dcd8cf;--mut:#8b867c;--accent:#8c9c83;--accent-d:#5f6e57}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Helvetica Neue",Arial,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:#e7e4dd;color:var(--ink);padding:34px 18px 80px;-webkit-font-smoothing:antialiased}
+.page{max-width:1080px;margin:0 auto}
+.intro{text-align:center;margin-bottom:38px}
+.intro h1{font-size:21px;letter-spacing:.04em;font-weight:800}
+.intro p{color:var(--ink-soft);font-size:14px;margin-top:8px}
+.variant{background:var(--paper);border-radius:18px;overflow:hidden;margin-bottom:26px;box-shadow:0 12px 40px -24px rgba(20,18,15,.4);border:1px solid #e3e0d8}
+.vhead{display:flex;align-items:baseline;gap:12px;padding:18px 22px 0}
+.vtag{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-d);font-weight:700}
+.vname{font-size:16px;font-weight:800}
+.vdesc{padding:6px 22px 16px;color:var(--ink-soft);font-size:13px;line-height:1.6;max-width:760px}
+.stage{background:var(--paper-2);padding:22px;display:grid;grid-template-columns:1fr 230px;gap:20px;align-items:start}
+.label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin-bottom:9px;font-weight:700}
+.brand{font-weight:800;letter-spacing:.02em;font-size:19px;display:flex;align-items:baseline;gap:7px}
+.brand .for{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);font-weight:700}
+.sym{width:20px;height:18px;border:2px solid currentColor;border-radius:3px;position:relative;flex:none;align-self:center}
+.sym:after{content:"";position:absolute;inset:3px;border:1.5px solid currentColor;border-radius:1px;opacity:.5}
+ul.menu{list-style:none;display:flex;gap:26px}
+ul.menu a{text-decoration:none;color:var(--ink-soft);font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+ul.menu a.on{color:var(--accent-d)}
+.cta-pill{border:1.5px solid var(--ink);border-radius:999px;padding:9px 17px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;white-space:nowrap}
+.cta-text{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;border-bottom:1.5px solid var(--ink);padding-bottom:3px}
+.burger{width:26px;display:flex;flex-direction:column;gap:5px}
+.burger span{height:2px;background:currentColor;border-radius:2px}
+.burger span:nth-child(2){width:70%}
+
+/* ---- desktop nav frames ---- */
+.dnav{height:64px;display:flex;align-items:center;padding:0 24px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+
+/* V1 editorial hairline */
+.v1 .dnav{justify-content:space-between;border:0;border-radius:0;border-bottom:1px solid var(--line);background:transparent}
+/* V2 centered logo split */
+.v2 .dnav{display:grid;grid-template-columns:1fr auto 1fr;background:transparent;border:0;border-radius:0;border-bottom:1px solid var(--line)}
+.v2 .menu.l{justify-content:flex-end}
+.v2 .menu.r{justify-content:flex-start}
+/* V3 ink bar */
+.v3 .dnav{justify-content:space-between;background:var(--ink);color:#fff;border:0}
+.v3 .dnav ul.menu a{color:#cfcabf}
+.v3 .dnav ul.menu a.on{color:#fff}
+.v3 .dnav .cta-pill{border-color:#fff;color:#fff}
+.v3 .dnav .brand .for{color:#9c978c}
+/* V4 ultra minimal */
+.v4 .dnav{justify-content:space-between;background:transparent;border:0;border-radius:0}
+
+/* ---- phone frame ---- */
+.phone{width:230px;margin:0 auto;border:9px solid #111;border-radius:30px;overflow:hidden;background:#fff;box-shadow:0 14px 30px -16px rgba(0,0,0,.5)}
+.pshot{height:300px;position:relative;background:#cfccc5}
+.pshot .photo{position:absolute;inset:0;background:
+  repeating-linear-gradient(135deg,#9a968e 0 14px,#86837b 14px 28px)}
+.pnav{position:absolute;top:0;left:0;right:0;height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 15px;z-index:2}
+.pnav .brand{font-size:14px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.pnav .brand .for{color:#eee}
+.pnav .burger{color:#fff;width:20px}
+.pcap{position:absolute;left:0;right:0;bottom:0;padding:14px;color:#fff;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:linear-gradient(transparent,rgba(0,0,0,.5))}
+/* V3 phone = ink bar */
+.v3 .pnav{background:var(--ink);height:50px}
+/* V2 phone centered */
+.v2 .pnav{justify-content:center;gap:0}
+.v2 .pnav .burger{position:absolute;right:15px}
+/* overlay menu sample for V4 */
+.v4 .pshot .photo{filter:brightness(.5)}
+.v4 .pmenu{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:13px;z-index:1}
+.v4 .pmenu a{color:#fff;font-size:14px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;font-weight:600}
+.v4 .pmenu a.on{color:#bcd0ad}
+@media(max-width:640px){.stage{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="intro">
+    <h1>TORSO for MEN — 네비게이션 디자인 시안</h1>
+    <p>현재(떠있는 글라스 캡슐) 대신 검토할 4가지 방향. 각 시안의 데스크탑 바 + 모바일 상태.</p>
+  </div>
+
+  <!-- V1 -->
+  <section class="variant v1">
+    <div class="vhead"><span class="vtag">Option 01</span><span class="vname">에디토리얼 헤어라인</span></div>
+    <p class="vdesc">캡슐을 버리고 풀폭 평면 바 + 얇은 하단 한 줄. 글자 간격 넓힌 메뉴, CTA는 알약 대신 밑줄 텍스트. 패션 매거진처럼 절제된 미니멀.</p>
+    <div class="stage">
+      <div><div class="label">Desktop</div>
+        <div class="dnav">
+          <div class="brand"><span class="sym"></span>TORSO<span class="for">for men</span></div>
+          <ul class="menu"><li><a class="on">Home</a></li><li><a>Philosophy</a></li><li><a>Directors</a></li><li><a>Reviews</a></li><li><a>Programs</a></li></ul>
+          <span class="cta-text">Reserve</span>
+        </div>
+      </div>
+      <div><div class="label">Mobile</div>
+        <div class="phone"><div class="pshot"><div class="photo"></div>
+          <div class="pnav"><div class="brand">TORSO<span class="for">for men</span></div><div class="burger"><span></span><span></span><span></span></div></div>
+          <div class="pcap">Soft Core</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- V2 -->
+  <section class="variant v2">
+    <div class="vhead"><span class="vtag">Option 02</span><span class="vname">센터 로고 · 좌우 분할</span></div>
+    <p class="vdesc">로고를 정중앙에 두고 메뉴를 좌·우로 나눔. 고급 살롱/하우스 브랜드 느낌. 대칭이 주는 격식과 안정감.</p>
+    <div class="stage">
+      <div><div class="label">Desktop</div>
+        <div class="dnav">
+          <ul class="menu l"><li><a class="on">Home</a></li><li><a>Philosophy</a></li></ul>
+          <div class="brand"><span class="sym"></span>TORSO<span class="for">for men</span></div>
+          <ul class="menu r"><li><a>Reviews</a></li><li><a>Programs</a></li></ul>
+        </div>
+      </div>
+      <div><div class="label">Mobile</div>
+        <div class="phone"><div class="pshot"><div class="photo"></div>
+          <div class="pnav"><div class="brand">TORSO<span class="for">for men</span></div><div class="burger"><span></span><span></span><span></span></div></div>
+          <div class="pcap">Soft Core</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- V3 -->
+  <section class="variant v3">
+    <div class="vhead"><span class="vtag">Option 03</span><span class="vname">잉크 바 (다크)</span></div>
+    <p class="vdesc">밝은 바 대신 짙은 잉크색 솔리드 바 + 화이트 텍스트. 강한 대비로 또렷하고 묵직한 인상. 사진 위에서도 박스 고민 없이 항상 선명.</p>
+    <div class="stage">
+      <div><div class="label">Desktop</div>
+        <div class="dnav">
+          <div class="brand"><span class="sym"></span>TORSO<span class="for">for men</span></div>
+          <ul class="menu"><li><a class="on">Home</a></li><li><a>Philosophy</a></li><li><a>Directors</a></li><li><a>Reviews</a></li><li><a>Programs</a></li></ul>
+          <span class="cta-pill">Reserve a Session</span>
+        </div>
+      </div>
+      <div><div class="label">Mobile</div>
+        <div class="phone"><div class="pshot"><div class="photo"></div>
+          <div class="pnav"><div class="brand">TORSO<span class="for">for men</span></div><div class="burger"><span></span><span></span><span></span></div></div>
+          <div class="pcap">Soft Core</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- V4 -->
+  <section class="variant v4">
+    <div class="vhead"><span class="vtag">Option 04</span><span class="vname">울트라 미니멀 (로고 + 메뉴)</span></div>
+    <p class="vdesc">데스크탑에서도 메뉴를 펼치지 않고 로고 + 햄버거만. 클릭하면 풀스크린 오버레이로 메뉴. 여백 극대화, 사진·영상이 주인공인 사이트에 어울림.</p>
+    <div class="stage">
+      <div><div class="label">Desktop</div>
+        <div class="dnav">
+          <div class="brand"><span class="sym"></span>TORSO<span class="for">for men</span></div>
+          <div class="burger" style="width:30px"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <div><div class="label">Mobile — 메뉴 열림</div>
+        <div class="phone"><div class="pshot"><div class="photo"></div>
+          <div class="pnav"><div class="brand">TORSO<span class="for">for men</span></div><div class="burger"><span></span><span></span><span></span></div></div>
+          <div class="pmenu"><a class="on">Home</a><a>Philosophy</a><a>Directors</a><a>Reviews</a><a>Programs</a></div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
