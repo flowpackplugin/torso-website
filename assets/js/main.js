@@ -502,3 +502,13 @@ document.querySelectorAll('a[href]').forEach(a => {
   function onScroll() { if (!raf) { raf = true; requestAnimationFrame(upd); } }
   upd(); window.addEventListener('scroll', onScroll, { passive: true }); window.addEventListener('resize', onScroll);
 })();
+// before/after comparison slider — range input drives the clip position (touch + mouse + keyboard)
+(function () {
+  document.querySelectorAll('.ba').forEach(function (ba) {
+    var range = ba.querySelector('.ba__range');
+    if (!range) return;
+    function set() { ba.style.setProperty('--pos', range.value + '%'); }
+    range.addEventListener('input', function () { set(); ba.classList.add('is-touched'); });
+    set();
+  });
+})();
