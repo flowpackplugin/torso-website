@@ -6,6 +6,8 @@
 <title>고객 후기 — TORSO for MEN</title>
 <meta name="description" content="TORSO for MEN 고객 후기. 비포 & 애프터 — 고객의 조건에서 완성된 스타일까지의 변화 기록.">
 <link rel="icon" href="assets/logo/symbol_black.png">
+<link rel="preload" as="image" href="assets/img/ba_after.webp" type="image/webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/img/ba_before.webp" type="image/webp" fetchpriority="high">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -46,9 +48,15 @@
 
     <div class="ba-wrap">
       <div class="ba" id="ba1">
-        <img class="ba__img ba__after" src="assets/img/ba_after.jpg" alt="시술 후 스타일">
+        <picture>
+          <source srcset="assets/img/ba_after.webp" type="image/webp">
+          <img class="ba__img ba__after" src="assets/img/ba_after.jpg" alt="시술 후 스타일" width="1040" height="780" decoding="async" fetchpriority="high">
+        </picture>
         <div class="ba__before-wrap">
-          <img class="ba__img ba__before" src="assets/img/ba_before.jpg" alt="시술 전">
+          <picture>
+            <source srcset="assets/img/ba_before.webp" type="image/webp">
+            <img class="ba__img ba__before" src="assets/img/ba_before.jpg" alt="시술 전" width="1040" height="780" decoding="async" fetchpriority="high">
+          </picture>
         </div>
         <span class="ba__label ba__label--b">Before</span>
         <span class="ba__label ba__label--a">After</span>
