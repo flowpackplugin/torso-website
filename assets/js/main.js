@@ -507,7 +507,13 @@ document.querySelectorAll('a[href]').forEach(a => {
   document.querySelectorAll('.ba').forEach(function (ba) {
     var range = ba.querySelector('.ba__range');
     if (!range) return;
-    function set() { ba.style.setProperty('--pos', range.value + '%'); }
+    function set() {
+      var v = +range.value;
+      ba.style.setProperty('--pos', v + '%');
+      // pill glow: handle to the right reveals more "before", lighting the BEFORE pill; left lights AFTER
+      ba.style.setProperty('--b-glow', Math.max(0, (v - 50) / 50).toFixed(3));
+      ba.style.setProperty('--a-glow', Math.max(0, (50 - v) / 50).toFixed(3));
+    }
     range.addEventListener('input', function () { set(); ba.classList.add('is-touched'); });
     set();
   });
