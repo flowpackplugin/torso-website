@@ -502,19 +502,49 @@ document.querySelectorAll('a[href]').forEach(a => {
   function onScroll() { if (!raf) { raf = true; requestAnimationFrame(upd); } }
   upd(); window.addEventListener('scroll', onScroll, { passive: true }); window.addEventListener('resize', onScroll);
 })();
-// before/after comparison slider — range input drives the clip position (touch + mouse + keyboard)
+// before/after comparison slider — drag anywhere on the image (touch + mouse + pen) plus keyboard via the range
 (function () {
   document.querySelectorAll('.ba').forEach(function (ba) {
     var range = ba.querySelector('.ba__range');
-    if (!range) return;
-    function set() {
-      var v = +range.value;
+    function apply(v) {
+      v = Math.max(0, Math.min(100, v));
       ba.style.setProperty('--pos', v + '%');
       // pill glow: handle to the right reveals more "before", lighting the BEFORE pill; left lights AFTER
       ba.style.setProperty('--b-glow', Math.max(0, (v - 50) / 50).toFixed(3));
       ba.style.setProperty('--a-glow', Math.max(0, (50 - v) / 50).toFixed(3));
+      if (range && +range.value !== v) range.value = v;
     }
-    range.addEventListener('input', function () { set(); ba.classList.add('is-touched'); });
-    set();
+    function posFromX(clientX) {
+      var r = ba.getBoundingClientRect();
+      return ((clientX - r.left) / r.width) * 100;
+    }
+    if (range) {
+      range.addEventListener('input', function () { apply(+range.value); ba.classList.add('is-touched'); });
+      apply(+range.value);
+    } else {
+      apply(50);
+    }
+    // pointer drag from anywhere on the image; decide horizontal vs vertical so the page can still scroll
+    var active = false, decided = false, startX = 0, startY = 0;
+    ba.addEventListener('pointerdown', function (e) {
+      active = true; decided = false; startX = e.clientX; startY = e.clientY;
+    });
+    ba.addEventListener('pointermove', function (e) {
+      if (!active) return;
+      if (!decided) {
+        var dx = Math.abs(e.clientX - startX), dy = Math.abs(e.clientY - startY);
+        if (dx < 5 && dy < 5) return;          // too small to judge yet
+        if (dy > dx) { active = false; return; } // vertical intent -> let the page scroll
+        decided = true;
+        try { ba.setPointerCapture(e.pointerId); } catch (err) {}
+        ba.classList.add('is-touched');
+        apply(posFromX(startX));               // snap to where the drag began
+      }
+      e.preventDefault();
+      apply(posFromX(e.clientX));
+    }, { passive: false });
+    function end() { active = false; decided = false; }
+    ba.addEventListener('pointerup', end);
+    ba.addEventListener('pointercancel', end);
   });
 })();
