@@ -13,10 +13,10 @@ if (nav){
   window.addEventListener('scroll', onScroll, {passive:true});
   window.addEventListener('resize', onScroll);
 }
-// mobile burger
+// mobile burger — toggles the full-screen split menu (.nav__nav) overlay
 const burger = document.querySelector('.nav__burger');
-const menu = document.querySelector('.nav__menu');
-if (burger && menu){
+const navWrap = document.querySelector('.nav__nav');
+if (burger && navWrap){
   // scissors toggle (closed by default, opens with the menu)
   burger.innerHTML = '<svg viewBox="0 0 26 24" aria-hidden="true">' +
     '<g class="handles">' +
@@ -28,51 +28,15 @@ if (burger && menu){
     '<circle class="pivot" cx="11" cy="12" r="0.9"/>' +
     '</svg>';
   burger.addEventListener('click', () => {
-    const open = menu.classList.toggle('open');
-    document.body.classList.toggle('menu-open', open);
+    const open = document.body.classList.toggle('menu-open');
     burger.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
-  // close the overlay when a link is tapped
-  menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
-    menu.classList.remove('open');
+  // close the overlay when any link is tapped
+  navWrap.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
     document.body.classList.remove('menu-open');
+    burger.setAttribute('aria-expanded', 'false');
   }));
 }
-// nav: sliding pill that glides to the current page's menu item on load
-(function () {
-  var menu = document.querySelector('.nav__menu');
-  if (!menu) return;
-  var links = menu.querySelectorAll('a');
-  if (!links.length) return;
-  var active = menu.querySelector('a.active') || links[0];
-  var pill = document.createElement('span');
-  pill.className = 'nav__pill';
-  menu.insertBefore(pill, menu.firstChild);
-  function place(el, animate) {
-    if (!el || !el.offsetWidth) return;
-    pill.style.transition = animate ? '' : 'none';
-    pill.style.left = el.offsetLeft + 'px';
-    pill.style.top = el.offsetTop + 'px';
-    pill.style.width = el.offsetWidth + 'px';
-    pill.style.height = el.offsetHeight + 'px';
-  }
-  var idx = Array.prototype.indexOf.call(links, active);
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var prev = null;
-  try { prev = sessionStorage.getItem('torsoNavIdx'); } catch (e) {}
-  if (!reduce && prev !== null && +prev !== idx && links[+prev]) {
-    place(links[+prev], false);                       // start where the last page's item was
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () { place(active, true); });   // then glide to this page
-    });
-  } else {
-    place(active, false);                             // first visit: just settle in place
-  }
-  try { sessionStorage.setItem('torsoNavIdx', idx); } catch (e) {}
-  window.addEventListener('resize', function () {
-    place(menu.querySelector('a.active') || active, false);
-  });
-})();
 // corephoto cards: hover-play on desktop, autoplay muted-loop on touch
 (function () {
   var vids = document.querySelectorAll('.corephoto__img video');
