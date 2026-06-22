@@ -53,18 +53,17 @@
     </div>
 
     <!-- DESIGNER -->
-    <div class="price-card" id="price-designer" data-disc="">
+    <div class="price-card" id="price-designer" data-disc="npay">
       <div class="price-card__h">
         <span class="price-card__title">
           <h3>디렉터</h3>
-          <span class="price-perks price-perks--inline" role="group" aria-label="할인 적용 (택1)">
-            <button type="button" class="perk perk--btn" data-disc="npay" aria-pressed="false"><span class="perk__pct perk__pct--npay">10%</span> 네이버페이</button>
-            <button type="button" class="perk perk--btn perk--hot" data-disc="first" aria-pressed="false"><span class="perk__pct">50%</span> 첫 방문</button>
+          <span class="price-perks price-perks--inline" role="group" aria-label="할인 적용">
+            <button type="button" class="perk perk--btn" data-disc="npay" aria-pressed="true"><span class="perk__pct perk__pct--npay">10%</span> 네이버페이</button>
           </span>
         </span>
         <span class="prog-tag">Director Program</span>
       </div>
-      <p class="price-hint">할인 버튼을 누르면 가격표에 바로 적용돼요 · 중복 적용은 안 돼요</p>
+      <p class="price-hint">네이버페이로 결제하면 10% 할인이 기본 적용돼요</p>
       <div class="price-row"><span class="name">컷 (헤어컨설팅 포함)</span><span class="pay" data-base="40000">40,000</span></div>
       <div class="price-row"><span class="name">컷 + 다운펌</span><span class="pay" data-base="80000">80,000</span></div>
       <div class="price-row"><span class="name">컷 + 다운펌 + 부분펌</span><span class="pay" data-base="110000">110,000</span></div>
@@ -99,17 +98,18 @@
     </div>
 
     <!-- DIRECTOR -->
-    <div class="price-card hidden" id="price-director" data-disc="">
+    <div class="price-card hidden" id="price-director" data-disc="first">
       <div class="price-card__h">
         <span class="price-card__title">
           <h3>원장</h3>
-          <span class="price-perks price-perks--inline" role="group" aria-label="할인 적용">
+          <span class="price-perks price-perks--inline" role="group" aria-label="할인 적용 (택1)">
             <button type="button" class="perk perk--btn" data-disc="npay" aria-pressed="false"><span class="perk__pct perk__pct--npay">10%</span> 네이버페이</button>
+            <button type="button" class="perk perk--btn perk--hot" data-disc="first" aria-pressed="true"><span class="perk__pct">50%</span> 첫 방문</button>
           </span>
         </span>
         <span class="prog-tag">Master Program</span>
       </div>
-      <p class="price-hint">네이버페이로 결제하면 10% 할인돼요</p>
+      <p class="price-hint">첫 방문 50% 할인이 기본 적용돼요 · 중복 적용은 안 돼요</p>
       <div class="price-row"><span class="name">컷 (헤어컨설팅 포함)</span><span class="pay" data-base="60000">60,000</span></div>
       <div class="price-row"><span class="name">컷 + 다운펌</span><span class="pay" data-base="120000">120,000</span></div>
       <div class="price-row"><span class="name">컷 + 다운펌 + 부분펌</span><span class="pay" data-base="170000">170,000</span></div>
