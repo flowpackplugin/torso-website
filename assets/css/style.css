@@ -153,9 +153,12 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .fab-reserve{display:none}
 @media(max-width:900px){
   .fab-reserve{display:inline-flex;align-items:center;gap:9px;position:fixed;left:50%;bottom:20px;
-    transform:translate(-50%,170%);z-index:80;background:var(--ink);color:var(--paper);overflow:hidden;
+    transform:translate(-50%,170%);z-index:80;color:var(--paper);overflow:hidden;
+    background:rgba(28,27,25,.55);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);
+    border:1px solid rgba(255,255,255,.22);
     padding:14px 30px;border-radius:100px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;
-    font-weight:700;text-decoration:none;box-shadow:0 12px 30px -8px rgba(20,18,15,.55);
+    font-weight:700;text-decoration:none;
+    box-shadow:0 8px 30px -6px rgba(20,18,15,.4),inset 0 1px 0 rgba(255,255,255,.32),inset 0 -1px 1px rgba(0,0,0,.18);
     transition:transform .5s var(--ease),opacity .35s var(--ease);opacity:0;pointer-events:none}
   .fab-reserve::after{content:"";width:7px;height:7px;border-top:1.5px solid currentColor;
     border-right:1.5px solid currentColor;transform:rotate(45deg);margin-left:-2px;opacity:.85}
@@ -170,8 +173,8 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   body.menu-open .fab-reserve{transform:translate(-50%,170%)!important;opacity:0!important;pointer-events:none!important}
 }
 @keyframes fabPulse{
-  0%,100%{box-shadow:0 12px 30px -8px rgba(20,18,15,.55),0 0 0 0 rgba(140,156,131,.45)}
-  55%{box-shadow:0 14px 32px -8px rgba(20,18,15,.6),0 0 0 9px rgba(140,156,131,0)}
+  0%,100%{box-shadow:0 8px 30px -6px rgba(20,18,15,.4),inset 0 1px 0 rgba(255,255,255,.32),inset 0 -1px 1px rgba(0,0,0,.18),0 0 0 0 rgba(140,156,131,.4)}
+  55%{box-shadow:0 10px 32px -6px rgba(20,18,15,.45),inset 0 1px 0 rgba(255,255,255,.32),inset 0 -1px 1px rgba(0,0,0,.18),0 0 0 9px rgba(140,156,131,0)}
 }
 @keyframes fabShine{
   0%{transform:translateX(-180%) skewX(-18deg);opacity:0}
