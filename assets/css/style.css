@@ -454,14 +454,6 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .perk--btn[aria-pressed="true"]::after{opacity:0}
 .perk--btn.perk--hot[aria-pressed="true"]{background:var(--accent-d);border-color:var(--accent-d);color:#fff;box-shadow:0 4px 14px rgba(140,156,131,.4)}
 .perk--btn.perk--hot[aria-pressed="true"] .perk__pct{color:#fff}
-.perk--btn.perk--rev{border-color:var(--ink);background:rgba(31,31,31,.05);animation-delay:.6s;animation-name:perkInviteInk}
-.perk--btn.perk--rev::after{background:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.28)}
-.perk--btn.perk--rev[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.26)}
-.perk--btn.perk--rev[aria-pressed="true"] .perk__pct{color:#fff}
-@keyframes perkInviteInk{
-  0%,100%{box-shadow:0 0 0 0 rgba(31,31,31,0)}
-  50%{box-shadow:0 0 0 5px rgba(31,31,31,.12)}
-}
 @keyframes perkInvite{
   0%,100%{box-shadow:0 0 0 0 rgba(3,199,90,0)}
   50%{box-shadow:0 0 0 5px rgba(3,199,90,.14)}
@@ -486,7 +478,6 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .price-row .pay.is-disc .pay__new{opacity:1;transform:none}
 .price-row .pay__new--npay{color:#03c75a}
 .price-row .pay__new--first{color:var(--accent-d)}
-.price-row .pay__new--revisit{color:var(--ink)}
 .price-row .pay--tba{font-weight:600;font-size:14px;color:var(--mut)}
 .price-row .pay__lbl{display:inline-block;vertical-align:middle;margin-left:7px;
   font-size:9.5px;font-weight:800;letter-spacing:.01em;line-height:1;white-space:nowrap;
@@ -495,7 +486,6 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .price-row .pay.is-disc .pay__lbl{opacity:1;transform:none}
 .pay__lbl--npay{color:#03c75a;background:rgba(3,199,90,.12)}
 .pay__lbl--first{color:var(--accent-d);background:rgba(140,156,131,.16)}
-.pay__lbl--revisit{color:#fff;background:var(--ink)}
 @media(prefers-reduced-motion:reduce){
   .price-row .pay__old::after{transition:none}
   .price-row .pay__new{transition:none}

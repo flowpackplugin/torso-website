@@ -190,7 +190,6 @@ document.querySelectorAll('a[href]').forEach(a => {
   function discounted(base, mode) {
     if (mode === 'npay') return Math.round(base * 0.9);
     if (mode === 'first') return Math.round(base * 0.5);
-    if (mode === 'revisit') return Math.round(base * 0.7);
     return base;
   }
   function renderPay(el, mode, rowIdx, doAnim) {
@@ -205,7 +204,7 @@ document.querySelectorAll('a[href]').forEach(a => {
       var neu = document.createElement('span'); neu.className = 'pay__new pay__new--' + mode;
       var nn = buildNum(fmt(discounted(base, mode))); neu.appendChild(nn.wrap); el.appendChild(neu);
       var lbl = document.createElement('span'); lbl.className = 'pay__lbl pay__lbl--' + mode;
-      lbl.textContent = (mode === 'npay') ? 'N페이 10%' : (mode === 'revisit') ? '재방문 30%' : '첫방문 50%'; el.appendChild(lbl);
+      lbl.textContent = (mode === 'npay') ? 'N페이 10%' : '첫방문 50%'; el.appendChild(lbl);
       if (doAnim && !reduce) roll(nn.digits, 60); else settle(nn.digits);
       void el.offsetHeight;
       requestAnimationFrame(function () { el.classList.add('is-disc'); });   // draw strike + reveal new
