@@ -193,7 +193,7 @@ document.querySelectorAll('a[href]').forEach(a => {
     if (mode === 'first30') return Math.round(base * 0.7);
     return base;
   }
-  var WHO = { first: { pct: '50%', names: '준영 · 진훈' }, first30: { pct: '30%', names: '정훈' } };
+  var WHO = { first: { pct: '50%', names: '진훈 · 정훈' }, first30: { pct: '30%', names: '준영' } };
   function updateWho(card) {
     var who = card.querySelector('[data-disc-who]');
     if (!who) return;
