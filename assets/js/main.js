@@ -563,3 +563,43 @@ document.querySelectorAll('a[href]').forEach(a => {
     ba.addEventListener('pointercancel', end);
   });
 })();
+// before/after — mobile auto-sweep tied to scroll (so visitors see the reveal without dragging)
+// As each comparison slider travels through the viewport, the divider sweeps Before<->After.
+// Manual drag wins: once a slider is touched it stops auto-driving. Desktop uses hover-reveal, so skip there.
+(function () {
+  var finePointer = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  if (finePointer) return;                       // desktop hover devices keep the hover-to-reveal behaviour
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var bas = Array.prototype.slice.call(document.querySelectorAll('.rev--ba .ba'));
+  if (!bas.length) return;
+  if (reduce) {                                  // no motion: rest at a clear half/half comparison
+    bas.forEach(function (ba) { if (!ba.classList.contains('is-touched')) ba.style.setProperty('--pos', '50%'); });
+    return;
+  }
+  function setPos(ba, v) {
+    v = Math.max(0, Math.min(100, v));
+    ba.style.setProperty('--pos', v.toFixed(1) + '%');
+    ba.style.setProperty('--b-glow', Math.max(0, (v - 50) / 50).toFixed(3));
+    ba.style.setProperty('--a-glow', Math.max(0, (50 - v) / 50).toFixed(3));
+  }
+  var raf = false;
+  function apply() {
+    raf = false;
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    bas.forEach(function (ba) {
+      if (ba.classList.contains('is-touched')) return;   // user took over — leave it alone
+      var r = ba.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;            // off-screen: don't bother
+      // map the card's centre through the viewport to a divider sweep:
+      // centre near the bottom -> mostly Before(100%); near the top -> mostly After(0%); centred -> 50/50
+      var centre = r.top + r.height / 2;
+      var q = centre / vh;                               // ~1 at bottom, ~0 at top
+      q = Math.max(0, Math.min(1, q));
+      setPos(ba, q * 100);
+    });
+  }
+  function onScroll() { if (!raf) { raf = true; requestAnimationFrame(apply); } }
+  apply();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+})();
