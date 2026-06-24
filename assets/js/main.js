@@ -190,7 +190,20 @@ document.querySelectorAll('a[href]').forEach(a => {
   function discounted(base, mode) {
     if (mode === 'npay') return Math.round(base * 0.9);
     if (mode === 'first') return Math.round(base * 0.5);
+    if (mode === 'first30') return Math.round(base * 0.7);
     return base;
+  }
+  var WHO = { first: { pct: '50%', names: '준영 · 진훈' }, first30: { pct: '30%', names: '정훈' } };
+  function updateWho(card) {
+    var who = card.querySelector('[data-disc-who]');
+    if (!who) return;
+    var info = WHO[card.dataset.disc || ''];
+    if (info) {
+      who.innerHTML = '<span class="price-who__pct">' + info.pct + '</span> 첫 방문 할인 디자이너 · <strong>' + info.names + '</strong>';
+      who.hidden = false;
+    } else {
+      who.hidden = true;
+    }
   }
   function renderPay(el, mode, rowIdx, doAnim) {
     var base = parseInt(el.dataset.base, 10);
@@ -204,7 +217,8 @@ document.querySelectorAll('a[href]').forEach(a => {
       var neu = document.createElement('span'); neu.className = 'pay__new pay__new--' + mode;
       var nn = buildNum(fmt(discounted(base, mode))); neu.appendChild(nn.wrap); el.appendChild(neu);
       var lbl = document.createElement('span'); lbl.className = 'pay__lbl pay__lbl--' + mode;
-      lbl.textContent = (mode === 'npay') ? 'N페이 10%' : '첫방문 50%'; el.appendChild(lbl);
+      var lblMap = { npay: 'N페이 10%', first: '첫방문 50%', first30: '첫방문 30%' };
+      lbl.textContent = lblMap[mode] || ''; el.appendChild(lbl);
       if (doAnim && !reduce) roll(nn.digits, 60); else settle(nn.digits);
       void el.offsetHeight;
       requestAnimationFrame(function () { el.classList.add('is-disc'); });   // draw strike + reveal new
@@ -217,6 +231,7 @@ document.querySelectorAll('a[href]').forEach(a => {
       if (!el.dataset.base) return;
       renderPay(el, mode, idx, doAnim); idx++;
     });
+    updateWho(card);
   }
 
   // discount toggle buttons (mutually exclusive within a card)
