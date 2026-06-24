@@ -590,12 +590,16 @@ document.querySelectorAll('a[href]').forEach(a => {
       if (ba.classList.contains('is-touched')) return;   // user took over — leave it alone
       var r = ba.getBoundingClientRect();
       if (r.bottom < 0 || r.top > vh) return;            // off-screen: don't bother
-      // map the card's centre through the viewport to a divider sweep:
-      // centre near the bottom -> mostly Before(100%); near the top -> mostly After(0%); centred -> 50/50
+      // Concentrate the full Before<->After sweep into the comfortable viewing band so the
+      // divider + grip visibly travel ACROSS the card while it's on screen — not only when it's
+      // half-cut at the extreme top/bottom edges (which felt like "the photo changes but the
+      // handle stays put"). Card entering from the bottom = Before(100); leaving at top = After(0).
       var centre = r.top + r.height / 2;
-      var q = centre / vh;                               // ~1 at bottom, ~0 at top
-      q = Math.max(0, Math.min(1, q));
-      setPos(ba, q * 100);
+      var startBand = vh * 0.82;                          // well into view from the bottom -> Before
+      var endBand = vh * 0.18;                            // about to leave at the top      -> After
+      var p = (startBand - centre) / (startBand - endBand);
+      p = Math.max(0, Math.min(1, p));                    // 0 -> 1 as the card scrolls upward
+      setPos(ba, (1 - p) * 100);
     });
   }
   function onScroll() { if (!raf) { raf = true; requestAnimationFrame(apply); } }
