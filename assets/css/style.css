@@ -1025,3 +1025,28 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 @media(max-width:900px){
   .hero--film .hero__scrim{background:linear-gradient(180deg,rgba(14,13,11,.55) 0%,rgba(14,13,11,.35) 40%,rgba(14,13,11,.72) 100%)}
 }
+
+/* ===== styles page — 추구미 아카이브 ===== */
+.style-core{margin-top:84px}
+.style-core:first-of-type{margin-top:0}
+.style-core__head{margin-bottom:34px;max-width:none}
+.style-core__head h2{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.style-core__line{font-family:"Playfair Display",serif;font-style:italic;font-weight:500;
+  font-size:14px;color:var(--mut);letter-spacing:.02em}
+.style-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px 20px}
+.stylecard{display:block}
+.stylecard__media{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--paper-2);
+  border:1px solid var(--line)}
+.stylecard__media img{width:100%;height:100%;object-fit:cover;object-position:center top;
+  transition:transform .9s var(--ease),filter .9s var(--ease)}
+.stylecard:hover .stylecard__media img{transform:scale(1.05)}
+.stylecard__num{position:absolute;left:16px;top:12px;z-index:1;
+  font-family:"Playfair Display",serif;font-style:italic;font-size:15px;color:var(--mut-l)}
+.stylecard__media:has(img) .stylecard__num{color:rgba(255,255,255,.85);
+  text-shadow:0 1px 8px rgba(0,0,0,.35)}
+.stylecard__body{padding:16px 2px 0}
+.stylecard__body h3{font-size:16.5px;letter-spacing:.01em}
+.stylecard__body h3 small{font-weight:500;font-size:12.5px;color:var(--mut)}
+.stylecard__body p{margin-top:6px;font-size:13px;color:var(--mut);line-height:1.6}
+@media(max-width:900px){.style-grid{grid-template-columns:1fr 1fr;gap:22px 14px}}
+@media(max-width:480px){.style-grid{grid-template-columns:1fr}.style-core{margin-top:64px}}

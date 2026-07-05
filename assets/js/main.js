@@ -96,7 +96,7 @@ document.querySelectorAll('a[href]').forEach(a => {
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var sel = '.shead, .feature, .price-card, .price-tabs, .split > div, .split .slideshow,' +
             ' .split img, .band > *, .info-row, .gal img, .map-links, .loc-map, #reserve,' +
-            ' .corephoto, .stat, .tocademy';
+            ' .corephoto, .stat, .tocademy, .stylecard';
   var els = Array.prototype.slice.call(document.querySelectorAll(sel));
   if (!els.length) return;
   if (reduce || !('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
