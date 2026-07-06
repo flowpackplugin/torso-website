@@ -882,10 +882,10 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .core-panel .vgrid::-webkit-scrollbar{height:6px}
 .core-panel .vgrid::-webkit-scrollbar-track{background:transparent}
 .core-panel .vgrid::-webkit-scrollbar-thumb{background:rgba(255,255,255,.28);border-radius:3px}
-/* 확장 시 스트립이 오른쪽→왼쪽으로 슬라이드 인 */
-.core-panel .vgrid--one{animation:coreStripIn .85s var(--ease) .12s both}
-@keyframes coreStripIn{from{opacity:0;transform:translateX(min(18vw,260px))}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){.core-panel .vgrid--one{animation:none}}
+/* 확장 시 타일이 하나씩 오른쪽→왼쪽으로 슬라이드 인 (딜레이는 JS가 순차 부여) */
+.core-panel .vgrid--one>*{animation:coreStripIn .7s var(--ease) both}
+@keyframes coreStripIn{from{opacity:0;transform:translateX(min(14vw,200px))}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.core-panel .vgrid--one>*{animation:none}}
 /* 코어 카드와 동일 프레임: 3:4 비율, 카드 1칸과 같은 크기 */
 .core-panel .vitem{position:relative;flex:0 0 auto;width:calc((min(1400px,100vw - 36px) - 9px)/4);aspect-ratio:3/4;
   scroll-snap-align:start;background:#000;border-radius:0;overflow:hidden}

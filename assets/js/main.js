@@ -148,6 +148,10 @@ if (burger && navWrap){
         strip.appendChild(d);
       }
     });
+    // 타일 순차 슬라이드 인: 왼쪽부터 하나씩 딜레이
+    Array.prototype.forEach.call(strip.children, function (el, i) {
+      el.style.animationDelay = (0.1 + i * 0.06).toFixed(2) + 's';
+    });
     panelIn.appendChild(strip);
     panelIn.querySelectorAll('video').forEach(function (v) {
       v.muted = true;
