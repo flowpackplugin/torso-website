@@ -81,6 +81,89 @@ if (burger && navWrap){
     });
   }
 })();
+// 추구미 코어 카드 클릭 → 인라인 패널에 스타일별 영상 전체 나열 (자동재생, UI 없음)
+(function () {
+  var panel = document.getElementById('corePanel');
+  var panelIn = document.getElementById('corePanelIn');
+  if (!panel || !panelIn) return;
+  var V = 'assets/video/styles/';
+  var CORES = {
+    sharp: { idx: '01', key: 'Sharp Core', name: '샤프 코어', styles: [
+      { code: '1-1', name: '슬릭댄디', n: 2 },
+      { code: '1-2', name: '필러스', n: 4 },
+      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 6 }
+    ]},
+    soft: { idx: '02', key: 'Soft Core', name: '소프트 코어', styles: [
+      { code: '2-1', name: '시스루 댄디', n: 2 },
+      { code: '2-2', name: '세미리프', n: 3 },
+      { code: '2-3', name: '쉐도우', n: 4 }
+    ]},
+    classic: { idx: '03', key: 'Classic Core', name: '클래식 코어', styles: [
+      { code: '3-1', name: '슬릭백', n: 3 },
+      { code: '3-2', name: '가일', n: 4 },
+      { code: '3-3', name: '포마드', n: 1 }
+    ]},
+    archive: { idx: '04', key: 'Archive Core', name: '아카이브 코어', styles: [
+      { code: '4-1', name: '텍스처컷', n: 4 },
+      { code: '4-2', name: '빈티지', n: 2 },
+      { code: '4-3', name: '히피', n: 4 },
+      { code: '4-4', name: '스왈로', n: 1 }
+    ]}
+  };
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.corephoto--click'));
+  var openKey = null;
+  var vio = ('IntersectionObserver' in window) ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (e.isIntersecting) { e.target.play().catch(function () {}); }
+      else { e.target.pause(); }
+    });
+  }, { threshold: 0.2 }) : null;
+  function close() {
+    openKey = null;
+    cards.forEach(function (el) { el.classList.remove('sel'); });
+    panel.classList.remove('open');
+    panelIn.querySelectorAll('video').forEach(function (v) { v.pause(); if (vio) vio.unobserve(v); });
+    setTimeout(function () { if (!openKey) panelIn.innerHTML = ''; }, 600);
+  }
+  function render(key) {
+    var core = CORES[key];
+    panelIn.innerHTML = '';
+    var head = document.createElement('div'); head.className = 'core-panel__head';
+    head.innerHTML = '<span class="core-panel__core">' + core.idx + ' · ' + core.key + ' — ' + core.name + '</span>' +
+      '<button class="core-panel__x" type="button">닫기 ×</button>';
+    head.querySelector('button').addEventListener('click', close);
+    panelIn.appendChild(head);
+    core.styles.forEach(function (st) {
+      var g = document.createElement('div'); g.className = 'sgroup';
+      g.innerHTML = '<div class="stitle"><small>' + st.code + '</small>' + st.name +
+        '<span class="cnt">영상 ' + st.n + '개</span></div><div class="vgrid"></div>';
+      var vg = g.querySelector('.vgrid');
+      for (var i = 1; i <= st.n; i++) {
+        var d = document.createElement('div'); d.className = 'vitem';
+        var nn = (i < 10 ? '0' : '') + i;
+        d.innerHTML = '<span class="vitem__tag">' + st.code + ' ' + st.name + ' · ' + i + '</span>' +
+          '<video src="' + V + 's' + st.code + '_' + nn + '.mp4" muted loop playsinline preload="none"></video>';
+        vg.appendChild(d);
+      }
+      panelIn.appendChild(g);
+    });
+    panelIn.querySelectorAll('video').forEach(function (v) {
+      v.muted = true;
+      if (vio) vio.observe(v); else { v.autoplay = true; v.play().catch(function () {}); }
+    });
+  }
+  cards.forEach(function (card) {
+    card.addEventListener('click', function () {
+      var key = card.dataset.core;
+      if (openKey === key) { close(); return; }
+      openKey = key;
+      cards.forEach(function (el) { el.classList.toggle('sel', el === card); });
+      render(key);
+      panel.classList.add('open');
+      setTimeout(function () { panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 150);
+    });
+  });
+})();
 // open only EXTERNAL links in a new tab; internal pages stay in the same tab
 document.querySelectorAll('a[href]').forEach(a => {
   const h = a.getAttribute('href') || '';
