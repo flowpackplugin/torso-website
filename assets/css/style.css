@@ -882,8 +882,8 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .core-panel .vgrid::-webkit-scrollbar{height:6px}
 .core-panel .vgrid::-webkit-scrollbar-track{background:transparent}
 .core-panel .vgrid::-webkit-scrollbar-thumb{background:rgba(255,255,255,.28);border-radius:3px}
-/* 카드 높이에 딱 맞춘 타일: 높이 = 위 코어 카드(3:4, 4열) 높이, 검은 여백 최소화 */
-.core-panel .vitem{position:relative;flex:0 0 auto;width:calc((100% - 9px)*3/16);aspect-ratio:9/16;
+/* 카드 높이에 딱 맞춘 타일: 높이 = 위 코어 카드(3:4, 4열 그리드 min(1400px,100vw-36px)) 높이 */
+.core-panel .vitem{position:relative;flex:0 0 auto;width:calc((min(1400px,100vw - 36px) - 9px)*3/16);aspect-ratio:9/16;
   scroll-snap-align:start;background:#000;border-radius:0;overflow:hidden}
 /* 한 줄 스트립: 스타일 구분은 세로 라벨(vsep)로 */
 .core-panel .vsep{flex:0 0 auto;writing-mode:vertical-rl;display:flex;align-items:center;gap:8px;
