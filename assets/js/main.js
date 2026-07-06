@@ -95,7 +95,7 @@ if (burger && navWrap){
     ]},
     soft: { idx: '02', key: 'Soft Core', name: '소프트 코어', styles: [
       { code: '2-1', name: '시스루 댄디', n: 3 },
-      { code: '2-2', name: '세미리프', n: 3 },
+      { code: '2-2', name: '세미리프', n: 4 },
       { code: '2-3', name: '쉐도우', n: 3 }
     ]},
     classic: { idx: '03', key: 'Classic Core', name: '클래식 코어', styles: [
@@ -106,7 +106,7 @@ if (burger && navWrap){
     archive: { idx: '04', key: 'Archive Core', name: '아카이브 코어', styles: [
       { code: '4-1', name: '텍스처컷', n: 3 },
       { code: '4-2', name: '빈티지', n: 2 },
-      { code: '4-3', name: '히피', n: 6 },
+      { code: '4-3', name: '히피', n: 5 },
       { code: '4-4', name: '스왈로', n: 1 }
     ]}
   };
