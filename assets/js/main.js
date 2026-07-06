@@ -91,7 +91,7 @@ if (burger && navWrap){
     sharp: { idx: '01', key: 'Sharp Core', name: '샤프 코어', styles: [
       { code: '1-1', name: '슬릭댄디', n: 1 },
       { code: '1-2', name: '필러스', n: 3 },
-      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 5 }
+      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 6 }
     ]},
     soft: { idx: '02', key: 'Soft Core', name: '소프트 코어', styles: [
       { code: '2-1', name: '시스루 댄디', n: 2 },
@@ -100,11 +100,11 @@ if (burger && navWrap){
     ]},
     classic: { idx: '03', key: 'Classic Core', name: '클래식 코어', styles: [
       { code: '3-1', name: '슬릭백', n: 2 },
-      { code: '3-2', name: '가일', n: 4 },
+      { code: '3-2', name: '가일', n: 3 },
       { code: '3-3', name: '포마드', n: 1 }
     ]},
     archive: { idx: '04', key: 'Archive Core', name: '아카이브 코어', styles: [
-      { code: '4-1', name: '텍스처컷', n: 4 },
+      { code: '4-1', name: '텍스처컷', n: 3 },
       { code: '4-2', name: '빈티지', n: 2 },
       { code: '4-3', name: '히피', n: 6 },
       { code: '4-4', name: '스왈로', n: 1 }
@@ -118,10 +118,12 @@ if (burger && navWrap){
       else { e.target.pause(); }
     });
   }, { threshold: 0.2 }) : null;
+  var mq = window.matchMedia('(max-width:900px)');
   function close() {
     openKey = null;
     cards.forEach(function (el) { el.classList.remove('sel'); });
     panel.classList.remove('open');
+    document.body.classList.remove('core-lock');
     panelIn.querySelectorAll('video').forEach(function (v) { v.pause(); if (vio) vio.unobserve(v); });
     setTimeout(function () { if (!openKey) panelIn.innerHTML = ''; }, 600);
   }
@@ -160,7 +162,13 @@ if (burger && navWrap){
       cards.forEach(function (el) { el.classList.toggle('sel', el === card); });
       render(key);
       panel.classList.add('open');
-      setTimeout(function () { panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 150);
+      if (mq.matches) {
+        // 모바일: 풀스크린 오버레이 — 페이지 스크롤 잠금, 오버레이는 맨 위부터
+        document.body.classList.add('core-lock');
+        panel.scrollTop = 0;
+      } else {
+        setTimeout(function () { panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 150);
+      }
     });
   });
 })();
