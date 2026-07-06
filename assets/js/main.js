@@ -106,7 +106,7 @@ if (burger && navWrap){
     archive: { idx: '04', key: 'Archive Core', name: '아카이브 코어', styles: [
       { code: '4-1', name: '텍스처컷', n: 4 },
       { code: '4-2', name: '빈티지', n: 2 },
-      { code: '4-3', name: '히피', n: 3 },
+      { code: '4-3', name: '히피', n: 5 },
       { code: '4-4', name: '스왈로', n: 1 }
     ]}
   };
