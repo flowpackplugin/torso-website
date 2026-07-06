@@ -89,24 +89,24 @@ if (burger && navWrap){
   var V = 'assets/video/styles/';
   var CORES = {
     sharp: { idx: '01', key: 'Sharp Core', name: '샤프 코어', styles: [
-      { code: '1-1', name: '슬릭댄디', n: 2 },
-      { code: '1-2', name: '필러스', n: 4 },
-      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 6 }
+      { code: '1-1', name: '슬릭댄디', n: 1 },
+      { code: '1-2', name: '필러스', n: 3 },
+      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 5 }
     ]},
     soft: { idx: '02', key: 'Soft Core', name: '소프트 코어', styles: [
       { code: '2-1', name: '시스루 댄디', n: 2 },
       { code: '2-2', name: '세미리프', n: 3 },
-      { code: '2-3', name: '쉐도우', n: 4 }
+      { code: '2-3', name: '쉐도우', n: 3 }
     ]},
     classic: { idx: '03', key: 'Classic Core', name: '클래식 코어', styles: [
-      { code: '3-1', name: '슬릭백', n: 3 },
+      { code: '3-1', name: '슬릭백', n: 2 },
       { code: '3-2', name: '가일', n: 4 },
       { code: '3-3', name: '포마드', n: 1 }
     ]},
     archive: { idx: '04', key: 'Archive Core', name: '아카이브 코어', styles: [
       { code: '4-1', name: '텍스처컷', n: 4 },
       { code: '4-2', name: '빈티지', n: 2 },
-      { code: '4-3', name: '히피', n: 4 },
+      { code: '4-3', name: '히피', n: 3 },
       { code: '4-4', name: '스왈로', n: 1 }
     ]}
   };
