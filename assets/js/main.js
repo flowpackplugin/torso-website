@@ -135,20 +135,20 @@ if (burger && navWrap){
       '<button class="core-panel__x" type="button">닫기 ×</button>';
     head.querySelector('button').addEventListener('click', close);
     panelIn.appendChild(head);
+    var strip = document.createElement('div'); strip.className = 'vgrid vgrid--one';
     core.styles.forEach(function (st) {
-      var g = document.createElement('div'); g.className = 'sgroup';
-      g.innerHTML = '<div class="stitle"><small>' + st.code + '</small>' + st.name +
-        '<span class="cnt">영상 ' + st.n + '개</span></div><div class="vgrid"></div>';
-      var vg = g.querySelector('.vgrid');
+      var lab = document.createElement('div'); lab.className = 'vsep';
+      lab.innerHTML = '<small>' + st.code + '</small><span>' + st.name + '</span>';
+      strip.appendChild(lab);
       for (var i = 1; i <= st.n; i++) {
         var d = document.createElement('div'); d.className = 'vitem';
         var nn = (i < 10 ? '0' : '') + i;
         d.innerHTML = '<span class="vitem__tag">' + st.code + ' ' + st.name + ' · ' + i + '</span>' +
           '<video src="' + V + 's' + st.code + '_' + nn + '.mp4" muted loop playsinline preload="none"></video>';
-        vg.appendChild(d);
+        strip.appendChild(d);
       }
-      panelIn.appendChild(g);
     });
+    panelIn.appendChild(strip);
     panelIn.querySelectorAll('video').forEach(function (v) {
       v.muted = true;
       if (vio) vio.observe(v); else { v.autoplay = true; v.play().catch(function () {}); }
