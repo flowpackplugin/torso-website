@@ -861,8 +861,9 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .corephoto--click:hover .corephoto__hint{color:#fff}
 .core-panel{max-height:0;overflow:hidden;transition:max-height .6s var(--ease);background:#161511;color:#fff}
 .core-panel.open{max-height:9000px}
-.core-panel__in{padding:36px 26px 44px}
-.core-panel__head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.core-panel__in{padding:3px 0 3px}
+.core-panel__head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  margin-bottom:3px;padding:10px 8px 8px}
 .core-panel__core{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700}
 .core-panel__x{background:none;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:999px;
   padding:6px 16px;font-size:12px;cursor:pointer;font-family:inherit;transition:all .2s}
@@ -872,14 +873,15 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .core-panel .stitle{font-size:15.5px;font-weight:700;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.14)}
 .core-panel .stitle small{font-family:"Playfair Display",serif;font-style:italic;font-weight:500;color:var(--accent);margin-right:8px}
 .core-panel .stitle .cnt{font-weight:400;font-size:12px;color:rgba(255,255,255,.5);margin-left:8px}
-.core-panel .vgrid{display:flex;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;
-  -webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;padding-bottom:10px;
+.core-panel .vgrid{display:flex;gap:3px;overflow-x:auto;overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;padding-bottom:3px;
   scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.28) transparent}
 .core-panel .vgrid::-webkit-scrollbar{height:6px}
 .core-panel .vgrid::-webkit-scrollbar-track{background:transparent}
 .core-panel .vgrid::-webkit-scrollbar-thumb{background:rgba(255,255,255,.28);border-radius:3px}
-.core-panel .vitem{position:relative;flex:0 0 auto;width:min(230px,60vw);aspect-ratio:9/16;
-  scroll-snap-align:start;background:#000;border-radius:8px;overflow:hidden}
+/* 카드 높이에 딱 맞춘 타일: 높이 = 위 코어 카드(3:4, 4열) 높이, 검은 여백 최소화 */
+.core-panel .vitem{position:relative;flex:0 0 auto;width:calc((100% - 9px)*3/16);aspect-ratio:9/16;
+  scroll-snap-align:start;background:#000;border-radius:0;overflow:hidden}
 /* 한 줄 스트립: 스타일 구분은 세로 라벨(vsep)로 */
 .core-panel .vsep{flex:0 0 auto;writing-mode:vertical-rl;display:flex;align-items:center;gap:8px;
   padding:12px 3px;font-size:13px;font-weight:700;color:#fff;letter-spacing:.06em;
