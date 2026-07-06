@@ -882,8 +882,8 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .core-panel .vgrid::-webkit-scrollbar{height:6px}
 .core-panel .vgrid::-webkit-scrollbar-track{background:transparent}
 .core-panel .vgrid::-webkit-scrollbar-thumb{background:rgba(255,255,255,.28);border-radius:3px}
-/* 카드 높이에 딱 맞춘 타일: 높이 = 위 코어 카드(3:4, 4열 그리드 min(1400px,100vw-36px)) 높이 */
-.core-panel .vitem{position:relative;flex:0 0 auto;width:calc((min(1400px,100vw - 36px) - 9px)*3/16);aspect-ratio:9/16;
+/* 코어 카드와 동일 프레임: 3:4 비율, 카드 1칸과 같은 크기 */
+.core-panel .vitem{position:relative;flex:0 0 auto;width:calc((min(1400px,100vw - 36px) - 9px)/4);aspect-ratio:3/4;
   scroll-snap-align:start;background:#000;border-radius:0;overflow:hidden}
 /* 한 줄 스트립: 스타일 구분은 세로 라벨(vsep)로 */
 .core-panel .vsep{flex:0 0 auto;writing-mode:vertical-rl;display:flex;align-items:center;gap:8px;
@@ -891,7 +891,7 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   border-left:1px solid rgba(255,255,255,.18)}
 .core-panel .vsep small{font-family:"Playfair Display",serif;font-style:italic;font-weight:500;
   font-size:12px;color:var(--accent);letter-spacing:.02em}
-.core-panel .vitem video{width:100%;height:100%;object-fit:cover}
+.core-panel .vitem video{width:100%;height:100%;object-fit:cover;object-position:center 15%}
 .core-panel .vitem__tag{position:absolute;left:10px;top:10px;z-index:2;background:rgba(0,0,0,.55);color:#fff;
   font-size:11px;padding:4px 10px;border-radius:999px;backdrop-filter:blur(4px)}
 @media(max-width:900px){
