@@ -91,7 +91,7 @@ if (burger && navWrap){
     sharp: { idx: '01', key: 'Sharp Core', name: '샤프 코어', styles: [
       { code: '1-1', name: '슬릭댄디', n: 2 },
       { code: '1-2', name: '필러스', n: 3 },
-      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 5 }
+      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 4 }
     ]},
     soft: { idx: '02', key: 'Soft Core', name: '소프트 코어', styles: [
       { code: '2-1', name: '시스루 댄디', n: 3 },
