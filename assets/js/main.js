@@ -86,16 +86,23 @@ var TORSO_MEDIA = (function () {
   var V = 'assets/video/styles/';
   var IMG = 'assets/img/styles/';
   // n = 영상 개수(진성), photos = 사진별 시술 디자이너 (pX-Y_01.jpg부터 순서대로)
+  // groups = 같은 인물의 사진 번호 묶음 → 한 타일에서 자동 크로스페이드 (미지정 시 사진 1장 = 타일 1개)
   var CORES = {
     sharp: { idx: '01', key: 'Sharp Core', name: '샤프 코어', styles: [
-      { code: '1-1', name: '슬릭댄디', n: 4, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon'] },
-      { code: '1-2', name: '필러스', n: 3, photos: ['junyoung','junyoung','junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','junghoon'] },
-      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 6, photos: ['jinhoon','jinhoon','jinhoon'] }
+      { code: '1-1', name: '슬릭댄디', n: 4, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon'],
+        groups: [[1,2,3],[4,5]] },
+      { code: '1-2', name: '필러스', n: 3, photos: ['junyoung','junyoung','junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','junghoon'],
+        groups: [[1],[2,3],[4],[5,6],[7],[8,9],[10]] },
+      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 6, photos: ['jinhoon','jinhoon','jinhoon'],
+        groups: [[1,2,3]] }
     ]},
     soft: { idx: '02', key: 'Soft Core', name: '소프트 코어', styles: [
-      { code: '2-1', name: '시스루 댄디', n: 3, photos: ['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'] },
-      { code: '2-2', name: '세미리프', n: 3, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon'] },
-      { code: '2-3', name: '쉐도우', n: 1, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'] }
+      { code: '2-1', name: '시스루 댄디', n: 3, photos: ['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
+        groups: [[1,2],[3],[4,5,6,7],[8,9]] },
+      { code: '2-2', name: '세미리프', n: 3, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon'],
+        groups: [[1,2,3],[4,5]] },
+      { code: '2-3', name: '쉐도우', n: 1, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
+        groups: [[1],[2,3],[4,5],[6,7,8],[9],[10],[11,12,13],[14]] }
     ]},
     classic: { idx: '03', key: 'Classic Core', name: '클래식 코어', styles: [
       { code: '3-1', name: '슬릭백', n: 3 },
@@ -120,22 +127,37 @@ var TORSO_MEDIA = (function () {
   // 영상 → 시술 디자이너 마킹 (원장 마킹표 확정 시 여기만 채우면 됨)
   // 예: '1-1_01': 'junyoung',  ← 미마킹 영상 기본값은 진성 원장
   var VIDEO_DESIGNER = {};
+  function pad2(k) { return (k < 10 ? '0' : '') + k; }
+  // 사진 타일 묶음 목록 (groups 미지정 시 사진 1장 = 타일 1개)
+  function groupsOf(st) {
+    if (!st.photos) return [];
+    if (st.groups) return st.groups;
+    return st.photos.map(function (_, i) { return [i + 1]; });
+  }
   // 타일 1개 HTML (영상+사진 공용, i = 1부터 시작하는 통합 인덱스)
   function tileHTML(st, i) {
     var isVid = i <= st.n;
-    var k = isVid ? i : i - st.n;
-    var nn = (k < 10 ? '0' : '') + k;
-    var vid = st.code + '_' + nn;
-    var dz = isVid
-      ? (DESIGNERS[VIDEO_DESIGNER[vid]] || DESIGNERS.jinsung)
-      : (DESIGNERS[st.photos[k - 1]] || DESIGNERS.shop);
-    return '<span class="vitem__tag">' + st.code + ' ' + st.name + ' · ' + i + '</span>' +
-      (isVid
-        ? '<video src="' + V + 's' + vid + '.mp4" muted loop playsinline preload="none"></video>'
-        : '<img src="' + IMG + 'p' + vid + '.jpg" alt="' + st.name + ' 시술 사진" loading="lazy">') +
+    var media, dz;
+    if (isVid) {
+      var vid = st.code + '_' + pad2(i);
+      dz = DESIGNERS[VIDEO_DESIGNER[vid]] || DESIGNERS.jinsung;
+      media = '<video src="' + V + 's' + vid + '.mp4" muted loop playsinline preload="none"></video>';
+    } else {
+      var g = groupsOf(st)[i - st.n - 1];
+      dz = DESIGNERS[st.photos[g[0] - 1]] || DESIGNERS.shop;
+      if (g.length === 1) {
+        media = '<img src="' + IMG + 'p' + st.code + '_' + pad2(g[0]) + '.jpg" alt="' + st.name + ' 시술 사진" loading="lazy">';
+      } else {
+        // 같은 인물 여러 컷 → 한 타일에서 자동 크로스페이드
+        media = '<div class="pfade pfade--' + g.length + '">' + g.map(function (k, gi) {
+          return '<img src="' + IMG + 'p' + st.code + '_' + pad2(k) + '.jpg" alt="' + st.name + ' 시술 사진 ' + (gi + 1) + '/' + g.length + '" loading="lazy" style="animation-delay:' + (gi * 4) + 's">';
+        }).join('') + '</div>';
+      }
+    }
+    return '<span class="vitem__tag">' + st.code + ' ' + st.name + ' · ' + i + '</span>' + media +
       '<a class="vitem__book" href="' + dz.url + '" target="_blank" rel="noopener">✂ ' + dz.name + ' · 예약</a>';
   }
-  function count(st) { return st.n + (st.photos ? st.photos.length : 0); }
+  function count(st) { return st.n + groupsOf(st).length; }
   return { CORES: CORES, DESIGNERS: DESIGNERS, tileHTML: tileHTML, count: count };
 })();
 
