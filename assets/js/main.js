@@ -87,20 +87,22 @@ if (burger && navWrap){
   var panelIn = document.getElementById('corePanelIn');
   if (!panel || !panelIn) return;
   var V = 'assets/video/styles/';
+  var IMG = 'assets/img/styles/';
+  // n = 영상 개수(진성), photos = 사진별 시술 디자이너 (pX-Y_01.jpg부터 순서대로)
   var CORES = {
     sharp: { idx: '01', key: 'Sharp Core', name: '샤프 코어', styles: [
-      { code: '1-1', name: '슬릭댄디', n: 4 },
-      { code: '1-2', name: '필러스', n: 3 },
-      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 6 }
+      { code: '1-1', name: '슬릭댄디', n: 4, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon'] },
+      { code: '1-2', name: '필러스', n: 3, photos: ['junyoung','junyoung','junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','junghoon'] },
+      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 6, photos: ['jinhoon','jinhoon','jinhoon'] }
     ]},
     soft: { idx: '02', key: 'Soft Core', name: '소프트 코어', styles: [
-      { code: '2-1', name: '시스루 댄디', n: 3 },
-      { code: '2-2', name: '세미리프', n: 3 },
-      { code: '2-3', name: '쉐도우', n: 1 }
+      { code: '2-1', name: '시스루 댄디', n: 3, photos: ['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'] },
+      { code: '2-2', name: '세미리프', n: 3, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon'] },
+      { code: '2-3', name: '쉐도우', n: 1, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'] }
     ]},
     classic: { idx: '03', key: 'Classic Core', name: '클래식 코어', styles: [
       { code: '3-1', name: '슬릭백', n: 3 },
-      { code: '3-2', name: '가일', n: 2 },
+      { code: '3-2', name: '가일', n: 2, photos: ['junghoon'] },
       { code: '3-3', name: '포마드', n: 3 }
     ]},
     archive: { idx: '04', key: 'Archive Core', name: '아카이브 코어', styles: [
@@ -151,13 +153,19 @@ if (burger && navWrap){
       var lab = document.createElement('div'); lab.className = 'vsep';
       lab.innerHTML = '<small>' + st.code + '</small><span>' + st.name + '</span>';
       strip.appendChild(lab);
-      for (var i = 1; i <= st.n; i++) {
+      var total = st.n + (st.photos ? st.photos.length : 0);
+      for (var i = 1; i <= total; i++) {
         var d = document.createElement('div'); d.className = 'vitem';
-        var nn = (i < 10 ? '0' : '') + i;
+        var isVid = i <= st.n;
+        var nn = ((isVid ? i : i - st.n) < 10 ? '0' : '') + (isVid ? i : i - st.n);
         var vid = st.code + '_' + nn;
-        var dz = DESIGNERS[VIDEO_DESIGNER[vid]] || DESIGNERS.jinsung;
+        var dz = isVid
+          ? (DESIGNERS[VIDEO_DESIGNER[vid]] || DESIGNERS.jinsung)
+          : (DESIGNERS[st.photos[i - st.n - 1]] || DESIGNERS.shop);
         d.innerHTML = '<span class="vitem__tag">' + st.code + ' ' + st.name + ' · ' + i + '</span>' +
-          '<video src="' + V + 's' + vid + '.mp4" muted loop playsinline preload="none"></video>' +
+          (isVid
+            ? '<video src="' + V + 's' + vid + '.mp4" muted loop playsinline preload="none"></video>'
+            : '<img src="' + IMG + 'p' + vid + '.jpg" alt="' + st.name + ' 시술 사진" loading="lazy">') +
           '<a class="vitem__book" href="' + dz.url + '" target="_blank" rel="noopener">✂ ' + dz.name + ' · 예약</a>';
         strip.appendChild(d);
       }
