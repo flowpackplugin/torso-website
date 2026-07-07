@@ -116,10 +116,10 @@ if (burger && navWrap){
     junyoung: { name: '준영',  url: BOOK + '6961265' },
     jinhoon:  { name: '진훈',  url: BOOK + '6826157' },
     junghoon: { name: '정훈',  url: BOOK + '7652510' },
-    shop:     { name: '예약하기', url: BOOK + '6970009' } // 매장 공용 (미마킹 기본값)
+    shop:     { name: '예약하기', url: BOOK + '6970009' } // 매장 공용
   };
   // 영상 → 시술 디자이너 마킹 (원장 마킹표 확정 시 여기만 채우면 됨)
-  // 예: '1-1_01': 'jinsung',
+  // 예: '1-1_01': 'junyoung',  ← 미마킹 영상 기본값은 진성 원장
   var VIDEO_DESIGNER = {};
   var cards = Array.prototype.slice.call(document.querySelectorAll('.corephoto--click'));
   var openKey = null;
@@ -155,12 +155,10 @@ if (burger && navWrap){
         var d = document.createElement('div'); d.className = 'vitem';
         var nn = (i < 10 ? '0' : '') + i;
         var vid = st.code + '_' + nn;
-        var dz = DESIGNERS[VIDEO_DESIGNER[vid]] || DESIGNERS.shop;
-        var marked = !!DESIGNERS[VIDEO_DESIGNER[vid]];
+        var dz = DESIGNERS[VIDEO_DESIGNER[vid]] || DESIGNERS.jinsung;
         d.innerHTML = '<span class="vitem__tag">' + st.code + ' ' + st.name + ' · ' + i + '</span>' +
           '<video src="' + V + 's' + vid + '.mp4" muted loop playsinline preload="none"></video>' +
-          '<a class="vitem__book" href="' + dz.url + '" target="_blank" rel="noopener">' +
-          (marked ? '✂ ' + dz.name + ' · 예약' : dz.name) + '</a>';
+          '<a class="vitem__book" href="' + dz.url + '" target="_blank" rel="noopener">✂ ' + dz.name + ' · 예약</a>';
         strip.appendChild(d);
       }
     });
