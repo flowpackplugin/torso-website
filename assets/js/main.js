@@ -81,11 +81,8 @@ if (burger && navWrap){
     });
   }
 })();
-// 추구미 코어 카드 클릭 → 인라인 패널에 스타일별 영상 전체 나열 (자동재생, UI 없음)
-(function () {
-  var panel = document.getElementById('corePanel');
-  var panelIn = document.getElementById('corePanelIn');
-  if (!panel || !panelIn) return;
+// ── 추구미 미디어 공용 데이터 (홈 패널 + 스타일 페이지 공용) ──
+var TORSO_MEDIA = (function () {
   var V = 'assets/video/styles/';
   var IMG = 'assets/img/styles/';
   // n = 영상 개수(진성), photos = 사진별 시술 디자이너 (pX-Y_01.jpg부터 순서대로)
@@ -123,6 +120,31 @@ if (burger && navWrap){
   // 영상 → 시술 디자이너 마킹 (원장 마킹표 확정 시 여기만 채우면 됨)
   // 예: '1-1_01': 'junyoung',  ← 미마킹 영상 기본값은 진성 원장
   var VIDEO_DESIGNER = {};
+  // 타일 1개 HTML (영상+사진 공용, i = 1부터 시작하는 통합 인덱스)
+  function tileHTML(st, i) {
+    var isVid = i <= st.n;
+    var k = isVid ? i : i - st.n;
+    var nn = (k < 10 ? '0' : '') + k;
+    var vid = st.code + '_' + nn;
+    var dz = isVid
+      ? (DESIGNERS[VIDEO_DESIGNER[vid]] || DESIGNERS.jinsung)
+      : (DESIGNERS[st.photos[k - 1]] || DESIGNERS.shop);
+    return '<span class="vitem__tag">' + st.code + ' ' + st.name + ' · ' + i + '</span>' +
+      (isVid
+        ? '<video src="' + V + 's' + vid + '.mp4" muted loop playsinline preload="none"></video>'
+        : '<img src="' + IMG + 'p' + vid + '.jpg" alt="' + st.name + ' 시술 사진" loading="lazy">') +
+      '<a class="vitem__book" href="' + dz.url + '" target="_blank" rel="noopener">✂ ' + dz.name + ' · 예약</a>';
+  }
+  function count(st) { return st.n + (st.photos ? st.photos.length : 0); }
+  return { CORES: CORES, DESIGNERS: DESIGNERS, tileHTML: tileHTML, count: count };
+})();
+
+// 추구미 코어 카드 클릭 → 인라인 패널에 스타일별 영상 전체 나열 (자동재생, UI 없음)
+(function () {
+  var panel = document.getElementById('corePanel');
+  var panelIn = document.getElementById('corePanelIn');
+  if (!panel || !panelIn) return;
+  var CORES = TORSO_MEDIA.CORES;
   var cards = Array.prototype.slice.call(document.querySelectorAll('.corephoto--click'));
   var openKey = null;
   var vio = ('IntersectionObserver' in window) ? new IntersectionObserver(function (es) {
@@ -153,20 +175,10 @@ if (burger && navWrap){
       var lab = document.createElement('div'); lab.className = 'vsep';
       lab.innerHTML = '<small>' + st.code + '</small><span>' + st.name + '</span>';
       strip.appendChild(lab);
-      var total = st.n + (st.photos ? st.photos.length : 0);
+      var total = TORSO_MEDIA.count(st);
       for (var i = 1; i <= total; i++) {
         var d = document.createElement('div'); d.className = 'vitem';
-        var isVid = i <= st.n;
-        var nn = ((isVid ? i : i - st.n) < 10 ? '0' : '') + (isVid ? i : i - st.n);
-        var vid = st.code + '_' + nn;
-        var dz = isVid
-          ? (DESIGNERS[VIDEO_DESIGNER[vid]] || DESIGNERS.jinsung)
-          : (DESIGNERS[st.photos[i - st.n - 1]] || DESIGNERS.shop);
-        d.innerHTML = '<span class="vitem__tag">' + st.code + ' ' + st.name + ' · ' + i + '</span>' +
-          (isVid
-            ? '<video src="' + V + 's' + vid + '.mp4" muted loop playsinline preload="none"></video>'
-            : '<img src="' + IMG + 'p' + vid + '.jpg" alt="' + st.name + ' 시술 사진" loading="lazy">') +
-          '<a class="vitem__book" href="' + dz.url + '" target="_blank" rel="noopener">✂ ' + dz.name + ' · 예약</a>';
+        d.innerHTML = TORSO_MEDIA.tileHTML(st, i);
         strip.appendChild(d);
       }
     });
@@ -198,6 +210,35 @@ if (burger && navWrap){
     });
   });
 })();
+// 스타일 페이지: 스타일별 영상·사진 전체 나열 (.smedia[data-style])
+(function () {
+  var grids = document.querySelectorAll('.smedia[data-style]');
+  if (!grids.length) return;
+  var byCode = {};
+  Object.keys(TORSO_MEDIA.CORES).forEach(function (k) {
+    TORSO_MEDIA.CORES[k].styles.forEach(function (st) { byCode[st.code] = st; });
+  });
+  var vio = ('IntersectionObserver' in window) ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (e.isIntersecting) { e.target.play().catch(function () {}); }
+      else { e.target.pause(); }
+    });
+  }, { threshold: 0.2 }) : null;
+  grids.forEach(function (g) {
+    var st = byCode[g.dataset.style];
+    if (!st) return;
+    var total = TORSO_MEDIA.count(st);
+    for (var i = 1; i <= total; i++) {
+      var d = document.createElement('div'); d.className = 'vitem';
+      d.innerHTML = TORSO_MEDIA.tileHTML(st, i);
+      g.appendChild(d);
+    }
+    g.querySelectorAll('video').forEach(function (v) {
+      v.muted = true;
+      if (vio) vio.observe(v); else { v.autoplay = true; v.play().catch(function () {}); }
+    });
+  });
+})();
 // open only EXTERNAL links in a new tab; internal pages stay in the same tab
 document.querySelectorAll('a[href]').forEach(a => {
   const h = a.getAttribute('href') || '';
@@ -213,7 +254,7 @@ document.querySelectorAll('a[href]').forEach(a => {
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var sel = '.shead, .feature, .price-card, .price-tabs, .split > div, .split .slideshow,' +
             ' .split img, .band > *, .info-row, .gal img, .map-links, .loc-map, #reserve,' +
-            ' .corephoto, .stat, .tocademy, .stylecard';
+            ' .corephoto, .stat, .tocademy, .styleblock';
   var els = Array.prototype.slice.call(document.querySelectorAll(sel));
   if (!els.length) return;
   if (reduce || !('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
