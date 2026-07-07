@@ -109,6 +109,18 @@ if (burger && navWrap){
       { code: '4-3', name: '히피', n: 3 }
     ]}
   };
+  // 디자이너별 네이버 예약 링크
+  var BOOK = 'https://booking.naver.com/booking/13/bizes/242540/items/';
+  var DESIGNERS = {
+    jinsung:  { name: '진성',  url: BOOK + '3696795' },
+    junyoung: { name: '준영',  url: BOOK + '6961265' },
+    jinhoon:  { name: '진훈',  url: BOOK + '6826157' },
+    junghoon: { name: '정훈',  url: BOOK + '7652510' },
+    shop:     { name: '예약하기', url: BOOK + '6970009' } // 매장 공용 (미마킹 기본값)
+  };
+  // 영상 → 시술 디자이너 마킹 (원장 마킹표 확정 시 여기만 채우면 됨)
+  // 예: '1-1_01': 'jinsung',
+  var VIDEO_DESIGNER = {};
   var cards = Array.prototype.slice.call(document.querySelectorAll('.corephoto--click'));
   var openKey = null;
   var vio = ('IntersectionObserver' in window) ? new IntersectionObserver(function (es) {
@@ -142,8 +154,13 @@ if (burger && navWrap){
       for (var i = 1; i <= st.n; i++) {
         var d = document.createElement('div'); d.className = 'vitem';
         var nn = (i < 10 ? '0' : '') + i;
+        var vid = st.code + '_' + nn;
+        var dz = DESIGNERS[VIDEO_DESIGNER[vid]] || DESIGNERS.shop;
+        var marked = !!DESIGNERS[VIDEO_DESIGNER[vid]];
         d.innerHTML = '<span class="vitem__tag">' + st.code + ' ' + st.name + ' · ' + i + '</span>' +
-          '<video src="' + V + 's' + st.code + '_' + nn + '.mp4" muted loop playsinline preload="none"></video>';
+          '<video src="' + V + 's' + vid + '.mp4" muted loop playsinline preload="none"></video>' +
+          '<a class="vitem__book" href="' + dz.url + '" target="_blank" rel="noopener">' +
+          (marked ? '✂ ' + dz.name + ' · 예약' : dz.name) + '</a>';
         strip.appendChild(d);
       }
     });
