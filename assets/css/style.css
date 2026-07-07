@@ -864,9 +864,9 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .core-panel{max-height:0;overflow:hidden;transition:max-height .6s var(--ease);background:#161511;color:#fff;
   width:min(1400px,calc(100vw - 36px));margin-left:50%;transform:translateX(-50%)}
 .core-panel.open{max-height:9000px}
-.core-panel__in{padding:3px 0}
+.core-panel__in{padding:26px 0 36px}
 .core-panel__head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-  margin-bottom:3px;padding:10px 8px 8px}
+  margin-bottom:14px;padding:0 8px 12px}
 .core-panel__core{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700}
 .core-panel__x{background:none;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:999px;
   padding:6px 16px;font-size:12px;cursor:pointer;font-family:inherit;transition:all .2s}
