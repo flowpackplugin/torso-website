@@ -91,8 +91,8 @@ var TORSO_MEDIA = (function () {
     sharp: { idx: '01', key: 'Sharp Core', name: '샤프 코어', styles: [
       { code: '1-1', name: '슬릭댄디', n: 4, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon'],
         groups: [[1,2,3],[4,5]] },
-      { code: '1-2', name: '필러스', n: 3, photos: ['junyoung','junyoung','junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','junghoon'],
-        groups: [[1],[2,3],[4],[5,6],[7],[8,9],[10]] },
+      { code: '1-2', name: '필러스', n: 3, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','junghoon'],
+        groups: [[1],[2,3],[4,5,6],[7,8],[9]] },
       { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 6, photos: ['jinhoon','jinhoon','jinhoon'],
         groups: [[1,2,3]] }
     ]},
@@ -150,7 +150,7 @@ var TORSO_MEDIA = (function () {
       } else {
         // 같은 인물 여러 컷 → 한 타일에서 자동 크로스페이드
         media = '<div class="pfade pfade--' + g.length + '">' + g.map(function (k, gi) {
-          return '<img src="' + IMG + 'p' + st.code + '_' + pad2(k) + '.jpg" alt="' + st.name + ' 시술 사진 ' + (gi + 1) + '/' + g.length + '" loading="lazy" style="animation-delay:' + (gi * 4) + 's">';
+          return '<img src="' + IMG + 'p' + st.code + '_' + pad2(k) + '.jpg" alt="' + st.name + ' 시술 사진 ' + (gi + 1) + '/' + g.length + '" loading="lazy" style="animation-delay:' + (gi * 2.5) + 's">';
         }).join('') + '</div>';
       }
     }
