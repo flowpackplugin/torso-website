@@ -788,3 +788,38 @@ document.querySelectorAll('a[href]').forEach(a => {
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
 })();
+
+// ===== GA4 이벤트 트래킹: 예약 버튼 클릭 =====
+// booking_click = 네이버 예약 링크 클릭(실질 전환 지표), reserve_click = 사이트 내 예약 유도 버튼
+(function () {
+  var BOOK_NAMES = { '3696795': '진성', '6961265': '준영', '6826157': '진훈', '7652510': '정훈', '6970009': '매장공용' };
+  var page = (location.pathname.split('/').pop() || 'index.html').replace('.html', '') || 'index';
+  function btnLocation(a) {
+    if (a.classList.contains('vitem__book')) return 'style_tile';
+    if (a.classList.contains('desg__book')) return 'designer_card';
+    if (a.classList.contains('fab-reserve')) return 'floating';
+    if (a.classList.contains('nav__cta')) return 'nav';
+    if (a.closest('.foot')) return 'footer';
+    if (a.closest('.band')) return 'cta_band';
+    if (a.closest('.hero')) return 'hero';
+    if (a.closest('.desg')) return 'designer_sns';
+    return 'other';
+  }
+  document.addEventListener('click', function (e) {
+    if (typeof gtag !== 'function') return;
+    var a = e.target && e.target.closest ? e.target.closest('a') : null;
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    if (href.indexOf('booking.naver.com') !== -1) {
+      var m = href.match(/items\/(\d+)/);
+      gtag('event', 'booking_click', {
+        designer: (m && BOOK_NAMES[m[1]]) || 'unknown',
+        button_location: btnLocation(a),
+        page_name: page
+      });
+    } else if (href.indexOf('designers.html') !== -1 &&
+      (a.classList.contains('fab-reserve') || a.classList.contains('nav__cta') || a.classList.contains('btn'))) {
+      gtag('event', 'reserve_click', { button_location: btnLocation(a), page_name: page });
+    }
+  }, true);
+})();
