@@ -156,7 +156,7 @@ var TORSO_MEDIA = (function () {
       }
     }
     return '<span class="vitem__tag">' + st.code + ' ' + st.name + ' · ' + i + '</span>' + media +
-      '<a class="vitem__book" href="' + dz.url + '" target="_blank" rel="noopener">✂ ' + dz.name + ' · 예약</a>';
+      '<a class="vitem__book" href="' + dz.url + '" target="_blank" rel="noopener">✂︎ ' + dz.name + ' · 예약</a>';
   }
   function count(st) { return st.n + groupsOf(st).length; }
   return { CORES: CORES, DESIGNERS: DESIGNERS, tileHTML: tileHTML, count: count };
@@ -206,8 +206,10 @@ var TORSO_MEDIA = (function () {
       }
     });
     // 타일 순차 슬라이드 인: 왼쪽부터 하나씩 딜레이
+    // (모바일은 오버레이 슬라이드 업 .5s가 끝나갈 때부터 시작해 자연스럽게 이어지도록)
+    var baseDelay = mq.matches ? 0.35 : 0.1;
     Array.prototype.forEach.call(strip.children, function (el, i) {
-      el.style.animationDelay = (0.1 + i * 0.06).toFixed(2) + 's';
+      el.style.animationDelay = (baseDelay + i * 0.06).toFixed(2) + 's';
     });
     panelIn.appendChild(strip);
     panelIn.querySelectorAll('video').forEach(function (v) {
