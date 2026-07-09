@@ -216,6 +216,17 @@ var TORSO_MEDIA = (function () {
       v.muted = true;
       if (vio) vio.observe(v); else { v.autoplay = true; v.play().catch(function () {}); }
     });
+    if (mq.matches) {
+      // 모바일: 미디어가 준비되면 페이드 인 — 갑자기 팝인하지 않도록 (pfade 묶음은 자체 크로스페이드)
+      Array.prototype.forEach.call(strip.querySelectorAll('.vitem>img'), function (im) {
+        if (im.complete && im.naturalWidth) { im.classList.add('ld'); }
+        else { im.addEventListener('load', function () { im.classList.add('ld'); }, { once: true }); }
+      });
+      Array.prototype.forEach.call(strip.querySelectorAll('.vitem>video'), function (v) {
+        if (v.readyState >= 2) { v.classList.add('ld'); }
+        else { v.addEventListener('loadeddata', function () { v.classList.add('ld'); }, { once: true }); }
+      });
+    }
   }
   cards.forEach(function (card) {
     card.addEventListener('click', function () {
@@ -223,13 +234,16 @@ var TORSO_MEDIA = (function () {
       if (openKey === key) { close(); return; }
       openKey = key;
       cards.forEach(function (el) { el.classList.toggle('sel', el === card); });
-      render(key);
-      panel.classList.add('open');
       if (mq.matches) {
-        // 모바일: 풀스크린 오버레이 — 페이지 스크롤 잠금, 오버레이는 맨 위부터
+        // 모바일: 오버레이 슬라이드 업을 먼저 시작(빈 패널) → 무거운 타일 렌더는 살짝 뒤에
+        // (렌더의 DOM 작업이 슬라이드 트랜지션 시작을 끊어 버벅이던 문제 분리)
         document.body.classList.add('core-lock');
+        panel.classList.add('open');
         panel.scrollTop = 0;
+        setTimeout(function () { if (openKey === key) render(key); }, 90);
       } else {
+        render(key);
+        panel.classList.add('open');
         setTimeout(function () { panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 150);
       }
     });

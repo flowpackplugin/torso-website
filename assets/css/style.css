@@ -947,6 +947,9 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
     display:flex;flex-direction:column;min-height:100%}
   .core-panel .vgrid--one{margin:auto 0}
   .core-panel .vitem{width:min(300px,68vw)}
+  /* 미디어 로드 페이드 인: 영상·사진이 뜰 때 갑자기 팝인하지 않도록 (pfade 묶음은 자체 크로스페이드) */
+  .core-panel .vitem>img,.core-panel .vitem>video{opacity:0;transition:opacity .5s var(--ease)}
+  .core-panel .vitem>img.ld,.core-panel .vitem>video.ld{opacity:1}
   .core-panel__head{position:sticky;top:0;z-index:5;background:#161511;align-items:center;
     padding:calc(14px + env(safe-area-inset-top)) 0 14px;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,.12)}
   .core-panel__x{padding:9px 20px;font-size:13px}
