@@ -831,6 +831,10 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   transition:transform 1.3s var(--ease),filter .7s var(--ease)}
 .corephoto:hover .corephoto__img img,.corephoto:hover .corephoto__img video{transform:scale(1.06);filter:grayscale(0) contrast(1.03) brightness(.78)}
 @media(hover:none){.corephoto__img video{filter:grayscale(0) contrast(1.03) brightness(.82)}}
+/* 코어 카드 대표 미디어 로테이션 (영상 1 + 사진 3 크로스페이드) */
+.corephoto__img>video,.corephoto__img>img{position:absolute;inset:0;opacity:0;
+  transition:opacity 1.1s var(--ease),transform 1.3s var(--ease),filter .7s var(--ease)}
+.corephoto__img>.on{opacity:1}
 /* legibility scrim */
 .corephoto::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
   background:linear-gradient(180deg,rgba(8,8,7,0) 36%,rgba(8,8,7,.2) 56%,rgba(8,8,7,.88) 100%);
@@ -1036,14 +1040,21 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .rev--ba .ba--port{aspect-ratio:1/1}
 .rev--ba .rev__media img{filter:none;object-position:center;transition:none}
 .rev--ba:hover .rev__media img{transform:none;filter:none}
-/* desktop (hover-capable): hover reveals BEFORE; drag-slider is mobile-only */
+/* desktop (hover-capable): BEFORE가 자동 크로스페이드로 순환, 호버 시 수동 리빌 */
 @media (hover:hover) and (pointer:fine){
   .rev--ba .ba{cursor:pointer}
-  .rev--ba .ba__before-wrap{clip-path:none;opacity:0;transition:opacity .4s var(--ease)}
-  .rev--ba .ba:hover .ba__before-wrap{opacity:1}
+  .rev--ba .ba__before-wrap{clip-path:none;opacity:0;transition:opacity .4s var(--ease);
+    animation:baAutoFade 8s ease-in-out infinite}
+  .rev--ba:nth-child(3n+2) .ba__before-wrap{animation-delay:1.3s}
+  .rev--ba:nth-child(3n) .ba__before-wrap{animation-delay:2.6s}
+  .rev--ba .ba:hover .ba__before-wrap{animation:none;opacity:1}
   .rev--ba .ba__handle,.rev--ba .ba__range,.rev--ba .ba__hint{display:none}
   .rev--ba .ba:hover .ba__label--b{--g:1}
+  @media (prefers-reduced-motion:reduce){
+    .rev--ba .ba__before-wrap{animation:none}
+  }
 }
+@keyframes baAutoFade{0%,20%{opacity:0}42%,60%{opacity:1}82%,100%{opacity:0}}
 /* text-only review card: photo removed, review text kept */
 .rev--text .rev__body{padding-top:22px}
 .rev__tag--in{position:static;display:inline-block;margin-bottom:13px;color:var(--accent-d);

@@ -81,6 +81,35 @@ if (burger && navWrap){
     });
   }
 })();
+// 코어 카드 대표 미디어 로테이션 (영상 1 + 사진 3 크로스페이드)
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  if (reduce) return;
+  var canHover = window.matchMedia && window.matchMedia('(hover:hover)').matches;
+  document.querySelectorAll('.corephoto__img').forEach(function (wrap) {
+    var layers = Array.prototype.slice.call(wrap.children);
+    if (layers.length < 2) return;
+    var i = 0, timer = null;
+    function show(k) {
+      layers[i].classList.remove('on');
+      i = k;
+      layers[i].classList.add('on');
+    }
+    function step() { show((i + 1) % layers.length); }
+    function start() { if (!timer) timer = setInterval(step, 3800); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) start(); else stop(); });
+      }, { threshold: 0.2 }).observe(wrap);
+    } else { start(); }
+    if (canHover) {
+      var card = wrap.closest('.corephoto');
+      card.addEventListener('mouseenter', function () { stop(); show(0); });
+      card.addEventListener('mouseleave', function () { start(); });
+    }
+  });
+})();
 // ── 추구미 미디어 공용 데이터 (홈 패널 + 스타일 페이지 공용) ──
 var TORSO_MEDIA = (function () {
   var V = 'assets/video/styles/';
@@ -105,14 +134,16 @@ var TORSO_MEDIA = (function () {
         groups: [[1,2],[3,4],[5,6,7],[8],[9]] }
     ]},
     classic: { idx: '03', key: 'Classic Core', name: '클래식 코어', styles: [
-      { code: '3-1', name: '슬릭백', n: 3 },
+      { code: '3-1', name: '슬릭백', n: 3, photos: ['junyoung','junyoung'],
+        groups: [[1,2]] },
       { code: '3-2', name: '가일', n: 1, photos: ['junghoon'] },
       { code: '3-3', name: '포마드', n: 2 }
     ]},
     archive: { idx: '04', key: 'Archive Core', name: '아카이브 코어', styles: [
-      { code: '4-1', name: '텍스처컷', n: 4 },
-      { code: '4-2', name: '빈티지', n: 4, photos: ['jinhoon','jinhoon','jinhoon'],
-        groups: [[1,2,3]] },
+      { code: '4-1', name: '텍스처컷', n: 4, photos: ['junyoung','junyoung','junyoung','junyoung','junyoung','junyoung'],
+        groups: [[1,2,3],[4,5,6]] },
+      { code: '4-2', name: '빈티지', n: 4, photos: ['jinhoon','jinhoon','jinhoon','junyoung','junyoung','junyoung'],
+        groups: [[1,2,3],[4,5,6]] },
       { code: '4-3', name: '히피', n: 3 }
     ]}
   };
