@@ -273,16 +273,20 @@ var TORSO_MEDIA = (function () {
       }
     });
     // 타일 순차 슬라이드 인: 왼쪽부터 하나씩 딜레이
-    // (모바일은 오버레이 슬라이드 업 .5s가 끝나갈 때부터 시작해 자연스럽게 이어지도록)
-    var baseDelay = mq.matches ? 0.35 : 0.1;
+    // (모바일은 렌더 자체가 슬라이드 업 종료 후라 딜레이를 짧게)
+    var baseDelay = mq.matches ? 0.05 : 0.1;
     Array.prototype.forEach.call(strip.children, function (el, i) {
       el.style.animationDelay = (baseDelay + i * 0.06).toFixed(2) + 's';
     });
     panelIn.appendChild(strip);
-    panelIn.querySelectorAll('video').forEach(function (v) {
-      v.muted = true;
-      if (vio) vio.observe(v); else { v.autoplay = true; v.play().catch(function () {}); }
-    });
+    // 영상 재생(네트워크+디코딩)은 타일 슬라이드 인과 겹치지 않게 모바일에선 살짝 뒤로
+    var startVideos = function () {
+      panelIn.querySelectorAll('video').forEach(function (v) {
+        v.muted = true;
+        if (vio) vio.observe(v); else { v.autoplay = true; v.play().catch(function () {}); }
+      });
+    };
+    if (mq.matches) { setTimeout(startVideos, 320); } else { startVideos(); }
     if (mq.matches) {
       // 모바일: 미디어가 준비되면 페이드 인 — 갑자기 팝인하지 않도록 (pfade 묶음은 자체 크로스페이드)
       Array.prototype.forEach.call(strip.querySelectorAll('.vitem>img'), function (im) {
@@ -302,12 +306,20 @@ var TORSO_MEDIA = (function () {
       openKey = key;
       cards.forEach(function (el) { el.classList.toggle('sel', el === card); });
       if (mq.matches) {
-        // 모바일: 오버레이 슬라이드 업을 먼저 시작(빈 패널) → 무거운 타일 렌더는 살짝 뒤에
-        // (렌더의 DOM 작업이 슬라이드 트랜지션 시작을 끊어 버벅이던 문제 분리)
+        // 모바일: 오버레이 슬라이드 업이 완전히 끝난 뒤에 무거운 타일 렌더 시작
+        // (렌더의 DOM/레이아웃 작업이 슬라이드 트랜지션 프레임을 끊던 문제 분리)
         document.body.classList.add('core-lock');
         panel.classList.add('open');
         panel.scrollTop = 0;
-        setTimeout(function () { if (openKey === key) render(key); }, 90);
+        var done = false;
+        var go = function () {
+          if (done) return; done = true;
+          panel.removeEventListener('transitionend', onEnd);
+          if (openKey === key) requestAnimationFrame(function () { render(key); });
+        };
+        var onEnd = function (e) { if (e.target === panel && e.propertyName === 'transform') go(); };
+        panel.addEventListener('transitionend', onEnd);
+        setTimeout(go, 650); // transitionend 미발화 대비 폴백
       } else {
         render(key);
         panel.classList.add('open');
