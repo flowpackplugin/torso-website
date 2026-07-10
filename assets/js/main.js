@@ -839,50 +839,8 @@ document.querySelectorAll('a[href]').forEach(a => {
     ba.addEventListener('pointercancel', end);
   });
 })();
-// before/after — mobile auto-sweep tied to scroll (so visitors see the reveal without dragging)
-// As each comparison slider travels through the viewport, the divider sweeps Before<->After.
-// Manual drag wins: once a slider is touched it stops auto-driving. Desktop uses hover-reveal, so skip there.
-(function () {
-  var finePointer = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
-  if (finePointer) return;                       // desktop hover devices keep the hover-to-reveal behaviour
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var bas = Array.prototype.slice.call(document.querySelectorAll('.rev--ba .ba'));
-  if (!bas.length) return;
-  if (reduce) {                                  // no motion: rest at a clear half/half comparison
-    bas.forEach(function (ba) { if (!ba.classList.contains('is-touched')) ba.style.setProperty('--pos', '50%'); });
-    return;
-  }
-  function setPos(ba, v) {
-    v = Math.max(0, Math.min(100, v));
-    ba.style.setProperty('--pos', v.toFixed(1) + '%');
-    ba.style.setProperty('--b-glow', Math.max(0, (v - 50) / 50).toFixed(3));
-    ba.style.setProperty('--a-glow', Math.max(0, (50 - v) / 50).toFixed(3));
-  }
-  var raf = false;
-  function apply() {
-    raf = false;
-    var vh = window.innerHeight || document.documentElement.clientHeight;
-    bas.forEach(function (ba) {
-      if (ba.classList.contains('is-touched')) return;   // user took over — leave it alone
-      var r = ba.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > vh) return;            // off-screen: don't bother
-      // Concentrate the full Before<->After sweep into the comfortable viewing band so the
-      // divider + grip visibly travel ACROSS the card while it's on screen — not only when it's
-      // half-cut at the extreme top/bottom edges (which felt like "the photo changes but the
-      // handle stays put"). Card entering from the bottom = Before(100); leaving at top = After(0).
-      var centre = r.top + r.height / 2;
-      var startBand = vh * 0.82;                          // well into view from the bottom -> Before
-      var endBand = vh * 0.18;                            // about to leave at the top      -> After
-      var p = (startBand - centre) / (startBand - endBand);
-      p = Math.max(0, Math.min(1, p));                    // 0 -> 1 as the card scrolls upward
-      setPos(ba, (1 - p) * 100);
-    });
-  }
-  function onScroll() { if (!raf) { raf = true; requestAnimationFrame(apply); } }
-  apply();
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-})();
+// before/after — 자동 왕복 스윕은 CSS 애니메이션(baSweep)이 담당.
+// 드래그하면 .is-touched가 붙어 애니메이션이 꺼지고 수동 조작으로 전환된다 (위 drag 핸들러 참조).
 
 // ===== GA4 이벤트 트래킹: 예약 버튼 클릭 =====
 // booking_click = 네이버 예약 링크 클릭(실질 전환 지표), reserve_click = 사이트 내 예약 유도 버튼
