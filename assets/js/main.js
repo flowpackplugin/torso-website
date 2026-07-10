@@ -81,23 +81,34 @@ if (burger && navWrap){
     });
   }
 })();
-// 코어 카드 대표 미디어 로테이션 (영상 1 + 사진 3 크로스페이드)
+// 코어 카드 대표 미디어 로테이션 — 영상 위주 (영상은 길게 재생, 사진은 짧게 크로스페이드)
 (function () {
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
   if (reduce) return;
   var canHover = window.matchMedia && window.matchMedia('(hover:hover)').matches;
+  var VIDEO_MS = 9000, PHOTO_MS = 2600;
   document.querySelectorAll('.corephoto__img').forEach(function (wrap) {
     var layers = Array.prototype.slice.call(wrap.children);
     if (layers.length < 2) return;
+    var video = layers[0].tagName === 'VIDEO' ? layers[0] : null;
     var i = 0, timer = null;
     function show(k) {
       layers[i].classList.remove('on');
       i = k;
       layers[i].classList.add('on');
+      if (video) {
+        if (i === 0) { video.play().catch(function () {}); }
+        else { video.pause(); }
+      }
     }
-    function step() { show((i + 1) % layers.length); }
-    function start() { if (!timer) timer = setInterval(step, 3800); }
-    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    function dwell() { return i === 0 ? VIDEO_MS : PHOTO_MS; }
+    function step() { show((i + 1) % layers.length); timer = setTimeout(step, dwell()); }
+    function start() {
+      if (timer) return;
+      if (i === 0 && video) video.play().catch(function () {});
+      timer = setTimeout(step, dwell());
+    }
+    function stop() { if (timer) { clearTimeout(timer); timer = null; } }
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {
         es.forEach(function (e) { if (e.isIntersecting) start(); else stop(); });
@@ -118,19 +129,19 @@ var TORSO_MEDIA = (function () {
   // groups = 같은 인물의 사진 번호 묶음 → 한 타일에서 자동 크로스페이드 (미지정 시 사진 1장 = 타일 1개)
   var CORES = {
     sharp: { idx: '01', key: 'Sharp Core', name: '샤프 코어', styles: [
-      { code: '1-1', name: '슬릭댄디', n: 4, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon'],
+      { code: '1-1', name: '슬릭댄디', n: 3, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon'],
         groups: [[1,2,3],[4,5]] },
-      { code: '1-2', name: '필러스', n: 3, photos: ['junyoung','junyoung','junyoung','junghoon'],
+      { code: '1-2', name: '필러스', n: 4, photos: ['junyoung','junyoung','junyoung','junghoon'],
         groups: [[1],[2,3],[4]] },
-      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 5, photos: ['jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
+      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 3, photos: ['jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
         groups: [[1,2,3],[4,5]] }
     ]},
     soft: { idx: '02', key: 'Soft Core', name: '소프트 코어', styles: [
-      { code: '2-1', name: '시스루 댄디', n: 3, photos: ['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
+      { code: '2-1', name: '시스루 댄디', n: 4, photos:['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
         groups: [[1,2],[3],[4,5,6,7],[8,9],[10,11,12]] },
       { code: '2-2', name: '세미리프', n: 3, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon','junyoung'],
         groups: [[1,2,3],[4,5],[6]] },
-      { code: '2-3', name: '쉐도우', n: 1, photos: ['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
+      { code: '2-3', name: '쉐도우', n: 2, photos:['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
         groups: [[1,2],[3,4],[5,6,7],[8],[9]] }
     ]},
     classic: { idx: '03', key: 'Classic Core', name: '클래식 코어', styles: [
@@ -142,7 +153,7 @@ var TORSO_MEDIA = (function () {
     archive: { idx: '04', key: 'Archive Core', name: '아카이브 코어', styles: [
       { code: '4-1', name: '텍스처컷', n: 4, photos: ['junyoung','junyoung','junyoung','junyoung','junyoung','junyoung'],
         groups: [[1,2,3],[4,5,6]] },
-      { code: '4-2', name: '빈티지', n: 4, photos: ['jinhoon','jinhoon','jinhoon','junyoung','junyoung','junyoung'],
+      { code: '4-2', name: '빈티지', n: 3, photos:['jinhoon','jinhoon','jinhoon','junyoung','junyoung','junyoung'],
         groups: [[1,2,3],[4,5,6]] },
       { code: '4-3', name: '히피', n: 3 }
     ]}
