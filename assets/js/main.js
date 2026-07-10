@@ -59,7 +59,7 @@ if (burger && navWrap){
 (function () {
   var BASE = 'assets/video/styles/';
   var LISTS = {
-    sharp:   ['s1-1_01.mp4', 's1-2_03.mp4', 's1-3_03.mp4', 's1-1_02.mp4'],
+    sharp:   ['s1-1_01.mp4', 's1-3_04.mp4', 's1-3_03.mp4', 's1-1_02.mp4'],
     soft:    ['s2-2_01.mp4', 's2-1_02.mp4', 's2-3_02.mp4', 's2-1_03.mp4'],
     classic: ['s3-1_01.mp4', 's3-2_01.mp4', 's3-3_01.mp4', 's3-3_02.mp4'],
     archive: ['s4-2_01.mp4', 's4-1_02.mp4', 's4-3_03.mp4', 's4-2_03.mp4']
@@ -156,9 +156,9 @@ var TORSO_MEDIA = (function () {
     sharp: { idx: '01', key: 'Sharp Core', name: '샤프 코어', styles: [
       { code: '1-1', name: '슬릭댄디', n: 3, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon'],
         groups: [[1,2,3],[4,5]] },
-      { code: '1-2', name: '필러스', n: 4, photos: ['junyoung','junyoung','junyoung','junghoon'],
+      { code: '1-2', name: '필러스', n: 3, photos: ['junyoung','junyoung','junyoung','junghoon'],
         groups: [[1],[2,3],[4]] },
-      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 3, photos: ['jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
+      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 4, photos: ['jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
         groups: [[1,2,3],[4,5]] }
     ]},
     soft: { idx: '02', key: 'Soft Core', name: '소프트 코어', styles: [
