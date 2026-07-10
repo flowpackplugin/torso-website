@@ -953,7 +953,7 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   .core-panel .vgrid--one{margin:auto 0}
   .core-panel .vitem{width:min(300px,68vw);content-visibility:auto;contain-intrinsic-size:300px 400px}
   /* 미디어 로드 페이드 인: 영상·사진이 뜰 때 갑자기 팝인하지 않도록 (pfade 묶음은 자체 크로스페이드) */
-  .core-panel .vitem>img,.core-panel .vitem>video{opacity:0;transition:opacity .5s var(--ease)}
+  .core-panel .vitem>img,.core-panel .vitem>video{opacity:0;transition:opacity .25s var(--ease)}
   .core-panel .vitem>img.ld,.core-panel .vitem>video.ld{opacity:1}
   .core-panel__head{position:sticky;top:0;z-index:5;background:#161511;align-items:center;
     padding:calc(14px + env(safe-area-inset-top)) 0 14px;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,.12)}
@@ -1042,11 +1042,11 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .rev--ba .rev__media img{filter:none;object-position:center;transition:none}
 .rev--ba:hover .rev__media img{transform:none;filter:none}
 /* 비포/애프터: 디바이더가 좌↔우로 계속 왕복 스윕 (모든 기기) — 만지면 수동 전환, 데스크탑은 호버로 일시정지 */
-.rev--ba .ba__before-wrap{animation:baSweep 7s ease-in-out infinite}
-.rev--ba .ba__handle{animation:baSweepHandle 7s ease-in-out infinite}
+.rev--ba .ba__before-wrap{animation:baSweep 4s ease-in-out infinite}
+.rev--ba .ba__handle{animation:baSweepHandle 4s ease-in-out infinite}
 /* 카드마다 위상 다르게 (음수 딜레이 = 사이클 중간부터 시작) */
-.rev--ba:nth-child(3n+2) .ba__before-wrap,.rev--ba:nth-child(3n+2) .ba__handle{animation-delay:-2.3s}
-.rev--ba:nth-child(3n) .ba__before-wrap,.rev--ba:nth-child(3n) .ba__handle{animation-delay:-4.6s}
+.rev--ba:nth-child(3n+2) .ba__before-wrap,.rev--ba:nth-child(3n+2) .ba__handle{animation-delay:-1.3s}
+.rev--ba:nth-child(3n) .ba__before-wrap,.rev--ba:nth-child(3n) .ba__handle{animation-delay:-2.6s}
 .rev--ba .ba.is-touched .ba__before-wrap,.rev--ba .ba.is-touched .ba__handle{animation:none}
 @media (prefers-reduced-motion:reduce){
   .rev--ba .ba__before-wrap,.rev--ba .ba__handle{animation:none}

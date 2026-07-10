@@ -214,11 +214,11 @@ var TORSO_MEDIA = (function () {
       var g = groupsOf(st)[i - st.n - 1];
       dz = DESIGNERS[st.photos[g[0] - 1]] || DESIGNERS.shop;
       if (g.length === 1) {
-        media = '<img src="' + IMG + 'p' + st.code + '_' + pad2(g[0]) + '.jpg" alt="' + st.name + ' 시술 사진" loading="lazy">';
+        media = '<img src="' + IMG + 'p' + st.code + '_' + pad2(g[0]) + '.webp" alt="' + st.name + ' 시술 사진" loading="lazy" decoding="async">';
       } else {
         // 같은 인물 여러 컷 → 한 타일에서 자동 크로스페이드
         media = '<div class="pfade pfade--' + g.length + '">' + g.map(function (k, gi) {
-          return '<img src="' + IMG + 'p' + st.code + '_' + pad2(k) + '.jpg" alt="' + st.name + ' 시술 사진 ' + (gi + 1) + '/' + g.length + '" loading="lazy" style="animation-delay:' + (gi * 2.5) + 's">';
+          return '<img src="' + IMG + 'p' + st.code + '_' + pad2(k) + '.webp" alt="' + st.name + ' 시술 사진 ' + (gi + 1) + '/' + g.length + '" loading="lazy" decoding="async" style="animation-delay:' + (gi * 2.5) + 's">';
         }).join('') + '</div>';
       }
     }
