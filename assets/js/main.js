@@ -55,24 +55,96 @@ if (burger && navWrap){
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
 })();
-// corephoto cards: 영상만 상시 재생 (뷰포트 진입 시 play, 이탈 시 pause)
+// corephoto cards: 코어별 영상 여러 개를 크로스페이드로 로테이션 (뷰포트 진입 시 재생)
 (function () {
-  var vids = document.querySelectorAll('.corephoto__img video');
-  if (!vids.length) return;
-  vids.forEach(function (v) { v.muted = true; v.loop = true; v.playsInline = true; });
+  var BASE = 'assets/video/styles/';
+  var LISTS = {
+    sharp:   ['s1-1_01.mp4', 's1-2_03.mp4', 's1-3_03.mp4', 's1-1_02.mp4'],
+    soft:    ['s2-2_01.mp4', 's2-1_02.mp4', 's2-3_02.mp4', 's2-1_03.mp4'],
+    classic: ['s3-1_01.mp4', 's3-2_01.mp4', 's3-3_01.mp4', 's3-3_02.mp4'],
+    archive: ['s4-2_01.mp4', 's4-1_02.mp4', 's4-3_03.mp4', 's4-2_03.mp4']
+  };
+  var MAX_SEG = 8000; // 긴 영상은 8초까지만 보여주고 다음으로
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-  if (reduce) return;
-  if ('IntersectionObserver' in window) {
+  var cards = document.querySelectorAll('.corephoto[data-core]');
+  if (!cards.length) return;
+
+  Array.prototype.forEach.call(cards, function (card) {
+    var wrap = card.querySelector('.corephoto__img');
+    var v1 = wrap && wrap.querySelector('video');
+    var list = LISTS[card.getAttribute('data-core')];
+    if (!wrap || !v1) return;
+    v1.muted = true; v1.playsInline = true;
+
+    // 로테이션 불가 조건: 축소 동작 선호 or 목록 없음 → 단일 영상 루프
+    if (reduce || !list || list.length < 2 || !('IntersectionObserver' in window)) {
+      v1.loop = true;
+      if (!reduce) { v1.autoplay = true; v1.play().catch(function () {}); }
+      return;
+    }
+
+    var v2 = v1.cloneNode(false);
+    v2.className = '';
+    v2.removeAttribute('poster');
+    v2.removeAttribute('aria-label');
+    v2.muted = true; v2.playsInline = true;
+    wrap.appendChild(v2);
+    var vids = [v1, v2];
+    vids.forEach(function (v) { v.loop = false; });
+
+    var idx = 0, cur = 0, timer = null, active = false;
+    function srcFor(i) { return BASE + list[i % list.length]; }
+    vids[1].preload = 'auto';
+    vids[1].src = srcFor(1);
+
+    function clearTimer() { if (timer) { clearTimeout(timer); timer = null; } }
+    function arm(v) {
+      clearTimer();
+      var ms = MAX_SEG;
+      if (isFinite(v.duration) && v.duration > 0) {
+        ms = Math.min(Math.max((v.duration - v.currentTime) * 1000, 500), MAX_SEG);
+      }
+      timer = setTimeout(next, ms);
+    }
+    function next() {
+      if (!active) return;
+      clearTimer();
+      idx++;
+      var old = vids[cur];
+      var now = vids[1 - cur];
+      cur = 1 - cur;
+      try { now.currentTime = 0; } catch (e) {}
+      now.play().catch(function () {});
+      now.classList.add('on');
+      old.classList.remove('on');
+      arm(now);
+      setTimeout(function () { // 크로스페이드 끝난 뒤 이전 슬롯에 다음 영상 예열
+        old.pause();
+        old.src = srcFor(idx + 1);
+        old.load();
+      }, 900);
+    }
+    vids.forEach(function (v) {
+      v.addEventListener('ended', function () { if (active && v === vids[cur]) next(); });
+    });
+
+    function start() {
+      if (active) return;
+      active = true;
+      var v = vids[cur];
+      v.play().catch(function () {});
+      arm(v);
+    }
+    function stop() {
+      active = false;
+      clearTimer();
+      vids.forEach(function (v) { v.pause(); });
+    }
     var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (e.isIntersecting) { e.target.play().catch(function () {}); }
-        else { e.target.pause(); }
-      });
+      es.forEach(function (e) { if (e.isIntersecting) start(); else stop(); });
     }, { threshold: 0.25 });
-    vids.forEach(function (v) { io.observe(v); });
-  } else {
-    vids.forEach(function (v) { v.autoplay = true; v.play().catch(function () {}); });
-  }
+    io.observe(card);
+  });
 })();
 // ── 추구미 미디어 공용 데이터 (홈 패널 + 스타일 페이지 공용) ──
 var TORSO_MEDIA = (function () {
