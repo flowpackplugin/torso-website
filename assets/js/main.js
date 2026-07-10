@@ -158,8 +158,8 @@ var TORSO_MEDIA = (function () {
         groups: [[1,2,3],[4,5]] },
       { code: '1-2', name: '필러스', n: 3, photos: ['junyoung','junyoung','junyoung','junghoon'],
         groups: [[1],[2,3],[4]] },
-      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 4, photos: ['jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
-        groups: [[1,2,3],[4,5]] }
+      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 4, photos: ['jinhoon','jinhoon','jinhoon','jinhoon'],
+        groups: [[1,2,3],[4]] }
     ]},
     soft: { idx: '02', key: 'Soft Core', name: '소프트 코어', styles: [
       { code: '2-1', name: '시스루 댄디', n: 4, photos:['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
