@@ -55,71 +55,24 @@ if (burger && navWrap){
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
 })();
-// corephoto cards: hover-play on desktop, autoplay muted-loop on touch
+// corephoto cards: 영상만 상시 재생 (뷰포트 진입 시 play, 이탈 시 pause)
 (function () {
   var vids = document.querySelectorAll('.corephoto__img video');
   if (!vids.length) return;
   vids.forEach(function (v) { v.muted = true; v.loop = true; v.playsInline = true; });
-  var touch = window.matchMedia && window.matchMedia('(hover:none)').matches;
-  if (touch) {
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (es) {
-        es.forEach(function (e) {
-          if (e.isIntersecting) { e.target.play().catch(function () {}); }
-          else { e.target.pause(); }
-        });
-      }, { threshold: 0.25 });
-      vids.forEach(function (v) { io.observe(v); });
-    } else {
-      vids.forEach(function (v) { v.autoplay = true; v.play().catch(function () {}); });
-    }
-  } else {
-    vids.forEach(function (v) {
-      var card = v.closest('.corephoto');
-      card.addEventListener('mouseenter', function () { v.play().catch(function () {}); });
-      card.addEventListener('mouseleave', function () { v.pause(); try { v.currentTime = 0; } catch (e) {} });
-    });
-  }
-})();
-// 코어 카드 대표 미디어 로테이션 — 영상 위주 (영상은 길게 재생, 사진은 짧게 크로스페이드)
-(function () {
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
   if (reduce) return;
-  var canHover = window.matchMedia && window.matchMedia('(hover:hover)').matches;
-  var VIDEO_MS = 9000, PHOTO_MS = 2600;
-  document.querySelectorAll('.corephoto__img').forEach(function (wrap) {
-    var layers = Array.prototype.slice.call(wrap.children);
-    if (layers.length < 2) return;
-    var video = layers[0].tagName === 'VIDEO' ? layers[0] : null;
-    var i = 0, timer = null;
-    function show(k) {
-      layers[i].classList.remove('on');
-      i = k;
-      layers[i].classList.add('on');
-      if (video) {
-        if (i === 0) { video.play().catch(function () {}); }
-        else { video.pause(); }
-      }
-    }
-    function dwell() { return i === 0 ? VIDEO_MS : PHOTO_MS; }
-    function step() { show((i + 1) % layers.length); timer = setTimeout(step, dwell()); }
-    function start() {
-      if (timer) return;
-      if (i === 0 && video) video.play().catch(function () {});
-      timer = setTimeout(step, dwell());
-    }
-    function stop() { if (timer) { clearTimeout(timer); timer = null; } }
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) {
-        es.forEach(function (e) { if (e.isIntersecting) start(); else stop(); });
-      }, { threshold: 0.2 }).observe(wrap);
-    } else { start(); }
-    if (canHover) {
-      var card = wrap.closest('.corephoto');
-      card.addEventListener('mouseenter', function () { stop(); show(0); });
-      card.addEventListener('mouseleave', function () { start(); });
-    }
-  });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { e.target.play().catch(function () {}); }
+        else { e.target.pause(); }
+      });
+    }, { threshold: 0.25 });
+    vids.forEach(function (v) { io.observe(v); });
+  } else {
+    vids.forEach(function (v) { v.autoplay = true; v.play().catch(function () {}); });
+  }
 })();
 // ── 추구미 미디어 공용 데이터 (홈 패널 + 스타일 페이지 공용) ──
 var TORSO_MEDIA = (function () {
