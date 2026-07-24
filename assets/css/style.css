@@ -1142,8 +1142,14 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 .hero--film .scroll-cue{color:#fff}
 .hero--film .scroll-cue__track{background:rgba(255,255,255,.65)}
 .hero--film .scroll-cue__track::after{background:#fff}
+/* CTA 버튼 대신 후킹 문장: 스크롤 전 화면에서 바로 읽히도록 */
+.hero--film .hero__hook--cta{margin:28px 0 0;font-size:clamp(15px,1.7vw,20px);line-height:1.62;
+  color:#f2f0eb;animation:heroFade .8s ease .4s both}
+.hero--film .hero__hook--cta b{font-weight:800;color:#fff}
 @media(max-width:900px){
   .hero--film .hero__scrim{background:linear-gradient(180deg,rgba(14,13,11,.55) 0%,rgba(14,13,11,.35) 40%,rgba(14,13,11,.72) 100%)}
+  /* 모바일: 스크롤 유도를 하단 중앙에 또렷하게 */
+  .hero--film .scroll-cue{left:50%;transform:translateX(-50%);bottom:20px;flex-direction:column;align-items:center}
 }
 
 /* ===== styles page — 추구미 아카이브 ===== */
