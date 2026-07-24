@@ -1151,7 +1151,8 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   /* 모바일: 히어로를 사파리 툴바 제외한 실제 보이는 높이에 맞추고, 스크롤 유도는 그 안쪽 하단 중앙에 */
   .hero--film{min-height:100vh;min-height:100svh}
   .hero--film .scroll-cue{left:50%;transform:translateX(-50%);flex-direction:column;align-items:center;
-    bottom:calc(30px + env(safe-area-inset-bottom))}
+    bottom:calc(46px + env(safe-area-inset-bottom))}
+  .hero--film .scroll-cue__track{height:76px}
 }
 
 /* ===== styles page — 추구미 아카이브 ===== */
