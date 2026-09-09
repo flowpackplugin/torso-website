@@ -23,3 +23,11 @@ assets/img/*_sheet.png
 
 # unused legacy script
 assets/js/hero3d.js
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
+wrangler.jsonc

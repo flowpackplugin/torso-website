@@ -397,6 +397,19 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
   font-weight:700;letter-spacing:.06em;font-size:13px;transition:color .35s var(--ease);color:var(--ink)}
 .price-tab .tab-ico{flex:none}
 .price-tab.active{color:var(--paper)}
+/* 상호 변경 안내 토스트 */
+.rebrand-toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,16px);z-index:400;
+  background:#1c1b19;color:#fff;font-size:13.5px;line-height:1.4;padding:12px 14px 12px 20px;
+  border-radius:999px;display:flex;align-items:center;gap:8px;opacity:0;
+  transition:opacity .4s ease,transform .4s ease;box-shadow:0 10px 30px rgba(0,0,0,.32);max-width:92vw}
+.rebrand-toast.on{opacity:1;transform:translate(-50%,0)}
+.rebrand-toast b{color:#c9d6bf;font-weight:700}
+.rebrand-toast button{background:none;border:0;color:rgba(255,255,255,.75);font-size:17px;cursor:pointer;padding:0 4px;line-height:1}
+/* 다운펌 추가 옵션 박스 (탭과 무관하게 항상 표시) */
+.addon-box{max-width:860px;margin:26px auto 0;padding:20px 26px 12px;border:1px solid var(--line);
+  border-radius:18px;background:var(--paper-2)}
+.addon-box__t{font-size:14.5px;font-weight:700;margin:0 0 8px;letter-spacing:.01em}
+.addon-box .price-row .pay{font-weight:800}
 .price-card{max-width:860px;margin:0 auto;border:1px solid rgba(255,255,255,.6);border-radius:24px;
   background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
   box-shadow:0 26px 64px -28px rgba(20,18,15,.24),0 4px 16px rgba(20,18,15,.05);overflow:hidden}

@@ -1,0 +1,25 @@
+# Cloudflare Workers Assets — files matched here are skipped on `wrangler deploy`.
+# The assets directory is "." (the repo root), so WITHOUT this list wrangler uploads EVERYTHING —
+# including .git and .wrangler, which would expose your full source, git history and account cache
+# on the public site. Keep these exclusions.
+
+# ── Dev / version-control / tooling — must never be served publicly ──
+.git
+.git/**
+.wrangler
+.wrangler/**
+node_modules
+node_modules/**
+.DS_Store
+**/.DS_Store
+*.log
+.gitignore
+.assetsignore
+
+# ── Raw camera originals (assets/img/2024 *.MP4 / *.MOV) ──
+# The site serves the optimized copies in assets/video/; these raw files aren't referenced and each
+# exceeds the Workers 25 MiB per-asset limit, which blocked the first deploy.
+assets/img/*.MP4
+assets/img/*.MOV
+assets/img/*.mp4
+assets/img/*.mov

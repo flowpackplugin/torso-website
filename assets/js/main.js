@@ -146,6 +146,22 @@ if (burger && navWrap){
     io.observe(card);
   });
 })();
+// 상호 변경 안내 토스트 — 방문자당 1회, 8초 후 자동 닫힘
+(function () {
+  try { if (localStorage.getItem('rebrandSeen')) return; } catch (e) {}
+  var t = document.createElement('div');
+  t.className = 'rebrand-toast';
+  t.innerHTML = 'TORSO for MEN이 <b>토르소 맨즈헤어</b>로 새롭게 단장했습니다 <button aria-label="닫기">×</button>';
+  document.body.appendChild(t);
+  requestAnimationFrame(function () { t.classList.add('on'); });
+  function close() {
+    t.classList.remove('on');
+    setTimeout(function () { t.remove(); }, 400);
+    try { localStorage.setItem('rebrandSeen', '1'); } catch (e) {}
+  }
+  t.querySelector('button').addEventListener('click', close);
+  setTimeout(close, 8000);
+})();
 // ── 추구미 미디어 공용 데이터 (홈 패널 + 스타일 페이지 공용) ──
 var TORSO_MEDIA = (function () {
   var V = 'assets/video/styles/';
@@ -153,7 +169,7 @@ var TORSO_MEDIA = (function () {
   // n = 영상 개수(진성), photos = 사진별 시술 디자이너 (pX-Y_01.jpg부터 순서대로)
   // groups = 같은 인물의 사진 번호 묶음 → 한 타일에서 자동 크로스페이드 (미지정 시 사진 1장 = 타일 1개)
   var CORES = {
-    sharp: { idx: '01', key: 'Sharp Core', name: '샤프 코어', styles: [
+    sharp: { idx: '02', key: 'Sharp Core', name: '샤프 코어', styles: [
       { code: '1-1', name: '슬릭댄디', n: 3, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon'],
         groups: [[1,2,3],[4,5]] },
       { code: '1-2', name: '필러스', n: 3, photos: ['junyoung','junyoung','junyoung','junghoon'],
@@ -161,7 +177,7 @@ var TORSO_MEDIA = (function () {
       { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 4, photos: ['jinhoon','jinhoon','jinhoon','jinhoon'],
         groups: [[1,2,3],[4]] }
     ]},
-    soft: { idx: '02', key: 'Soft Core', name: '소프트 코어', styles: [
+    soft: { idx: '03', key: 'Soft Core', name: '소프트 코어', styles: [
       { code: '2-1', name: '시스루 댄디', n: 4, photos:['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
         groups: [[1,2],[3],[4,5,6,7],[8,9],[10,11,12]] },
       { code: '2-2', name: '세미리프', n: 3, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon','junyoung'],
@@ -169,13 +185,13 @@ var TORSO_MEDIA = (function () {
       { code: '2-3', name: '쉐도우', n: 2, photos:['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
         groups: [[1,2],[3,4],[5,6,7],[8],[9]] }
     ]},
-    classic: { idx: '03', key: 'Classic Core', name: '클래식 코어', styles: [
+    classic: { idx: '04', key: 'Classic Core', name: '클래식 코어', styles: [
       { code: '3-1', name: '슬릭백', n: 3, photos: ['junyoung','junyoung'],
         groups: [[1,2]] },
       { code: '3-2', name: '가일', n: 1, photos: ['junghoon'] },
       { code: '3-3', name: '포마드', n: 2 }
     ]},
-    archive: { idx: '04', key: 'Archive Core', name: '아카이브 코어', styles: [
+    archive: { idx: '01', key: 'Archive Core', name: '아카이브 코어', styles: [
       { code: '4-1', name: '텍스처컷', n: 4, photos: ['junyoung','junyoung','junyoung','junyoung','junyoung','junyoung'],
         groups: [[1,2,3],[4,5,6]] },
       { code: '4-2', name: '빈티지', n: 3, photos:['jinhoon','jinhoon','jinhoon','junyoung','junyoung','junyoung'],
@@ -190,6 +206,7 @@ var TORSO_MEDIA = (function () {
     junyoung: { name: '준영',  url: BOOK + '6961265' },
     jinhoon:  { name: '진훈',  url: BOOK + '6826157' },
     junghoon: { name: '정훈',  url: BOOK + '7652510' },
+    yongun:   { name: '용운',  url: BOOK + '7942111' }, // 주니어
     shop:     { name: '예약하기', url: BOOK + '6970009' } // 매장 공용
   };
   // 영상 → 시술 디자이너 마킹 (원장 마킹표 확정 시 여기만 채우면 됨)
@@ -463,13 +480,21 @@ document.querySelectorAll('a[href]').forEach(a => {
       }, base + i * 45);
     });
   }
-  function discounted(base, mode) {
+  // 날짜 기반 할인 전환: 정훈 펌 패키지 첫방문 30% → 2026-11-01부터 20%
+  var LATE_FIRST = new Date() >= new Date(2026, 10, 1); // month 10 = 11월
+  function firstPctOf(el) {
+    var pct = el.dataset.first !== undefined ? parseInt(el.dataset.first, 10) : 50;
+    if (LATE_FIRST && el.dataset.firstLate !== undefined) pct = parseInt(el.dataset.firstLate, 10);
+    return pct;
+  }
+  function discounted(base, mode, el) {
     if (mode === 'npay') return Math.round(base * 0.9);
-    if (mode === 'first') return Math.round(base * 0.5);
+    if (mode === 'first') { var p = firstPctOf(el); return Math.round(base * (100 - p) / 100); }
+    if (mode === 'first20') return Math.round(base * 0.8);
     if (mode === 'first30') return Math.round(base * 0.7);
     return base;
   }
-  var WHO = { first: { pct: '50%', names: '진훈 · 정훈' }, first30: { pct: '30%', names: '준영' } };
+  var WHO = {};
   function updateWho(card) {
     var who = card.querySelector('[data-disc-who]');
     if (!who) return;
@@ -485,16 +510,20 @@ document.querySelectorAll('a[href]').forEach(a => {
     var base = parseInt(el.dataset.base, 10);
     if (!base) return;                                   // skip 추후 공개 rows
     el.classList.remove('is-disc'); el.innerHTML = '';
-    if (!mode) {
+    // 첫방문 0% 행(컬러·탈색 등)은 할인 모드여도 정가 표기
+    var effMode = mode;
+    if (mode === 'first' && firstPctOf(el) === 0) effMode = '';
+    if (!effMode) {
       var cur = buildNum(fmt(base)); el.appendChild(cur.wrap);
       if (doAnim && !reduce) roll(cur.digits, rowIdx * 70); else settle(cur.digits);
     } else {
       var oldEl = document.createElement('s'); oldEl.className = 'pay__old'; oldEl.textContent = fmt(base); el.appendChild(oldEl);
-      var neu = document.createElement('span'); neu.className = 'pay__new pay__new--' + mode;
-      var nn = buildNum(fmt(discounted(base, mode))); neu.appendChild(nn.wrap); el.appendChild(neu);
-      var lbl = document.createElement('span'); lbl.className = 'pay__lbl pay__lbl--' + mode;
-      var lblMap = { npay: 'N페이 10%', first: '첫방문 50%', first30: '첫방문 30%' };
-      lbl.textContent = lblMap[mode] || ''; el.appendChild(lbl);
+      var neu = document.createElement('span'); neu.className = 'pay__new pay__new--' + (effMode === 'first20' ? 'first30' : effMode);
+      var nn = buildNum(fmt(discounted(base, effMode, el))); neu.appendChild(nn.wrap); el.appendChild(neu);
+      var lbl = document.createElement('span'); lbl.className = 'pay__lbl pay__lbl--' + (effMode === 'first20' ? 'first30' : effMode);
+      var lblText = { npay: 'N페이 10%', first20: '첫방문 20%', first30: '첫방문 30%' }[effMode];
+      if (effMode === 'first') lblText = '첫방문 ' + firstPctOf(el) + '%';
+      lbl.textContent = lblText || ''; el.appendChild(lbl);
       if (doAnim && !reduce) roll(nn.digits, 60); else settle(nn.digits);
       void el.offsetHeight;
       requestAnimationFrame(function () { el.classList.add('is-disc'); });   // draw strike + reveal new
@@ -509,6 +538,23 @@ document.querySelectorAll('a[href]').forEach(a => {
     });
     updateWho(card);
   }
+
+  // 다운펌 추가 옵션 + 정훈 펌 첫방문 안내 — 날짜 기반 표기 전환
+  (function () {
+    var oct = new Date() >= new Date(2026, 9, 1);   // 2026-10-01부터 인상가
+    document.querySelectorAll('.addon-pay').forEach(function (el) {
+      var v = parseInt(oct ? el.dataset.later : el.dataset.now, 10);
+      el.textContent = '+' + v.toLocaleString('en-US');
+    });
+    var note = document.querySelector('[data-addon-note]');
+    if (note && oct) note.remove();
+    if (LATE_FIRST) {                                // 2026-11-01부터 펌 첫방문 20%
+      var pct = document.querySelector('[data-perm-pct]');
+      var pnote = document.querySelector('[data-perm-note]');
+      if (pct) pct.textContent = '20%';
+      if (pnote) pnote.remove();
+    }
+  })();
 
   // discount toggle buttons (mutually exclusive within a card)
   document.querySelectorAll('.price-card').forEach(function (card) {
