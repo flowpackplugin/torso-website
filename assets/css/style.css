@@ -402,6 +402,9 @@ h1,h2,h3{font-weight:700;letter-spacing:-.02em;line-height:1.14;text-wrap:balanc
 }
 .price-tab .tab-ico{flex:none}
 .price-tab.active{color:var(--paper)}
+/* 히어로 타이틀: 새 아트데코 워드마크 이미지 */
+.hero__title--img{margin:0}
+.hero__title--img img{display:block;width:min(440px,82vw);height:auto}
 /* 상호 변경 안내 토스트 */
 .rebrand-toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,16px);z-index:400;
   background:#1c1b19;color:#fff;font-size:13.5px;line-height:1.4;padding:12px 14px 12px 20px;
