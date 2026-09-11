@@ -60,9 +60,9 @@ if (burger && navWrap){
   var BASE = 'assets/video/styles/';
   var LISTS = {
     sharp:   ['s2-1_01.mp4', 's2-3_04.mp4', 's2-3_03.mp4', 's2-1_02.mp4'],
-    soft:    ['s3-2_01.mp4', 's3-1_02.mp4', 's3-3_02.mp4', 's3-1_03.mp4'],
-    classic: ['s4-1_01.mp4', 's4-2_01.mp4', 's4-3_01.mp4', 's4-3_02.mp4'],
-    archive: ['s1-2_01.mp4', 's1-1_02.mp4', 's1-3_03.mp4', 's1-2_03.mp4']
+    soft:    ['s3-2_02.mp4', 's3-1_02.mp4', 's3-3_03.mp4', 's3-1_03.mp4'],
+    classic: ['s4-1_02.mp4', 's4-2_01.mp4', 's4-3_01.mp4', 's4-3_02.mp4'],
+    archive: ['s1-2_05.mp4', 's1-1_02.mp4', 's1-3_03.mp4', 's1-2_07.mp4']
   };
   var MAX_SEG = 8000; // 긴 영상은 8초까지만 보여주고 다음으로
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -212,13 +212,13 @@ var TORSO_MEDIA = (function () {
   // 영상 → 시술 디자이너 마킹 (원장 마킹표 확정 시 여기만 채우면 됨)
   // 예: '1-1_01': 'junyoung',  ← 미마킹 영상 기본값은 진성 원장
   var VIDEO_DESIGNER = {
-    '1-2_04': 'junyoung', // 빈티지 비포 (2026-09-11 추가)
-    '1-2_05': 'junyoung', // 빈티지 애프터
-    '3-2_04': 'junyoung', // 세미리프 (2026-09-11 추가)
-    '4-1_04': 'junyoung', // 슬릭백 (2026-09-11 추가)
-    '1-2_06': 'jinhoon',  // 빈티지 진훈 (2026-09-11 추가)
-    '1-2_07': 'junyoung', // 빈티지펌 준영 (2026-09-11 추가)
-    '3-3_03': 'jinhoon'   // 쉐도우펌 진훈 (2026-09-11 추가)
+    '1-2_01': 'junyoung', // 빈티지 애프터 (2026-09-11)
+    '1-2_02': 'junyoung', // 빈티지 비포
+    '1-2_03': 'jinhoon',  // 빈티지 진훈
+    '1-2_04': 'junyoung', // 빈티지펌 준영
+    '3-2_01': 'junyoung', // 세미리프 (2026-09-11)
+    '3-3_01': 'jinhoon',  // 쉐도우펌 (2026-09-11)
+    '4-1_01': 'junyoung'  // 슬릭백 (2026-09-11)
   };
   function pad2(k) { return (k < 10 ? '0' : '') + k; }
   // 사진 타일 묶음 목록 (groups 미지정 시 사진 1장 = 타일 1개)
