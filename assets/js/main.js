@@ -180,13 +180,13 @@ var TORSO_MEDIA = (function () {
     soft: { idx: '03', key: 'Soft Core', name: '소프트 코어', styles: [
       { code: '3-1', name: '시스루 댄디', n: 4, photos:['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
         groups: [[1,2],[3],[4,5,6,7],[8,9],[10,11,12]] },
-      { code: '3-2', name: '세미리프', n: 3, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon','junyoung'],
+      { code: '3-2', name: '세미리프', n: 4, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon','junyoung'],
         groups: [[1,2,3],[4,5],[6]] },
-      { code: '3-3', name: '쉐도우', n: 2, photos:['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
+      { code: '3-3', name: '쉐도우', n: 3, photos:['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
         groups: [[1,2],[3,4],[5,6,7],[8],[9]] }
     ]},
     classic: { idx: '04', key: 'Classic Core', name: '클래식 코어', styles: [
-      { code: '4-1', name: '슬릭백', n: 3, photos: ['junyoung','junyoung'],
+      { code: '4-1', name: '슬릭백', n: 4, photos: ['junyoung','junyoung'],
         groups: [[1,2]] },
       { code: '4-2', name: '가일', n: 1, photos: ['junghoon'] },
       { code: '4-3', name: '포마드', n: 2 }
@@ -194,7 +194,7 @@ var TORSO_MEDIA = (function () {
     archive: { idx: '01', key: 'Archive Core', name: '아카이브 코어', styles: [
       { code: '1-1', name: '텍스처컷', n: 4, photos: ['junyoung','junyoung','junyoung','junyoung','junyoung','junyoung'],
         groups: [[1,2,3],[4,5,6]] },
-      { code: '1-2', name: '빈티지', n: 3, photos:['jinhoon','jinhoon','jinhoon','junyoung','junyoung','junyoung'],
+      { code: '1-2', name: '빈티지', n: 7, photos:['jinhoon','jinhoon','jinhoon','junyoung','junyoung','junyoung'],
         groups: [[1,2,3],[4,5,6]] },
       { code: '1-3', name: '히피', n: 3 }
     ]}
@@ -211,7 +211,15 @@ var TORSO_MEDIA = (function () {
   };
   // 영상 → 시술 디자이너 마킹 (원장 마킹표 확정 시 여기만 채우면 됨)
   // 예: '1-1_01': 'junyoung',  ← 미마킹 영상 기본값은 진성 원장
-  var VIDEO_DESIGNER = {};
+  var VIDEO_DESIGNER = {
+    '1-2_04': 'junyoung', // 빈티지 비포 (2026-09-11 추가)
+    '1-2_05': 'junyoung', // 빈티지 애프터
+    '3-2_04': 'junyoung', // 세미리프 (2026-09-11 추가)
+    '4-1_04': 'junyoung', // 슬릭백 (2026-09-11 추가)
+    '1-2_06': 'jinhoon',  // 빈티지 진훈 (2026-09-11 추가)
+    '1-2_07': 'junyoung', // 빈티지펌 준영 (2026-09-11 추가)
+    '3-3_03': 'jinhoon'   // 쉐도우펌 진훈 (2026-09-11 추가)
+  };
   function pad2(k) { return (k < 10 ? '0' : '') + k; }
   // 사진 타일 묶음 목록 (groups 미지정 시 사진 1장 = 타일 1개)
   function groupsOf(st) {
