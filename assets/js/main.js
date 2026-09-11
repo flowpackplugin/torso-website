@@ -59,10 +59,10 @@ if (burger && navWrap){
 (function () {
   var BASE = 'assets/video/styles/';
   var LISTS = {
-    sharp:   ['s1-1_01.mp4', 's1-3_04.mp4', 's1-3_03.mp4', 's1-1_02.mp4'],
-    soft:    ['s2-2_01.mp4', 's2-1_02.mp4', 's2-3_02.mp4', 's2-1_03.mp4'],
-    classic: ['s3-1_01.mp4', 's3-2_01.mp4', 's3-3_01.mp4', 's3-3_02.mp4'],
-    archive: ['s4-2_01.mp4', 's4-1_02.mp4', 's4-3_03.mp4', 's4-2_03.mp4']
+    sharp:   ['s2-1_01.mp4', 's2-3_04.mp4', 's2-3_03.mp4', 's2-1_02.mp4'],
+    soft:    ['s3-2_01.mp4', 's3-1_02.mp4', 's3-3_02.mp4', 's3-1_03.mp4'],
+    classic: ['s4-1_01.mp4', 's4-2_01.mp4', 's4-3_01.mp4', 's4-3_02.mp4'],
+    archive: ['s1-2_01.mp4', 's1-1_02.mp4', 's1-3_03.mp4', 's1-2_03.mp4']
   };
   var MAX_SEG = 8000; // 긴 영상은 8초까지만 보여주고 다음으로
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -170,33 +170,33 @@ var TORSO_MEDIA = (function () {
   // groups = 같은 인물의 사진 번호 묶음 → 한 타일에서 자동 크로스페이드 (미지정 시 사진 1장 = 타일 1개)
   var CORES = {
     sharp: { idx: '02', key: 'Sharp Core', name: '샤프 코어', styles: [
-      { code: '1-1', name: '슬릭댄디', n: 3, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon'],
+      { code: '2-1', name: '슬릭댄디', n: 3, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon'],
         groups: [[1,2,3],[4,5]] },
-      { code: '1-2', name: '필러스', n: 3, photos: ['junyoung','junyoung','junyoung','junghoon'],
+      { code: '2-2', name: '필러스', n: 3, photos: ['junyoung','junyoung','junyoung','junghoon'],
         groups: [[1],[2,3],[4]] },
-      { code: '1-3', name: '드롭 · 아이비 · 크롭', n: 4, photos: ['jinhoon','jinhoon','jinhoon','jinhoon'],
+      { code: '2-3', name: '드롭 · 아이비 · 크롭', n: 4, photos: ['jinhoon','jinhoon','jinhoon','jinhoon'],
         groups: [[1,2,3],[4]] }
     ]},
     soft: { idx: '03', key: 'Soft Core', name: '소프트 코어', styles: [
-      { code: '2-1', name: '시스루 댄디', n: 4, photos:['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
+      { code: '3-1', name: '시스루 댄디', n: 4, photos:['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
         groups: [[1,2],[3],[4,5,6,7],[8,9],[10,11,12]] },
-      { code: '2-2', name: '세미리프', n: 3, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon','junyoung'],
+      { code: '3-2', name: '세미리프', n: 3, photos: ['junyoung','junyoung','junyoung','jinhoon','jinhoon','junyoung'],
         groups: [[1,2,3],[4,5],[6]] },
-      { code: '2-3', name: '쉐도우', n: 2, photos:['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
+      { code: '3-3', name: '쉐도우', n: 2, photos:['junyoung','junyoung','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon','jinhoon'],
         groups: [[1,2],[3,4],[5,6,7],[8],[9]] }
     ]},
     classic: { idx: '04', key: 'Classic Core', name: '클래식 코어', styles: [
-      { code: '3-1', name: '슬릭백', n: 3, photos: ['junyoung','junyoung'],
+      { code: '4-1', name: '슬릭백', n: 3, photos: ['junyoung','junyoung'],
         groups: [[1,2]] },
-      { code: '3-2', name: '가일', n: 1, photos: ['junghoon'] },
-      { code: '3-3', name: '포마드', n: 2 }
+      { code: '4-2', name: '가일', n: 1, photos: ['junghoon'] },
+      { code: '4-3', name: '포마드', n: 2 }
     ]},
     archive: { idx: '01', key: 'Archive Core', name: '아카이브 코어', styles: [
-      { code: '4-1', name: '텍스처컷', n: 4, photos: ['junyoung','junyoung','junyoung','junyoung','junyoung','junyoung'],
+      { code: '1-1', name: '텍스처컷', n: 4, photos: ['junyoung','junyoung','junyoung','junyoung','junyoung','junyoung'],
         groups: [[1,2,3],[4,5,6]] },
-      { code: '4-2', name: '빈티지', n: 3, photos:['jinhoon','jinhoon','jinhoon','junyoung','junyoung','junyoung'],
+      { code: '1-2', name: '빈티지', n: 3, photos:['jinhoon','jinhoon','jinhoon','junyoung','junyoung','junyoung'],
         groups: [[1,2,3],[4,5,6]] },
-      { code: '4-3', name: '히피', n: 3 }
+      { code: '1-3', name: '히피', n: 3 }
     ]}
   };
   // 디자이너별 네이버 예약 링크
