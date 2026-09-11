@@ -772,6 +772,18 @@ document.querySelectorAll('a[href]').forEach(a => {
     });
   });
 })();
+// 리뷰 수 자동 증가: 기준일(data-reviews-from)의 기준값에서 하루 data-reviews-per-day건씩 반영
+(function () {
+  var el = document.querySelector('.stat__num[data-reviews-base]');
+  if (!el) return;
+  var base = parseInt(el.dataset.reviewsBase, 10);
+  var perDay = parseFloat(el.dataset.reviewsPerDay || '2');
+  var from = new Date(el.dataset.reviewsFrom + 'T00:00:00+09:00');
+  var days = Math.max(0, Math.floor((Date.now() - from.getTime()) / 86400000));
+  var n = base + Math.floor(days * perDay);
+  el.dataset.count = n;
+  el.textContent = n.toLocaleString('en-US');
+})();
 // authority stats — slot digit-roll (same as program prices) when scrolled into view
 (function () {
   var nums = Array.prototype.slice.call(document.querySelectorAll('.stat__num'));
