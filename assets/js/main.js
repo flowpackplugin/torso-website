@@ -510,8 +510,9 @@ document.querySelectorAll('a[href]').forEach(a => {
     var base = parseInt(el.dataset.base, 10);
     if (!base) return;                                   // skip 추후 공개 rows
     el.classList.remove('is-disc'); el.innerHTML = '';
-    // 첫방문 0% 행(컬러·탈색 등)은 할인 모드여도 정가 표기
+    // 첫방문 0% 행(염색·탈색·드라이 등)은 첫방문 계열 할인 모드여도 정가 표기
     var effMode = mode;
+    if ((mode === 'first' || mode === 'first20') && el.dataset.first === '0') effMode = '';
     if (mode === 'first' && firstPctOf(el) === 0) effMode = '';
     if (!effMode) {
       var cur = buildNum(fmt(base)); el.appendChild(cur.wrap);

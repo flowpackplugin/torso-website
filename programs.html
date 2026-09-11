@@ -16,7 +16,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/logo/symbol_black.png">
-<link rel="stylesheet" href="assets/css/style.css?v=rebrand3">
+<link rel="stylesheet" href="assets/css/style.css?v=rebrand4">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-F9YTZ0XVML"></script>
 <script>
@@ -87,8 +87,14 @@
         <span class="prog-tag">Junior Program</span>
       </div>
       <p class="price-hint">부담 없는 단독가로 운영돼요 · 첫 방문 할인은 없고, 네이버페이 결제 시 10% 할인돼요</p>
-      <div class="price-row"><span class="name">커트 (헤어컨설팅 포함)</span><span class="pay" data-base="30000">30,000</span></div>
-      <div class="price-row"><span class="name">그 외 메뉴</span><span class="pay pay--tba">가격표 정리 중</span></div>
+      <div class="price-row"><span class="name">맨즈 퍼스널컷 (헤어컨설팅 포함)</span><span class="pay" data-base="30000">30,000</span></div>
+      <div class="price-row"><span class="name">컷 + 다운펌</span><span class="pay" data-base="60000">60,000</span></div>
+      <div class="price-row"><span class="name">컷 + 일반펌</span><span class="pay" data-base="120000">120,000</span></div>
+      <div class="price-row"><span class="name">컷 + 열펌</span><span class="pay" data-base="140000">140,000</span></div>
+      <div class="price-divider">컬러 · 케어 (커트 별도)</div>
+      <div class="price-row"><span class="name">염색</span><span class="pay" data-base="50000">50,000</span></div>
+      <div class="price-row"><span class="name">탈색</span><span class="pay" data-base="80000">80,000</span></div>
+      <div class="price-row"><span class="name">드라이</span><span class="pay" data-base="20000">20,000</span></div>
     </div>
 
     <!-- 수석 · 진훈·준영 -->
@@ -103,15 +109,15 @@
         </span>
         <span class="prog-tag">Senior Program</span>
       </div>
-      <p class="price-hint">첫 방문 시술 20% 할인 · 재방문은 N페이 결제 시 10% · 중복 적용은 안 돼요</p>
-      <div class="price-row"><span class="name">커트 (헤어컨설팅 포함)</span><span class="pay pay--tba">가격표 정리 중</span></div>
-      <div class="price-row"><span class="name">컷 + 다운펌</span><span class="pay pay--tba">가격표 정리 중</span></div>
-      <div class="price-row"><span class="name">컷 + 일반펌</span><span class="pay pay--tba">가격표 정리 중</span></div>
-      <div class="price-row"><span class="name">컷 + 열펌</span><span class="pay pay--tba">가격표 정리 중</span></div>
-      <div class="price-divider">컬러 · 케어 (커트 별도)</div>
-      <div class="price-row"><span class="name">컬러</span><span class="pay pay--tba">가격표 정리 중</span></div>
-      <div class="price-row"><span class="name">탈색</span><span class="pay pay--tba">가격표 정리 중</span></div>
-      <div class="price-row"><span class="name">스타일링</span><span class="pay pay--tba">가격표 정리 중</span></div>
+      <p class="price-hint">첫 방문 시술 20% 할인 · 재방문은 N페이 결제 시 10% · 중복 적용은 안 돼요 · 염색·탈색·드라이는 첫 방문 할인 제외</p>
+      <div class="price-row"><span class="name">맨즈 퍼스널컷 (헤어컨설팅 포함)</span><span class="pay" data-base="40000">40,000</span></div>
+      <div class="price-row"><span class="name">컷 + 다운펌</span><span class="pay" data-base="80000">80,000</span></div>
+      <div class="price-row"><span class="name">컷 + 일반펌</span><span class="pay" data-base="150000">150,000</span></div>
+      <div class="price-row"><span class="name">컷 + 열펌</span><span class="pay" data-base="170000">170,000</span></div>
+      <div class="price-divider">컬러 · 케어 (커트 별도 · 첫 방문 할인 제외)</div>
+      <div class="price-row"><span class="name">염색</span><span class="pay" data-base="60000" data-first="0">60,000</span></div>
+      <div class="price-row"><span class="name">탈색</span><span class="pay" data-base="80000" data-first="0">80,000</span></div>
+      <div class="price-row"><span class="name">드라이</span><span class="pay" data-base="20000" data-first="0">20,000</span></div>
     </div>
 
     <!-- 정훈 (별도 가격) -->
@@ -159,23 +165,23 @@
     <div class="price-card hidden" id="price-director" data-disc="npay">
       <div class="price-card__h">
         <span class="price-card__title">
-          <h3>원장</h3>
-          <span class="price-perks price-perks--inline" role="group" aria-label="할인 적용">
+          <h3>원장 · 진성</h3>
+          <span class="price-perks price-perks--inline" role="group" aria-label="할인 적용 (택1)">
             <button type="button" class="perk perk--btn" data-disc="npay" aria-pressed="true"><span class="perk__pct perk__pct--npay">10%</span> 네이버페이</button>
+            <button type="button" class="perk perk--btn perk--hot" data-disc="first20" aria-pressed="false"><span class="perk__pct">20%</span> 첫 방문</button>
           </span>
         </span>
         <span class="prog-tag">Master Program</span>
       </div>
-      <p class="price-hint">네이버페이로 결제하면 10% 할인이 기본 적용돼요</p>
-      <div class="price-row"><span class="name">컷 (헤어컨설팅 포함)</span><span class="pay" data-base="60000">60,000</span></div>
+      <p class="price-hint">첫 방문 시술 20% · 재방문은 N페이 결제 시 10% · 중복 적용은 안 돼요 · 염색·탈색·드라이는 첫 방문 할인 제외</p>
+      <div class="price-row"><span class="name">맨즈 퍼스널컷 (헤어컨설팅 포함)</span><span class="pay" data-base="60000">60,000</span></div>
       <div class="price-row"><span class="name">컷 + 다운펌</span><span class="pay" data-base="120000">120,000</span></div>
-      <div class="price-row"><span class="name">컷 + 다운펌 + 부분펌</span><span class="pay" data-base="170000">170,000</span></div>
-      <div class="price-row"><span class="name">컷 + 다운펌 + 부분열펌</span><span class="pay" data-base="200000">200,000</span></div>
-      <div class="price-row"><span class="name">컷 + 다운펌 + 전체펌</span><span class="pay" data-base="210000">210,000</span></div>
-      <div class="price-row"><span class="name">컷 + 다운펌 + 전체열펌</span><span class="pay" data-base="230000">230,000</span></div>
-      <div class="price-divider">단품 펌</div>
-      <div class="price-row"><span class="name">컷 + 부분펌</span><span class="pay" data-base="110000">110,000</span></div>
-      <div class="price-row"><span class="name">컷 + 부분열펌</span><span class="pay" data-base="140000">140,000</span></div>
+      <div class="price-row"><span class="name">컷 + 일반펌</span><span class="pay" data-base="210000">210,000</span></div>
+      <div class="price-row"><span class="name">컷 + 열펌</span><span class="pay" data-base="230000">230,000</span></div>
+      <div class="price-divider">컬러 · 케어 (커트 별도 · 첫 방문 할인 제외)</div>
+      <div class="price-row"><span class="name">염색</span><span class="pay" data-base="80000" data-first="0">80,000</span></div>
+      <div class="price-row"><span class="name">탈색</span><span class="pay" data-base="100000" data-first="0">100,000</span></div>
+      <div class="price-row"><span class="name">드라이</span><span class="pay" data-base="40000" data-first="0">40,000</span></div>
     </div>
 
     <!-- 다운펌 추가 옵션 (모든 담당 공통) -->
@@ -300,6 +306,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=rebrand3"></script>
+<script src="assets/js/main.js?v=rebrand4"></script>
 </body>
 </html>
